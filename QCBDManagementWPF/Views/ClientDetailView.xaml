@@ -1,0 +1,256 @@
+﻿<UserControl x:Class="QCBDManagementWPF.Views.ClientDetailView"
+             Name="ClientDetailWinDow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:system="clr-namespace:System;assembly=mscorlib" 
+             xmlns:local="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+             xmlns:Main="clr-namespace:QCBDManagementWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="700" Loaded="ClientDetailWinDow_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180*"/>
+            <ColumnDefinition Width="187*"/>
+            <ColumnDefinition Width="117*"/>
+            <ColumnDefinition Width="192*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label FontSize="20" Grid.ColumnSpan="4" Foreground="DarkGray" HorizontalAlignment="Center" Content="{Binding ClientViewModel.ClientDetailViewModel.Title, UpdateSourceTrigger=PropertyChanged}"/>
+        <StackPanel Margin="1,8,8,8" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock HorizontalAlignment="Center">Search</TextBlock>
+                    <StackPanel Margin="0 10 0 0" Grid.Row="1" Orientation="Vertical">
+                        <!--<StackPanel Margin="0 6 0 0" Orientation="Horizontal">
+                                <TextBlock >Client ID</TextBlock>
+                                <ComboBox ItemsSource="{Binding DataContext.ClientViewModel.ClientModelList,RelativeSource={RelativeSource AncestorType={x:Type Window}}}" HorizontalAlignment="Right" materialDesign:TextFieldAssist.Text="Client ID" Margin="6 0 0 0" Width="250">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Rectangle Fill="{Binding TxtID}"/>
+                                                <TextBlock Text="{Binding TxtID}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>-->
+                        <StackPanel Margin="0 6 0 0" Orientation="Horizontal">
+                            <TextBlock>Company Name</TextBlock>
+                            <ComboBox Name="comboCompanyName" ItemsSource="{Binding DataContext.ClientViewModel.ClientModelList,RelativeSource={RelativeSource AncestorType={x:Type Window}}}" HorizontalAlignment="Right" Margin="6 0 0 0" Width="250">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Rectangle Fill="{Binding TxtCompany}"/>
+                                            <TextBlock Text="{Binding TxtCompany}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 12 0 0" HorizontalAlignment="Right">
+                            <Button Command="{Binding ClientViewModel.ClientDetailViewModel.BtnSearchCommand}" CommandParameter="{Binding SelectedItem, ElementName=comboCompanyName}">
+                                <materialDesign:PackIcon Kind="Magnify"/>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:Card>
+            <materialDesign:Card Margin="0 20 0 0">
+                <StackPanel Orientation="Vertical">
+                    <Button Command="{Binding ClientViewModel.ClientDetailViewModel.SelectClientForQuoteCommand}">Selectect this Client for a Quote</Button>
+                </StackPanel>
+            </materialDesign:Card>
+        </StackPanel>
+        <materialDesign:ColorZone  Margin="8,8,8.5,0" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock HorizontalAlignment="Center">Main Details</TextBlock>
+                <StackPanel Margin="0 10 0 0"  Grid.Row="1" Orientation="Vertical">
+                    <TextBox materialDesign:TextFieldAssist.Hint="Client ID" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" IsEnabled="False"                 
+                                         Margin="0 6 0 0" FontSize="12" Text="{Binding DataContext.ClientViewModel.SelectedCLientModel.TxtID, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Company Name(*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"                 
+                                         Margin="0 6 0 0" FontSize="12" Text="{Binding DataContext.ClientViewModel.SelectedCLientModel.TxtCompany, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Margin="0 0 40 0">Status</TextBlock>
+                        <StackPanel Orientation="Vertical">
+                            <RadioButton Content="Prospect" GroupName="rdbStatus" Margin="0 6 0 0" FontSize="12" IsChecked="{Binding DataContext.ClientViewModel.SelectedCLientModel.IsProspect, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                            <RadioButton Content="Client" GroupName="rdbStatus" Margin="0 6 0 0" FontSize="12" IsChecked="{Binding DataContext.ClientViewModel.SelectedCLientModel.IsClient, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Last Name (*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.TxtLastName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="First Name(*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.TxtFirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Phone(*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.TxtPhone, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Fax" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.TxtFax, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Email(*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.TxtEmail, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Position" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.TxtPosition, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Cellphone" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.TxtCellphone, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Comment" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.TxtComment, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Max Credit(*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 6 0 0" FontSize="12" Text="{Binding DataContext.ClientViewModel.SelectedCLientModel.TxtMaxCredit, UpdateSourceTrigger=LostFocus, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="RIB" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding DataContext.ClientViewModel.SelectedCLientModel.TxtRib, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Limit paiement(*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding DataContext.ClientViewModel.SelectedCLientModel.TxtPayDelay, UpdateSourceTrigger=LostFocus, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <materialDesign:ColorZone Margin="1,8,8,0" Grid.Row="2" Grid.ColumnSpan="2">
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center">Main Contact</TextBlock>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                        <Button Command="{Binding ClientViewModel.ClientDetailViewModel.BtnAddCommand}" CommandParameter="contact">
+                            <materialDesign:PackIcon Kind="Plus"/>
+                        </Button>
+                        <Button HorizontalAlignment="Right"
+                                Command="{Binding ClientViewModel.ClientDetailViewModel.BtnDeleteCommand}" Margin="1 0 0 0" CommandParameter="contact">
+                            <materialDesign:PackIcon Kind="Delete"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Margin="0 10 0 0"  Grid.Row="1"  Orientation="Vertical">
+                    <TextBox materialDesign:TextFieldAssist.Hint="Last Name (*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Contact.LastName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="First Name(*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Contact.Firstname, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Phone(*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Contact.Phone, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Fax" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Contact.Fax, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Email(*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Contact.Email, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Position" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Contact.Position, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Cellphone" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Contact.Cellphone, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Comment" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Contact.Comment, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <materialDesign:ColorZone Margin="8,8,8.5,0" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center">Address</TextBlock>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Command="{Binding ClientViewModel.ClientDetailViewModel.BtnAddCommand}" CommandParameter="address">
+                            <materialDesign:PackIcon Kind="Plus"/>
+                        </Button>
+                        <Button Command="{Binding ClientViewModel.ClientDetailViewModel.BtnDeleteCommand}" CommandParameter="address" Margin="1 0 0 0">
+                            <materialDesign:PackIcon Kind="Delete"/>
+                        </Button>
+                    </StackPanel>
+
+                </Grid>
+                <StackPanel Grid.Row="1" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="0 0 10 0">Type(*)</TextBlock>
+                     <ComboBox ItemsSource="{Binding ClientViewModel.ClientDetailViewModel.AddressTypeList, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Address.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                               Width="200"/>
+                    </StackPanel>
+                   <TextBox materialDesign:TextFieldAssist.Hint="Name" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Address.Name2, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Address(*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Address.AddressName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="City(*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Address.CityName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Post Code(*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Address.Postcode, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Country(*)" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Address.Country, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Comment on the address" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding ClientViewModel.ClientDetailViewModel.SelectedCLientModel.Address.Comment, UpdateSourceTrigger=PropertyChanged}"/>
+
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <materialDesign:ColorZone Grid.Row="3" Grid.ColumnSpan="2" Margin="0,8,5,0">
+            <DataGrid Name="dgContact" ItemsSource="{Binding ClientViewModel.SelectedCLientModel.ContactList}" 
+                          CanUserAddRows="False" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="LastName" Binding="{Binding LastName}"/>
+                    <DataGridTextColumn Header="FirstName" Binding="{Binding Firstname}"/>
+                    <DataGridTextColumn Header="Position" Binding="{Binding Position}"/>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding DataContext.ClientViewModel.ClientDetailViewModel.DetailSelectedContactCommand, ElementName=dgContact}"
+                                            CommandParameter="{Binding CurrentItem, ElementName=dgContact}">
+                                    <TextBlock>Detail</TextBlock>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </materialDesign:ColorZone>
+        <materialDesign:ColorZone Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Margin="5,8,0,0">
+            <DataGrid Name="dgAddress" ItemsSource="{Binding ClientViewModel.SelectedCLientModel.AddressList}" 
+                          CanUserAddRows="False" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Address type" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Address" Binding="{Binding AddressName}"/>
+                    <DataGridTextColumn Header="Country" Binding="{Binding Country}"/>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding DataContext.ClientViewModel.ClientDetailViewModel.DetailSelectedAddressCommand, ElementName=dgAddress}"
+                                            CommandParameter="{Binding CurrentItem, ElementName=dgAddress}">
+                                    <TextBlock>Detail</TextBlock>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </materialDesign:ColorZone>
+        <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="4" HorizontalAlignment="Right" Margin="0,12,-0.5,0">
+            <Button IsDefault="True"
+                        Command="{Binding ClientViewModel.ClientDetailViewModel.BtnDeleteCommand}" CommandParameter="client" >
+                <materialDesign:PackIcon Kind="Delete" FontSize="30"/>
+            </Button>
+            <Button IsDefault="True"
+                        Command="{Binding ClientViewModel.ClientDetailViewModel.ValidChangeCommand}" >
+                <materialDesign:PackIcon Kind="Pencil" FontSize="30"/>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

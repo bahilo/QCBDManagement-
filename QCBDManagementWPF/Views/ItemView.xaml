@@ -1,0 +1,158 @@
+﻿<UserControl x:Class="QCBDManagementWPF.Views.ItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:system="clr-namespace:System;assembly=mscorlib" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+             xmlns:Main="clr-namespace:QCBDManagementWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="800" Loaded="UserControl_Loaded">
+    <Grid MaxWidth="1000">
+        <StackPanel Orientation="Vertical">
+            <StackPanel Height="80">
+                <Label FontSize="20" Foreground="DarkGray" HorizontalAlignment="Center" Content="{Binding ItemViewModel.Title, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <materialDesign:Card HorizontalAlignment="Stretch">
+                <materialDesign:ColorZone>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" Margin="30" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock HorizontalAlignment="Center">Brand</TextBlock>
+                                    <ComboBox ItemsSource="{Binding ItemViewModel.BrandList, UpdateSourceTrigger=PropertyChanged}" Width="200"
+                                              SelectedItem="{Binding ItemViewModel.ItemModel.SelectedBrand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" Margin="100 0 0 0">
+                                    <TextBlock HorizontalAlignment="Center">And/Or in Family</TextBlock>
+                                    <ComboBox ItemsSource="{Binding ItemViewModel.FamilyList, UpdateSourceTrigger=PropertyChanged}" Width="200"
+                                              SelectedItem="{Binding ItemViewModel.ItemModel.SelectedFamily, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Magnify"/>
+                                <TextBox x:Name="tbTxtSearch" Text="{Binding ItemViewModel.ItemModel.TxtName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="300" Margin="8 0 0 0"/>
+                                <Button Command="{Binding ItemViewModel.btnSearchCommand}" CommandParameter="{Binding Path=Text, ElementName=tbTxtSearch}">
+                                    <materialDesign:PackIcon Kind="Magnify"/>
+                                </Button>
+                            </StackPanel>
+                            <StackPanel Margin="0 8 0 0" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <CheckBox Name="cbRef" Margin="8 0 0 0" Content="Reference" IsChecked="True" IsEnabled="False"/>
+                                <CheckBox Name="cbName" Margin="8 0 0 0" Content="Item Name" 
+                                          IsChecked="{Binding ItemViewModel.ItemModel.IsSearchByItemName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <CheckBox Name="cbMatch" Margin="8 0 0 0" Content="Match Exactly"
+                                          IsChecked="{Binding ItemViewModel.ItemModel.IsExactMatch ,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <CheckBox Name="cbDeep" Margin="8 0 0 0" Content="Deep search" 
+                                          IsChecked="{Binding ItemViewModel.ItemModel.IsDeepSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <materialDesign:ColorZone Mode="PrimaryMid" Margin="0 0 10 10">
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="CartOutline"/>
+                                        <TextBlock>Card</TextBlock>
+                                    </StackPanel>
+                                    <DataGrid Name="dgCart" ItemsSource="{Binding ItemViewModel.Cart.CartItemList,IsAsync=True, UpdateSourceTrigger=PropertyChanged}" 
+                                          AutoGenerateColumns="False" MaxHeight="140" Width="430" EnableColumnVirtualization="True" EnableRowVirtualization="True" CanUserAddRows="False">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Item" Binding="{Binding TxtName}"/>
+                                            <DataGridTemplateColumn>
+                                                <DataGridTemplateColumn.Header>
+                                                    <TextBlock>Quantity</TextBlock>
+                                                </DataGridTemplateColumn.Header>
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding TxtQuantity, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTextColumn Header="Total Selling Price" Binding="{Binding TxtTotalSellingPrice}"/>
+                                            <DataGridTemplateColumn>
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button ToolTip="Delete" Grid.Column="3" Style="{DynamicResource MaterialDesignFlatButton}"
+                                                            Command="{Binding DataContext.ItemViewModel.DeleteFromCartCommand, ElementName=dgCart}"
+                                                            CommandParameter="{Binding Path=CurrentItem, ElementName=dgCart}">
+                                                            <materialDesign:PackIcon Kind="Delete" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                        <TextBlock Text="Total Purchase Price:"/>
+                                        <TextBlock Text="{Binding ItemViewModel.Cart.TxtCartTotalPurchasePrice, UpdateSourceTrigger=PropertyChanged}" Margin="8 0 0 0"/>
+                                        <TextBlock Text="Total Selling Price:" Margin="8 0 0 0"/>
+                                        <TextBlock Text="{Binding ItemViewModel.Cart.TxtCartTotalSellingPrice, UpdateSourceTrigger=PropertyChanged}" Margin="8 0 0 0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </materialDesign:ColorZone>
+                            <Button Margin="10 0 0 0" Style="{DynamicResource MaterialDesignFlatButton}" HorizontalAlignment="Right" 
+                                            Command="{Binding ItemViewModel.GoToQuoteCommand}">
+                                Validate
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </materialDesign:ColorZone>
+            </materialDesign:Card>
+            <materialDesign:ColorZone Mode="PrimaryMid">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Name="txtBTitleSearch" HorizontalAlignment="Center">Search results</TextBlock>
+
+                    <StackPanel Grid.Row="1" Orientation="Vertical">
+                        <DataGrid x:Name="dgSearchResult" AutoGenerateColumns="False"
+                                  ItemsSource="{Binding ItemViewModel.ItemModelList, IsAsync=True, UpdateSourceTrigger=PropertyChanged}" 
+                                  EnableColumnVirtualization="True" EnableRowVirtualization="True" MaxHeight="600"
+                                  CanUserAddRows="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Select To Cart">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <!--  Checked="cbMove_Checked"-->
+                                            <CheckBox Name="cbSelect"
+                                                  IsChecked="{Binding IsItemSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  HorizontalAlignment="Center" 
+                                                  VerticalAlignment="Center"
+                                                  Command="{Binding DataContext.ItemViewModel.checkBoxToCartCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid},Path=CurrentItem}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="ID" Binding="{Binding TxtID}"/>
+                                <DataGridTextColumn Header="Reference" Binding="{Binding TxtRef}"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding TxtName}"/>
+                                <DataGridTextColumn Header="Brand" Binding="{Binding TxtType}"/>
+                                <DataGridTextColumn Header="Family" Binding="{Binding TxtType_sub}"/>
+                                <DataGridTextColumn Header="Provider" Binding="{Binding SelectedProvider.Name}"/>
+                                <DataGridTextColumn Header="Purchase Price" Binding="{Binding TxtPrice_purchase}"/>
+                                <DataGridTextColumn Header="Selling Price" Binding="{Binding TxtPrice_sell}"/>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                Command="{Binding DataContext.ItemViewModel.GetCurrentItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                                CommandParameter="{Binding Path=CurrentItem, ElementName=dgSearchResult}">
+                                                Detail
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:ColorZone>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

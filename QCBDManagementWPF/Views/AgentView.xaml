@@ -1,0 +1,138 @@
+﻿<UserControl x:Class="QCBDManagementWPF.Views.AgentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+             xmlns:Main="clr-namespace:QCBDManagementWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
+    <materialDesign:ColorZone>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Name="txtBTitle" FontSize="20" Foreground="DarkGray" HorizontalAlignment="Center" Content="{Binding AgentViewModel.Title, UpdateSourceTrigger=PropertyChanged}"/>
+            <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="1">
+                <TextBlock Name="txtBAgent" HorizontalAlignment="Center">Agent List</TextBlock>
+            </materialDesign:ColorZone>            
+            <DataGrid Grid.Row="2" x:Name="dgAgentList" AutoGenerateColumns="False"
+                        ItemsSource="{Binding AgentViewModel.ActiveAgentModelList, UpdateSourceTrigger=PropertyChanged}" 
+                        Margin="0 0 8 0" EnableColumnVirtualization="True" EnableRowVirtualization="True" CanUserAddRows="False" MaxHeight="500" MaxWidth="985">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Select">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!--  Checked="cbMove_Checked"-->
+                                <CheckBox Name="cbMove"
+                                                  HorizontalAlignment="Center" 
+                                                  VerticalAlignment="Center"
+                                                  Command="{Binding DataContext.AgentViewModel.CheckBoxCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                  CommandParameter="{Binding ElementName=dgAgentList,Path=CurrentItem}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="ID" Binding="{Binding TxtID}"/>
+                    <DataGridTextColumn Header="First Name" Binding="{Binding TxtFirstName}"/>
+                    <DataGridTextColumn Header="LastName" Binding="{Binding TxtLastName}"/>
+                    <DataGridTextColumn Header="Status" Binding="{Binding TxtStatus}"/>
+                    <DataGridTextColumn Header="Phone" Binding="{Binding TxtPhone}"/>
+                    <DataGridTextColumn Header="Fax" Binding="{Binding TxtFax}"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding TxtEmail}"/>
+                    <DataGridTextColumn Header="Login" Binding="{Binding TxtLogin}"/>
+                    <!--DataGridTextColumn Header="Role" Binding="{Binding TxtEmail}"/-->
+                    
+                    <DataGridTemplateColumn Header="Detail">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!--  Checked="cbMove_Checked"-->
+                                <Button Style="{DynamicResource MaterialDesignFlatButton}" Name="btnDetail"
+                                                  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Content="Detail"
+                                                  Command="{Binding DataContext.AgentViewModel.GetCurrentAgentCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                  CommandParameter="{Binding ElementName=dgAgentList,Path=CurrentItem}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            
+            <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="3">
+                <TextBlock  Name="txtBUnactifAgent" HorizontalAlignment="Center">Deactivated agents</TextBlock>
+            </materialDesign:ColorZone>            
+            <DataGrid Grid.Row="4" x:Name="dgDeactivatedAgent" AutoGenerateColumns="False"
+                        ItemsSource="{Binding AgentViewModel.DeactivatedAgentModelList, IsAsync=True, UpdateSourceTrigger=PropertyChanged}" 
+                        Margin="0 0 8 0" EnableColumnVirtualization="True" EnableRowVirtualization="True" CanUserAddRows="False" MaxHeight="300" MaxWidth="985"
+                        ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Select">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!--  Checked="cbMove_Checked"-->
+                                <CheckBox Name="cbMove"
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"
+                                        Command="{Binding DataContext.AgentViewModel.CheckBoxCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                        CommandParameter="{Binding ElementName=dgDeactivatedAgent,Path=CurrentItem}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="ID" Binding="{Binding TxtID}"/>
+                    <DataGridTextColumn Header="First Name" Binding="{Binding TxtFirstName}"/>
+                    <DataGridTextColumn Header="LastName" Binding="{Binding TxtLastName}"/>
+                    <DataGridTextColumn Header="Status" Binding="{Binding TxtStatus}"/>
+                    <DataGridTextColumn Header="Phone" Binding="{Binding TxtPhone}"/>
+                    <DataGridTextColumn Header="Fax" Binding="{Binding TxtFax}"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding TxtEmail}"/>
+                    <DataGridTextColumn Header="Login" Binding="{Binding TxtLogin}"/>
+                    <DataGridTemplateColumn Header="Detail">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!--  Checked="cbMove_Checked"-->
+                                <Button Style="{DynamicResource MaterialDesignFlatButton}" Name="btnDetail"
+                                                  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Content="Detail"
+                                                  Command="{Binding DataContext.AgentViewModel.GetCurrentAgentCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                  CommandParameter="{Binding ElementName=dgDeactivatedAgent,Path=CurrentItem}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <materialDesign:ColorZone Mode="PrimaryMid"  Grid.Row="5">
+                <TextBlock Name="txtBMoveAgentClient" HorizontalAlignment="Center">Move CLients</TextBlock>
+            </materialDesign:ColorZone>            
+            <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="0 5 0 5"
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center">
+                <TextBlock VerticalAlignment="Center" Margin="8 0 0 0">Move All Clients To</TextBlock>
+                <ComboBox Name="comboBxToAgent" Width="250" ItemsSource="{Binding AgentViewModel.AgentModelList, IsAsync=True}" Margin="8 0 0 0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <materialDesign:ColorZone Mode="Accent">
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Fill="{Binding TxtLastName}" Width="16" Height="16" Margin="0 2 5 2"/>
+                                    <TextBlock Text="{Binding TxtLastName}"/>
+                                </StackPanel>
+                            </materialDesign:ColorZone>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Name="btnMoveClient" Margin="8 0 0 0"  Style="{DynamicResource MaterialDesignRaisedAccentButton}"
+                                Command="{Binding AgentViewModel.ClientMoveCommand}"
+                                CommandParameter="{Binding ElementName=comboBxToAgent, Path=SelectedItem}">
+                    <materialDesign:PackIcon Kind="Magnify"/>
+                </Button>
+            </StackPanel>            
+        </Grid>
+    </materialDesign:ColorZone>
+</UserControl>

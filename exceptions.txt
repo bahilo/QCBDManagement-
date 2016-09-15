@@ -1,0 +1,301 @@
+Cannot open database "C:\USERS\ERIC\DOCUMENTS\VISUAL STUDIO 2015\PROJECTS\QCBDMANAGEMENT\QCBDMANAGEMENTWPF\BIN\DEBUG\APP_DATA\QCBDDATABASE.MDF" requested by the login. The login failed.
+Login failed for user 'BAHILO-PC\eric'.
+
+
+
+An unhandled exception of type 'System.InvalidOperationException' occurred in PresentationFramework.dll
+Additional information: Internal error: internal WPF code tried to reactivate a BindingExpression that was already marked as detached.
+
+
+
+
+An unhandled exception of type 'System.InvalidOperationException' occurred in PresentationFramework.dll
+Additional information: Internal error: internal WPF code tried to reactivate a BindingExpression that was already marked as detached.
+
+
+
+command_detail
+An unhandled exception of type 'System.InvalidOperationException' occurred in PresentationFramework.dll
+Additional information: Internal error: internal WPF code tried to reactivate a BindingExpression that was already marked as detached.
+
+
+
+
+command_detail 
+An unhandled exception of type 'System.InvalidOperationException' occurred in PresentationFramework.dll
+Additional information: 'DeferRefresh' is not allowed during an AddNew or EditItem transaction.
+
+
+
+
+Managed Debugging Assistant 'ContextSwitchDeadlock' has detected a problem in 'C:\Users\eric\Documents\Visual Studio 2015\Projects\QCBDManagement\QCBDManagementWPF\bin\Debug\QCBDManagementWPF.vshost.exe'.
+
+Additional information: The CLR has been unable to transition from COM context 0x7cc0a0 to COM context 0x7cc158 for 60 seconds. 
+The thread that owns the destination context/apartment is most likely either doing a non pumping wait or processing a very long running operation without pumping Windows messages. 
+This situation generally has a negative performance impact and may even lead to the application becoming non responsive or memory usage accumulating continually over time. 
+To avoid this problem, all single threaded apartment (STA) threads should use pumping wait primitives (such as CoWaitForMultipleHandles) and routinely pump messages during long running operations.
+
+
+
+
+An unhandled exception of type 'System.InvalidOperationException' occurred in PresentationFramework.dll
+Additional information: Internal error: internal WPF code tried to reactivate a BindingExpression that was already marked as detached.
+Solution: avoid using async in wpf for itemsource, exception coming from a bug in wpf.
+
+
+
+
+Timeout expired.  The timeout period elapsed prior to obtaining a connection from the pool.  
+This may have occurred because all pooled connections were in use and max pool size was reached.
+
+
+
+
+
+
+A network-related or instance-specific error occurred while establishing a connection to SQL Server. 
+The server was not found or was not accessible. 
+Verify that the instance name is correct and that SQL Server is configured to allow remote connections. 
+(provider: SQL Network Interfaces, error: 50 - Local Database Runtime error occurred. 
+Error occurred during LocalDB instance startup: SQL Server process failed to start.
+)
+
+
+
+
+
+Connection Timeout Expired.  The timeout period elapsed while attempting to consume the pre-login handshake acknowledgement.  
+This could be because the pre-login handshake failed or the server was unable to respond back in time.  
+The duration spent while attempting to connect to this server was - [Pre-Login] initialization=14735; handshake=74; 
+
+
+
+
+
+
+
+A network-related or instance-specific error occurred while establishing a connection to SQL Server. 
+The server was not found or was not accessible. 
+Verify that the instance name is correct and that SQL Server is configured to allow remote connections. 
+(provider: SQL Network Interfaces, error: 50 - Local Database Runtime error occurred. 
+Error occurred during LocalDB instance startup: SQL Server process failed to start.
+
+response => increase the timeout
+
+
+
+Attempted to divide by zero.
+   at System.Decimal.FCallDivide(Decimal& d1, Decimal& d2)
+   at System.Decimal.op_Division(Decimal d1, Decimal d2)
+   at QCBDManagementWPF.Models.Command_itemModel.profitCalcul() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\Models\Command_itemModel.cs:line 188
+   at QCBDManagementWPF.Models.Command_itemModel.onCommand_itemChange(Object sender, PropertyChangedEventArgs e) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\Models\Command_itemModel.cs:line 172
+   at System.ComponentModel.PropertyChangedEventHandler.Invoke(Object sender, PropertyChangedEventArgs e)
+   at QCBDManagementWPF.Classes.BindBase.onPropertyChange(String propertyName) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\Classes\BindBase.cs:line 33
+   at QCBDManagementWPF.Classes.BindBase.setProperty[P](P& member, P val, String propertyName) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\Classes\BindBase.cs:line 27
+   at QCBDManagementWPF.Models.Command_itemModel.set_Command_Item(Command_item value) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\Models\Command_itemModel.cs:line 46
+   at QCBDManagementWPF.ViewModel.CommandDetailViewModel.<Command_ItemListToModelViewList>d__176.MoveNext() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\ViewModel\CommandDetailViewModel.cs:line 381
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at QCBDManagementWPF.ViewModel.CommandDetailViewModel.<onCommand_itemTaskComplete_getCommandModel>d__197.MoveNext() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\ViewModel\CommandDetailViewModel.cs:line 739
+)
+
+
+An attempt was made to transition a task to a final state when it had already completed.
+   at System.Threading.Tasks.TaskCompletionSource`1.SetException(Exception exception)
+   at QCBDManagementDAL.Helper.ChannelHelper.DALHelper.<>c__DisplayClass9_0.<doActionAsync>b__0() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementDAL\Helper\ChannelHelper\DALHelper.cs:line 124
+   at System.Threading.Tasks.Task`1.InnerInvoke()
+   at System.Threading.Tasks.Task.Execute()
+   
+   response => TaskCompletionSource can be call only once when created.
+   
+   
+   
+Internal error: internal WPF code tried to reactivate a BindingExpression that was already marked as detached.
+   at System.Windows.Data.BindingExpressionBase.SetStatus(BindingStatusInternal status)
+   at MS.Internal.Data.ClrBindingWorker.SetStatus(PropertyPathStatus status)
+   at MS.Internal.Data.ClrBindingWorker.CompleteGetValue(AsyncGetValueRequest request)
+   at MS.Internal.Data.ClrBindingWorker.OnCompleteGetValueOperation(Object arg)
+   at MS.Internal.Data.DataBindOperation.Invoke()
+   at MS.Internal.Data.DataBindEngine.ProcessCrossThreadRequests()
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   at System.Windows.Threading.DispatcherOperation.InvokeImpl()
+   at System.Windows.Threading.DispatcherOperation.InvokeInSecurityContext(Object state)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Windows.Threading.DispatcherOperation.Invoke()
+   at System.Windows.Threading.Dispatcher.ProcessQueue()
+   at System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   at MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   at MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   at System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   at MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   at MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   at System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   at System.Windows.Threading.Dispatcher.PushFrame(DispatcherFrame frame)
+   at System.Windows.Application.RunDispatcher(Object ignore)
+   at System.Windows.Application.RunInternal(Window window)
+   at System.Windows.Application.Run(Window window)
+   at System.Windows.Application.Run()
+   at QCBDManagementWPF.App.Main() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\obj\Debug\App.g.cs:line 0
+   at System.AppDomain._nExecuteAssembly(RuntimeAssembly assembly, String[] args)
+   at System.AppDomain.ExecuteAssembly(String assemblyFile, Evidence assemblySecurity, String[] args)
+   at Microsoft.VisualStudio.HostingProcess.HostProc.RunUsersAssembly()
+   at System.Threading.ThreadHelper.ThreadStart_Context(Object state)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.ThreadHelper.ThreadStart()
+   
+Solution => Remove all async key word from wpf.
+
+
+
+Timeout expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+{"The wait operation timed out"}
+   at System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at System.Threading.Tasks.Task`1.get_Result()
+   at QCBDManagementDAL.Core.DALCommand.UpdateCommandDependencies(List`1 commands, Boolean isActiveProgress) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementDAL\Core\DALCommand.cs:line 887
+   at QCBDManagementDAL.Core.DALCommand.retrieveGateWayDataCommand() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementDAL\Core\DALCommand.cs:line 106
+   at QCBDManagementDAL.Core.DALCommand.onCredentialChange_loadCommandDataFromWebService(Object sender, PropertyChangedEventArgs e) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementDAL\Core\DALCommand.cs:line 59
+   at QCBDManagementGateway.Core.GateWayCommand.onPropertyChange(String propertyName) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementGateway\Core\GateWayCommand.cs:line 67
+   at QCBDManagementGateway.Core.GateWayCommand.set_Credential(Agent value) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementGateway\Core\GateWayCommand.cs:line 54
+   at QCBDManagementGateway.Core.GateWayCommand.initializeCredential(Agent user) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementGateway\Core\GateWayCommand.cs:line 45
+   at QCBDManagementDAL.Core.DALCommand.initializeCredential(Agent user) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementDAL\Core\DALCommand.cs:line 70
+   at DataAccess.<>c__DisplayClass33_0.<SetUserCredential>b__0() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementDAL\DataAccess.cs:line 54
+   at System.Threading.Tasks.Task.InnerInvoke()
+   at System.Threading.Tasks.Task.Execute()
+   
+   response => increase the connection string timeout
+   
+   
+The data types text and nvarchar are incompatible in the equal to operator.
+     at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean asyncWrite)
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at QCBDManagementDAL.App_Data.QCBDDataSetTableAdapters.infosTableAdapter.Update(String Name, String Value, Int32 Original_ID, String Original_Name, String Original_Value, Int32 ID) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementDAL\App_Data\QCBDDataSet.Designer.cs:line 23476
+   at QCBDManagementDAL.App_Data.QCBDDataSetTableAdapters.infosTableAdapter.Update(String Name, String Value, Int32 Original_ID, String Original_Name, String Original_Value) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementDAL\App_Data\QCBDDataSet.Designer.cs:line 23491
+   at QCBDManagementDAL.Core.DALReferential.<UpdateInfos>d__19.MoveNext() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementDAL\Core\DALReferential.cs:line 139
+   
+   solution => sqlserver never use "=" sign to check equality but rather use "like"
+   
+   
+   Must create DependencySource on same Thread as the DependencyObject.
+      at System.Windows.DependencyObject.ValidateSources(DependencyObject d, DependencySource[] newSources, Expression expr)
+   at System.Windows.Expression.ChangeSources(DependencyObject d, DependencyProperty dp, DependencySource[] newSources)
+   at System.Windows.Data.BindingExpressionBase.ChangeSources(DependencyObject target, DependencyProperty dp, WeakDependencySource[] newSources)
+   at System.Windows.Data.BindingExpressionBase.ChangeSources(WeakDependencySource[] newSources)
+   at System.Windows.Data.BindingExpression.ChangeWorkerSources(WeakDependencySource[] newWorkerSources, Int32 n)
+   at MS.Internal.Data.ClrBindingWorker.ReplaceDependencySources()
+   at MS.Internal.Data.ClrBindingWorker.NewValueAvailable(Boolean dependencySourcesChanged, Boolean initialValue, Boolean isASubPropertyChange)
+   at MS.Internal.Data.PropertyPathWorker.UpdateSourceValueState(Int32 k, ICollectionView collectionView, Object newValue, Boolean isASubPropertyChange)
+   at MS.Internal.Data.PropertyPathWorker.RefreshValue()
+   at MS.Internal.Data.ClrBindingWorker.ScheduleTransferOperation(Object arg)
+   at MS.Internal.Data.DataBindOperation.Invoke()
+   at MS.Internal.Data.DataBindEngine.ProcessCrossThreadRequests()
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   at System.Windows.Threading.DispatcherOperation.InvokeImpl()
+   at System.Windows.Threading.DispatcherOperation.InvokeInSecurityContext(Object state)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Windows.Threading.DispatcherOperation.Invoke()
+   at System.Windows.Threading.Dispatcher.ProcessQueue()
+   at System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   at MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   at MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   at System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   at MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   at MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   at System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   at System.Windows.Threading.Dispatcher.PushFrame(DispatcherFrame frame)
+   at System.Windows.Application.RunDispatcher(Object ignore)
+   at System.Windows.Application.RunInternal(Window window)
+   at System.Windows.Application.Run(Window window)
+   at System.Windows.Application.Run()
+   at QCBDManagementWPF.App.Main() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\obj\Debug\App.g.cs:line 0
+   at System.AppDomain._nExecuteAssembly(RuntimeAssembly assembly, String[] args)
+   at System.AppDomain.ExecuteAssembly(String assemblyFile, Evidence assemblySecurity, String[] args)
+   at Microsoft.VisualStudio.HostingProcess.HostProc.RunUsersAssembly()
+   at System.Threading.ThreadHelper.ThreadStart_Context(Object state)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.ThreadHelper.ThreadStart()
+   
+   Solution => happen because wpf Image control is using an image source while we try to change the source, solution is to close the first image source before try to load an other image.
+   
+   The calling thread cannot access this object because a different thread owns it.
+      at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.DependencyObject.GetValue(DependencyProperty dp)
+   at System.Windows.Media.Imaging.BitmapImage.get_StreamSource()
+   at QCBDManagementWPF.Classes.DisplayAndData.Display.Image.updateImageSource(String fileFullPath, Boolean isClosingImageStream) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\Classes\DisplayAndData.cs:line 346
+   at QCBDManagementWPF.Classes.DisplayAndData.Display.Image.setup() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\Classes\DisplayAndData.cs:line 225
+   at QCBDManagementWPF.Classes.DisplayAndData.Display.Image.read() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\Classes\DisplayAndData.cs:line 263
+   at QCBDManagementWPF.Classes.DisplayAndData.Display.Image.<read>b__62_0(Task t) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\Classes\DisplayAndData.cs:line 276
+   at System.Threading.Tasks.ContinuationTaskFromTask.InnerInvoke()
+   at System.Threading.Tasks.Task.Execute()
+   
+   
+   Must create DependencySource on same Thread as the DependencyObject.
+   response => happened when using bitmap in WPF so to avoid this error call the freeze method of bitmap to make it not modifiable when created.
+   
+   
+   The calling thread cannot access this object because a different thread owns it.
+   
+    at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.DependencyObject.GetValue(DependencyProperty dp)
+   at System.Windows.Controls.Primitives.ButtonBase.get_Command()
+   at System.Windows.Controls.Primitives.ButtonBase.UpdateCanExecute()
+   at System.Windows.Controls.Primitives.ButtonBase.OnCanExecuteChanged(Object sender, EventArgs e)
+   at System.Windows.Input.CanExecuteChangedEventManager.HandlerSink.OnCanExecuteChanged(Object sender, EventArgs e)
+   at System.EventHandler.Invoke(Object sender, EventArgs e)
+   at QCBDManagementWPF.Command.ButtonCommand`1.raiseCanExecuteActionChanged() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\Command\ButtonCommand.cs:line 56
+   at QCBDManagementWPF.ViewModel.AgentSideBarViewModel.updateCommand() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\ViewModel\AgentSideBarViewModel.cs:line 90
+   at QCBDManagementWPF.ViewModel.AgentSideBarViewModel.onCurrentPageChange_updateCommand(Object sender, PropertyChangedEventArgs e) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\ViewModel\AgentSideBarViewModel.cs:line 113
+   at System.ComponentModel.PropertyChangedEventHandler.Invoke(Object sender, PropertyChangedEventArgs e)
+   at QCBDManagementWPF.Classes.BindBase.onPropertyChange(String propertyName) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\Classes\BindBase.cs:line 49
+   at QCBDManagementWPF.Classes.BindBase.setProperty[P](P& member, P val, String propertyName) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\Classes\BindBase.cs:line 37
+   at QCBDManagementWPF.MainWindowViewModel.set_ProgressBarPercentValue(Double value) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\MainWindowViewModel.cs:line 234
+   at QCBDManagementWPF.MainWindowViewModel.progressBarManagement(Double status) in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementWPF\MainWindowViewModel.cs:line 306
+   at QCBDManagementDAL.Core.DALItem.retrieveGateWayDataItem() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementDAL\Core\DALItem.cs:line 162
+   at QCBDManagementDAL.Helper.ChannelHelper.DALHelper.<>c__DisplayClass3_0.<doActionAsync>b__0() in C:\Users\eric\documents\visual studio 2015\Projects\QCBDManagement\QCBDManagementDAL\Helper\ChannelHelper\DALHelper.cs:line 131
+   
+   response => use a dispatcher in order to update UIElemt because 
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   

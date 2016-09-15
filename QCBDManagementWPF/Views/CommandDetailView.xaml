@@ -1,0 +1,619 @@
+﻿<UserControl xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"  x:Class="QCBDManagementWPF.Views.CommandDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+             xmlns:Main="clr-namespace:QCBDManagementWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
+
+    <Grid Margin="0 0 8 0" HorizontalAlignment="Left">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            
+            <RowDefinition Height="*"/>            
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label FontSize="20" Foreground="DarkGray" HorizontalAlignment="Center" Content="{Binding CommandViewModel.CommandDetailViewModel.Title, UpdateSourceTrigger=PropertyChanged}"/>
+        <materialDesign:ColorZone Grid.Row="1"  Mode="Accent">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock >Commad ID</TextBlock>
+                    <TextBlock Margin="10 0 0 0" Text="{Binding CommandViewModel.CommandDetailViewModel.CommandSelected.TxtID}"/>
+                    <TextBlock Margin="10 0 0 0" > for the Company</TextBlock>
+                    <TextBlock Margin="10 0 0 0" FontStyle="Italic" Text="{Binding CommandViewModel.CommandDetailViewModel.CommandSelected.CLientModel.TxtCompany}"/>
+                    <TextBlock Margin="10 0 0 0" > Managed by</TextBlock>
+                    <TextBlock Margin="10 0 0 0" FontStyle="Italic" Text="{Binding CommandViewModel.CommandDetailViewModel.CommandSelected.AgentModel.TxtFirstName}"/>
+                    <TextBlock Margin="10 0 0 0" FontStyle="Italic" Text="{Binding CommandViewModel.CommandDetailViewModel.CommandSelected.AgentModel.TxtLastName}"/>
+                </StackPanel>
+            </StackPanel>
+        </materialDesign:ColorZone>
+        <materialDesign:Card Grid.Row="2" Margin="0 0 0 15"  MaxWidth="990">
+            <StackPanel Orientation="Vertical">
+                <materialDesign:ColorZone Mode="PrimaryMid">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Name="txtBWaitValid" HorizontalAlignment="Center">Items List</TextBlock>
+                        <DataGrid x:Name="dgCommandWaitValidList" AutoGenerateColumns="False"
+                                ItemsSource="{Binding CommandViewModel.CommandDetailViewModel.Command_ItemModelList, UpdateSourceTrigger=PropertyChanged}" 
+                                RowDetailsVisibilityMode="{Binding CommandViewModel.CommandDetailViewModel.BlockItemListDetailVisibility}"
+                                CanUserAddRows="False">
+                            <DataGrid.RowDetailsTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="{DynamicResource PrimaryHueMidForegroundBrush}">
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBox Text="{Binding TxtComment_Purchase_Price}" 
+                                                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                                     materialDesign:TextFieldAssist.Hint="Comment"
+                                                     Background="White" MinLines="5" Width="300"  TextWrapping="Wrap" AcceptsReturn="True" HorizontalAlignment="Left"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center">
+                                            <TextBox Text="{Binding TxtQuantity_received, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                                     materialDesign:TextFieldAssist.Hint="Quantity received"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGrid.RowDetailsTemplate>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Reference" Binding="{Binding TxtItem_ref}"/>
+                                <DataGridTextColumn Header="Item" Binding="{Binding ItemModel.TxtName}"/>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding TxtPrice_purchase, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                                     IsEnabled="{Binding CommandViewModel.CommandDetailViewModel.IsItemListPurchasePriceTextBoxEnable, UpdateSourceTrigger=PropertyChanged}"
+                                                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                                     materialDesign:TextFieldAssist.Hint="Purchase Price"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding TxtPrice, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                                     IsEnabled="{Binding CommandViewModel.CommandDetailViewModel.IsItemListSellingPriceTextBoxEnable, UpdateSourceTrigger=PropertyChanged}"
+                                                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                                     materialDesign:TextFieldAssist.Hint="sale Price"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding TxtQuantity, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                                     IsEnabled="{Binding CommandViewModel.CommandDetailViewModel.IsItemListQuantityTextBoxEnable, UpdateSourceTrigger=PropertyChanged}"
+                                                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                                     materialDesign:TextFieldAssist.Hint="Quantity"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Quantity Pending" Binding="{Binding TxtQuantity_pending, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="Total Selling" Binding="{Binding TxtTotalSelling}"/>
+                                <DataGridTextColumn Header="Percentage Profit" Binding="{Binding TxtPercentProfit}"/>
+                                <DataGridTextColumn Header="Profit" Binding="{Binding TxtProfit}"/>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.Header>
+                                        <TextBlock>Delete</TextBlock>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <Button Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                        CommandParameter="{Binding CurrentItem, ElementName=dgCommandWaitValidList}">
+                                                    <materialDesign:PackIcon Kind="Delete"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </materialDesign:ColorZone>
+                <Button Margin="8" 
+                        Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.UpdateCommand_itemListCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        HorizontalAlignment="Center">
+                    <materialDesign:PackIcon Kind="Pencil"/>
+                </Button>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <Grid Grid.Row="3" Margin="0 0 0 15">
+            <StackPanel Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock  Margin="0 0 10 0">Total Before Taxes</TextBlock>
+                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalBeforeTax}" IsEnabled="False" Margin="0 0 10 0" Width="50" HorizontalAlignment="Center"  />
+                <TextBlock Margin="0 0 10 0">Total After Tax</TextBlock>
+                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalAfterTax}" Margin="0 0 10 0" Width="50"  IsEnabled="False" HorizontalAlignment="Center" />
+                <TextBlock Margin="0 0 10 0">Total Precentage Profit</TextBlock>
+                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalPercentProfit}" Margin="0 0 10 0" Width="50"  IsEnabled="False" HorizontalAlignment="Center" />
+                <TextBlock Margin="0 0 10 0">Total Profit</TextBlock>
+                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalProfit}" Margin="0 0 10 0" Width="50"  IsEnabled="False" HorizontalAlignment="Center" />
+                <TextBlock Margin="0 0 10 0">Total Taxes Amount</TextBlock>
+                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalTaxAmount}" Margin="0 0 10 0" Width="50"  IsEnabled="False" HorizontalAlignment="Center" />
+                <TextBlock Margin="0 0 10 0">Tax</TextBlock>
+                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.Tax.Value}" IsEnabled="False" Margin="0 0 10 0" Width="50"  HorizontalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="4" Margin="0 0 0 15">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <materialDesign:Card Margin="0 0 10 0">
+                        <Border Background="{DynamicResource PrimaryHueMidBrush}">
+                            <StackPanel Width="300" Orientation="Vertical" Margin="0 0 10 0">
+                                <TextBlock HorizontalAlignment="Center">Private Comment</TextBlock>
+                                <TextBox Background="White" Text="{Binding CommandViewModel.SelectedCommandModel.TxtPrivateComment, Mode=TwoWay}" MinLines="5" TextWrapping="Wrap" AcceptsReturn="True"/>
+                            </StackPanel>
+                        </Border>
+                    </materialDesign:Card>
+                    <materialDesign:Card Margin="0 0 10 0">
+                        <Border Background="{DynamicResource PrimaryHueLightBrush}">
+                            <StackPanel Width="300" Orientation="Vertical" Margin="0 0 10 0">
+                                <TextBlock HorizontalAlignment="Center">Comment will be seen by the CLient on Quote</TextBlock>
+                                <TextBox Text="{Binding CommandViewModel.SelectedCommandModel.TxtPublicComment, Mode=TwoWay}" MinLines="5" TextWrapping="Wrap" AcceptsReturn="True"
+                                             Background="White"/>
+                            </StackPanel>
+                        </Border>
+                    </materialDesign:Card>
+                    <materialDesign:Card>
+                        <Border Background="{DynamicResource PrimaryHueDarkBrush}">
+                            <StackPanel Width="300" Orientation="Vertical" Margin="0 0 10 0">
+                                <TextBlock HorizontalAlignment="Center">Admin Comment Only</TextBlock>
+                                <TextBox Background="White" Text="{Binding CommandViewModel.SelectedCommandModel.TxtAdminComment, Mode=TwoWay}" MinLines="5" TextWrapping="Wrap" AcceptsReturn="True"/>
+                            </StackPanel>
+                        </Border>
+                    </materialDesign:Card>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <Button Command="{Binding CommandViewModel.CommandDetailViewModel.UpdateCommentCommand}">
+                        <materialDesign:PackIcon Kind="Pencil"/>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <materialDesign:Card Grid.Row="5" Margin="0 0 0 15" HorizontalAlignment="Center">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock>Select Tax</TextBlock>
+                    <ComboBox Name="cbxTax" ItemsSource="{Binding CommandViewModel.TaxList, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding CommandViewModel.CommandDetailViewModel.Tax, UpdateSourceTrigger=PropertyChanged}"
+                              Margin="8 0 0 0" Width="250">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Value}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Margin="8 0 0 0" 
+                            Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.TaxCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                            CommandParameter="{Binding SelectedItem, ElementName=cbxTax}">
+                        <materialDesign:PackIcon Kind="Check"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <RadioButton IsChecked="{Binding CommandViewModel.CommandDetailViewModel.IsQuote, Mode=TwoWay}" GroupName="rbQoteType">Quote</RadioButton>
+                        <RadioButton IsChecked="{Binding CommandViewModel.CommandDetailViewModel.IsProForma, Mode=TwoWay}" Margin="8 0 0 0" GroupName="rbQoteType">Pro Forma</RadioButton>
+                    </StackPanel>
+                    <CheckBox HorizontalAlignment="Center" IsChecked="{Binding CommandViewModel.CommandDetailViewModel.IsQuoteReferencesVisible, Mode=TwoWay}">Leave constructor references visible</CheckBox>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtQuoteValidityInDays, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                                     materialDesign:TextFieldAssist.Hint="Validity of the quote (days)"/>
+                    </StackPanel>
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                            Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.GeneratePdfCreatedQuoteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
+                        Generate Quote.
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
+
+        <Border Grid.Row="6" BorderBrush="Beige" BorderThickness="5" MaxWidth="980" Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockDeliveryAddressVisiblity}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Center">Delivery Address</TextBlock>
+                <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <ComboBox Name="cbxDeliveryAddress" SelectedItem="{Binding CommandViewModel.SelectedCommandModel.DeliveryAddress, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding CommandViewModel.SelectedCommandModel.AddressList, UpdateSourceTrigger=PropertyChanged}" Width="250">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Margin="8 0 0 0" 
+                            Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.DeliveryAddressSelectionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                            CommandParameter="{Binding SelectedItem, ElementName=cbxDeliveryAddress}">
+                        <materialDesign:PackIcon Kind="Check"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Center" Grid.Row="1" Grid.Column="2" Orientation="Vertical">
+                    <TextBlock Text="{Binding SelectedItem.AddressName, ElementName=cbxDeliveryAddress}" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding SelectedItem.CityName, ElementName=cbxDeliveryAddress}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding SelectedItem.Postcode, ElementName=cbxDeliveryAddress}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding SelectedItem.Country, ElementName=cbxDeliveryAddress}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding SelectedItem.Comment, ElementName=cbxDeliveryAddress}" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <StackPanel Orientation="Vertical"  Grid.Row="7" Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockDeliveryReceiptCreationVisiblity, UpdateSourceTrigger=PropertyChanged}">
+            <materialDesign:Card >
+                <materialDesign:ColorZone Mode="PrimaryMid">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock HorizontalAlignment="Center">Delivery receipt creation</TextBlock>
+                        <DataGrid Name="dgDeliveryCreation" ItemsSource="{Binding CommandViewModel.CommandDetailViewModel.Item_ModelDeliveryInProcess, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False"
+                                  CanUserAddRows="False" MaxWidth="990">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Item Reference" Binding="{Binding Item.Ref}"/>
+                                <DataGridTextColumn Header="Item Name" Binding="{Binding Item.Name}"/>
+                                <DataGridTextColumn Header="Quantity in Process" Binding="{Binding TxtQuantity_current}"/>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.Header>
+                                        <TextBlock>Number of Packages</TextBlock>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding DeliveryModel.TxtPackage, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                                     materialDesign:TextFieldAssist.Hint="Number of Packages"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                                            Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.CancelDeliveryReceiptCreationCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                            CommandParameter="{Binding CurrentItem, ElementName=dgDeliveryCreation}">
+                                                Cancel this ref.
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </materialDesign:ColorZone>
+            </materialDesign:Card>
+            <StackPanel Orientation="Vertical" Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockStepOneVisibility, UpdateSourceTrigger=PropertyChanged}">
+                <Button Margin="8" HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignFlatButton}"
+                                    Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.DeliveryReceiptCreationCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
+                    Step 1/3 Create one delivery receipt for the received items
+                </Button>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Row="8" Orientation="Vertical" Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockBillCreationVisibility}">
+            <materialDesign:Card>
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <materialDesign:ColorZone Grid.Row="1" Grid.ColumnSpan="2" Mode="PrimaryMid">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock HorizontalAlignment="Center">Bills Creation</TextBlock>
+                            <DataGrid Name="dgBillCreation"
+                                    ItemsSource="{Binding CommandViewModel.CommandDetailViewModel.Item_deliveryModelBillingInProcess, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False"
+                                    CanUserAddRows="False" MaxWidth="990">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Delivery ID" Binding="{Binding DeliveryModel.TxtID}"/>
+                                    <DataGridTextColumn Header="Create date" Binding="{Binding DeliveryModel.TxtDate}"/>
+                                    <DataGridTextColumn Header="Packages" Binding="{Binding DeliveryModel.TxtPackage}"/>
+                                    <DataGridTextColumn Header="Item Reference" Binding="{Binding TxtItem_ref}"/>
+                                    <DataGridTextColumn Header="Item Name" Binding="{Binding Item.Name}"/>
+                                    <DataGridTextColumn Header="Quantity" Binding="{Binding TxtQuantity_delivery}"/>
+                                    <DataGridTemplateColumn>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                                    <CheckBox Command="{Binding ItemModel.Item_deliveryModel.DeliveryModel.IsConstructorRefVisible}">
+                                                        Refs Constructor visible.
+                                                    </CheckBox>
+                                                    <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                                            Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.GenerateDeliveryReceiptCreatedPdfCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                            CommandParameter="{Binding CurrentItem, ElementName=dgBillCreation}">
+                                                        Generate receipt Pdf.
+                                                    </Button>
+                                                    <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                                            Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.CancelDeliveryReceiptCreatedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                            CommandParameter="{Binding CurrentItem, ElementName=dgBillCreation}">
+                                                        Cancel this ref.
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </materialDesign:ColorZone>
+                </Grid>
+            </materialDesign:Card>
+            <StackPanel Orientation="Vertical">
+                <ItemsControl MaxHeight="50" HorizontalAlignment="Center" MaxWidth="990" Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockDeliveryListToIncludeVisibility, UpdateSourceTrigger=PropertyChanged}"
+                                ItemsSource="{Binding CommandViewModel.CommandDetailViewModel.Item_deliveryModelBillingInProcess, UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox Content="{Binding DeliveryModel.TxtID}" IsChecked="{Binding IsSelected}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <StackPanel Orientation="Vertical"  Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockStepTwoVisibility, UpdateSourceTrigger=PropertyChanged}">
+                    <Button Margin="5" Style="{DynamicResource MaterialDesignFlatButton}"  HorizontalAlignment="Center"
+                            Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.BillCreationCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
+                        Step 2/3 Create the delivery receipt bill for the selected items
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+
+        <Grid Grid.Row="9" Margin="0 0 0 15" Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockDeliveryReceiptCreatedVisibility}">
+            <Grid>
+                <materialDesign:Card>
+                    <materialDesign:ColorZone Mode="PrimaryMid">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock HorizontalAlignment="Center">Delivery receipt created</TextBlock>
+                            <DataGrid Name="dgDeliveryCreated"  ItemsSource="{Binding CommandViewModel.CommandDetailViewModel.DeliveryModelList, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False"
+                                      CanUserAddRows="False" MaxWidth="990">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding TxtID}"/>
+                                    <DataGridTextColumn Header="Create date" Binding="{Binding TxtDate}"/>
+                                    <DataGridTextColumn Header="Package" Binding="{Binding TxtPackage}"/>
+                                    <!--<DataGridTextColumn Header="Item Ref" Binding="{Binding TxtItem_ref}"/>
+                                    <DataGridTextColumn Header="Item Name" Binding="{Binding Item.Name}"/>
+                                    <DataGridTextColumn Header="Quantity" Binding="{Binding TxtQuantity_delivery}"/>-->
+                                    <DataGridTemplateColumn>
+                                        <DataGridTemplateColumn.Header>
+                                            <TextBlock>Action</TextBlock>
+                                        </DataGridTemplateColumn.Header>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Vertical">
+                                                    <CheckBox Command="{Binding IsConstructorRefVisible}">
+                                                        Refs Constructor visible.
+                                                    </CheckBox>
+                                                    <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                                            Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.GenerateDeliveryReceiptCreatedPdfCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                            CommandParameter="{Binding CurrentItem, ElementName=dgDeliveryCreated}">
+                                                        Generate receipt Pdf.
+                                                    </Button>
+                                                    <!-- <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                                            Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.CancelDeliveryReceiptCreatedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                            CommandParameter="{Binding CurrentItem, ElementName=dgDeliveryCreated}">
+                                                        Cancel Receipt
+                                                    </Button>-->
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </materialDesign:ColorZone>
+                </materialDesign:Card>
+            </Grid>
+        </Grid>
+
+        <materialDesign:Card Grid.Row="10" Margin="0 0 0 15" Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockBillCreatedVisibility}">
+            <materialDesign:ColorZone Mode="PrimaryMid">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock HorizontalAlignment="Center">Bills Created</TextBlock>
+                    <DataGrid Name="dgBillCreated"  ItemsSource="{Binding CommandViewModel.CommandDetailViewModel.BillModelList, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False"
+                              CanUserAddRows="False" MaxWidth="990">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Bill ID" Binding="{Binding TxtID}"/>
+                            <DataGridTextColumn Header="Created Date" Binding="{Binding TxtDate}"/>
+                            <DataGridTextColumn Header="Amount" Binding="{Binding TxtPay}"/>
+                            <DataGridTextColumn Header="Limit Date" Binding="{Binding TxtDateLimit}"/>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock>Bill</TextBlock>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                                            Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.GeneratePdfCreatedBillCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                            CommandParameter="{Binding CurrentItem, ElementName=dgBillCreated}">
+                                                Generate bill Pdf.
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock>Action</TextBlock>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                            <CheckBox  IsChecked="{Binding DataContext.CommandViewModel.CommandDetailViewModel.IsCommandReferencesVisible, ElementName=dgBillCreated, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                                Refs Constructor visible.
+                                            </CheckBox>
+                                            <Button Style="{DynamicResource MaterialDesignFlatButton}">
+                                                Open an Email
+                                            </Button>
+                                            <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                                            Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.CancelBillCreatedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                            CommandParameter="{Binding CurrentItem, ElementName=dgBillCreated}">
+                                                Cancel this ref.
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="300"/>
+                                            <ColumnDefinition Width="300"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="1"  Orientation="Horizontal">
+                                            <TextBox Text="{Binding TxtPayReceived, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                                     materialDesign:TextFieldAssist.Hint="Amount Payed"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="1" Grid.Column="1"  Orientation="Horizontal">
+                                            <TextBox Text="{Binding TxtPayMod, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                                     materialDesign:TextFieldAssist.Hint="Pay Method"/>
+                                        </StackPanel>
+                                        <!--<TextBlock Grid.Row="2">Pay Date (DD-MM-YYYY)</TextBlock>-->
+                                        <StackPanel Grid.Row="2" Grid.Column="1"  Orientation="Horizontal">
+                                            <DatePicker SelectedDate="{Binding TxtPayDate, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"  Width="100" HorizontalAlignment="Left" Margin="0 16 0 0" materialDesign:TextFieldAssist.Hint="Pay Date" />
+                                            <!--<TextBox Text="{Binding TxtPayDate}"/>-->
+                                        </StackPanel>
+                                        <Border Grid.Row="3" Grid.Column="2" Background="{DynamicResource PrimaryHueMidBrush}">
+                                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                                <TextBlock>Private Comment</TextBlock>
+                                                <TextBox MinHeight="100" MinWidth="200"  Background="White" Text="{Binding TxtPrivateComment, UpdateSourceTrigger=PropertyChanged}" TextWrapping="wrap" AcceptsReturn="True" MinLines="3"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Grid.Row="3" Grid.Column="3" Background="{DynamicResource PrimaryHueLightBrush}">
+                                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                                <TextBlock>Public Comment</TextBlock>
+                                                <TextBox MinHeight="100" MinWidth="200"  MaxWidth="990"  Background="White" Text="{Binding TxtPublicComment, UpdateSourceTrigger=PropertyChanged}" TextWrapping="wrap" AcceptsReturn="True" MinLines="3"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <Button Grid.Row="4" Grid.ColumnSpan="2"  HorizontalAlignment="Center"
+                                                Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.UpdateBillCommand, ElementName=dgBillCreated}"
+                                                CommandParameter="{Binding CurrentItem, ElementName=dgBillCreated}">
+                                            <materialDesign:PackIcon Kind="Pencil"/>
+                                        </Button>
+                                    </Grid>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
+                    </DataGrid>
+                </StackPanel>
+            </materialDesign:ColorZone>
+        </materialDesign:Card>
+
+        <Grid Grid.Row="11" Margin="0 0 0 15">
+            <materialDesign:ColorZone>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical"  Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockEmailVisibility, UpdateSourceTrigger=PropertyChanged}">
+                        <Border BorderBrush="Red">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock HorizontalAlignment="Center">Email Bill</TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock>Subject:</TextBlock>
+                                    <TextBox  Text="{Binding CommandViewModel.CommandDetailViewModel.EmailFile.TxtSubject, Mode=TwoWay}" Width="400" Background="White"/>
+                                </StackPanel>
+                                <TextBox CaretBrush="Black" Margin="8 0 8 8" Background="White" IsEnabled="False"
+                                         Text="{Binding CommandViewModel.CommandDetailViewModel.EmailFile.TxtContent, Mode=TwoWay}"
+                                         MinLines="10" 
+                                         TextWrapping="Wrap" 
+                                         AcceptsReturn="True"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Vertical"  Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockEmailVisibility, UpdateSourceTrigger=PropertyChanged}">
+                        <CheckBox  Content="Constructor References Visible" IsChecked="{Binding CommandViewModel.CommandDetailViewModel.IsCommandReferencesVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Width="80" Text="{Binding CommandViewModel.CommandDetailViewModel.TxtQuoteValidityInDays, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False"/>
+                            <TextBlock>Quote validity(in days)</TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockBillListBoxVisibility}">
+                            <TextBlock VerticalAlignment="Center"  Margin="0 0 10 0">Add the Following Bill</TextBlock>
+                            <ComboBox ItemsSource="{Binding CommandViewModel.CommandDetailViewModel.CommandSelected.BillModelList}" SelectedItem="{Binding CommandViewModel.CommandDetailViewModel.SelectedBillToSend, UpdateSourceTrigger=PropertyChanged}"
+                                      IsSynchronizedWithCurrentItem="True" VerticalAlignment="Center">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding TxtID}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal"  Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockEmailVisibility, UpdateSourceTrigger=PropertyChanged}">
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                Command="{Binding CommandViewModel.CommandDetailViewModel.SendEmailCommand}">
+                            Send Email
+                        </Button>
+                        <TextBlock VerticalAlignment="Center">a Copy will be send to you</TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="3" Orientation="Vertical" HorizontalAlignment="Center" Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockStepThreeVisibility, UpdateSourceTrigger=PropertyChanged}">
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.BilledCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
+                            <TextBlock>Step 3/3 Confirm sending and bills of all items of this Command (Status: waiting to be paid)</TextBlock>
+                        </Button>
+                        <TextBlock>Caution: Make sure you have generated all Delivery receipts and Bills before updating the status</TextBlock>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:ColorZone>
+        </Grid>
+        <!---->
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F7FE1AEB-2017-471E-82C5-6D896106C35D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>QCBDManagementCommon</RootNamespace>
+    <AssemblyName>QCBDManagementCommon</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\Log.cs" />
+    <Compile Include="Classes\NotifyTaskCompletion.cs" />
+    <Compile Include="Classes\Utility.cs" />
+    <Compile Include="Entities\Action.cs" />
+    <Compile Include="Entities\ActionRecord.cs" />
+    <Compile Include="Entities\Address.cs" />
+    <Compile Include="Entities\Agent.cs" />
+    <Compile Include="Entities\Agent_role.cs" />
+    <Compile Include="Entities\Auto_ref.cs" />
+    <Compile Include="Entities\Bill.cs" />
+    <Compile Include="Entities\Client.cs" />
+    <Compile Include="Entities\Command.cs" />
+    <Compile Include="Entities\Command_item.cs" />
+    <Compile Include="Entities\Contact.cs" />
+    <Compile Include="Entities\Delivery.cs" />
+    <Compile Include="Entities\Infos.cs" />
+    <Compile Include="Entities\Item.cs" />
+    <Compile Include="Entities\Item_delivery.cs" />
+    <Compile Include="Entities\Language.cs" />
+    <Compile Include="Entities\Notification.cs" />
+    <Compile Include="Entities\Privilege.cs" />
+    <Compile Include="Entities\Provider.cs" />
+    <Compile Include="Entities\Provider_item.cs" />
+    <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\Role_action.cs" />
+    <Compile Include="Entities\StrongBox.cs" />
+    <Compile Include="Entities\SendEmail.cs" />
+    <Compile Include="Entities\Statistic.cs" />
+    <Compile Include="Entities\Tax.cs" />
+    <Compile Include="Entities\Tax_command.cs" />
+    <Compile Include="Entities\Tax_item.cs" />
+    <Compile Include="Enum\EAction.cs" />
+    <Compile Include="Enum\EItem.cs" />
+    <Compile Include="Enum\ESecurity.cs" />
+    <Compile Include="Enum\ESecurityRole.cs" />
+    <Compile Include="Enum\EStatus.cs" />
+    <Compile Include="Enum\EStatusAddress.cs" />
+    <Compile Include="Enum\EStatusCommand.cs" />
+    <Compile Include="Interfaces\BL\IActionManager.cs" />
+    <Compile Include="Interfaces\BL\IActionRecordManager.cs" />
+    <Compile Include="Interfaces\BL\IAddressManager.cs" />
+    <Compile Include="Interfaces\BL\IAgentManager.cs" />
+    <Compile Include="Interfaces\BL\IAgent_roleManager.cs" />
+    <Compile Include="Interfaces\BL\IAuto_refManagement.cs" />
+    <Compile Include="Interfaces\BL\IBillManager.cs" />
+    <Compile Include="Interfaces\BL\IClientManager.cs" />
+    <Compile Include="Interfaces\BL\ICommandManager.cs" />
+    <Compile Include="Interfaces\BL\ICommand_itemManager.cs" />
+    <Compile Include="Interfaces\BL\IContactManager.cs" />
+    <Compile Include="Interfaces\BL\IDeliveryManager.cs" />
+    <Compile Include="Interfaces\BL\IDisplayManager.cs" />
+    <Compile Include="Interfaces\BL\IGeneratePDF.cs" />
+    <Compile Include="Interfaces\BL\IInfosManager.cs" />
+    <Compile Include="Interfaces\BL\IItemManager.cs" />
+    <Compile Include="Interfaces\BL\IItem_deliveryManager.cs" />
+    <Compile Include="Interfaces\BL\INotificationManager.cs" />
+    <Compile Include="Interfaces\BL\IPrivilegeManager.cs" />
+    <Compile Include="Interfaces\BL\IProviderManager.cs" />
+    <Compile Include="Interfaces\BL\IProvider_itemManager.cs" />
+    <Compile Include="Interfaces\BL\IReferentialManager.cs" />
+    <Compile Include="Interfaces\BL\IRoleManager.cs" />
+    <Compile Include="Interfaces\BL\IRole_actionManager.cs" />
+    <Compile Include="Interfaces\BL\ISecurityActionManager.cs" />
+    <Compile Include="Interfaces\BL\ISecurityManager.cs" />
+    <Compile Include="Interfaces\BL\ISendEmail.cs" />
+    <Compile Include="Interfaces\BL\IStatisticManager.cs" />
+    <Compile Include="Interfaces\BL\ITaxManager.cs" />
+    <Compile Include="Interfaces\BL\ITax_commandManager.cs" />
+    <Compile Include="Interfaces\BL\ITax_itemManager.cs" />
+    <Compile Include="Interfaces\DAC\IActionRecordManager.cs" />
+    <Compile Include="Interfaces\DAC\IAddressManager.cs" />
+    <Compile Include="Interfaces\DAC\IAgentManager.cs" />
+    <Compile Include="Interfaces\DAC\IAgent_roleManager.cs" />
+    <Compile Include="Interfaces\DAC\IAuto_refManagement.cs" />
+    <Compile Include="Interfaces\DAC\IBillManager.cs" />
+    <Compile Include="Interfaces\DAC\IClientManager.cs" />
+    <Compile Include="Interfaces\DAC\ICommandManager.cs" />
+    <Compile Include="Interfaces\DAC\ICommand_itemManager.cs" />
+    <Compile Include="Interfaces\DAC\IContactManager.cs" />
+    <Compile Include="Interfaces\DAC\IDataAccessManager.cs" />
+    <Compile Include="Interfaces\DAC\IDeliveryManager.cs" />
+    <Compile Include="Interfaces\DAC\IDisplayManager.cs" />
+    <Compile Include="Interfaces\DAC\IGeneratePDF.cs" />
+    <Compile Include="Interfaces\DAC\IInfosManager.cs" />
+    <Compile Include="Interfaces\DAC\IItemManager.cs" />
+    <Compile Include="Interfaces\DAC\IItem_deliveryManager.cs" />
+    <Compile Include="Interfaces\DAC\INotificationManager.cs" />
+    <Compile Include="Interfaces\DAC\IPrivilegeManager.cs" />
+    <Compile Include="Interfaces\DAC\IProviderManager.cs" />
+    <Compile Include="Interfaces\DAC\IProvider_itemManager.cs" />
+    <Compile Include="Interfaces\DAC\IReferentialManager.cs" />
+    <Compile Include="Interfaces\DAC\IRoleManager.cs" />
+    <Compile Include="Interfaces\DAC\IRole_actionManager.cs" />
+    <Compile Include="Interfaces\DAC\ISecurityActionManager.cs" />
+    <Compile Include="Interfaces\DAC\ISecurityManager.cs" />
+    <Compile Include="Interfaces\DAC\ISendEmail.cs" />
+    <Compile Include="Interfaces\DAC\IStatisticManager.cs" />
+    <Compile Include="Interfaces\DAC\ITaxManager.cs" />
+    <Compile Include="Interfaces\DAC\ITax_commandManager.cs" />
+    <Compile Include="Interfaces\DAC\ITax_itemManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Structures\ParamCommandToPdf.cs" />
+    <Compile Include="Structures\ParamDeliveryToPdf.cs" />
+    <Compile Include="Structures\ParamEmail.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Config\QCBD.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

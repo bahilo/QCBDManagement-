@@ -1,0 +1,127 @@
+﻿<UserControl x:Class="QCBDManagementWPF.Views.ItemDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+             xmlns:Main="clr-namespace:QCBDManagementWPF"
+             xmlns:system="clr-namespace:System;assembly=mscorlib" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label FontSize="20" Grid.ColumnSpan="2" Foreground="DarkGray" HorizontalAlignment="Center" Content="{Binding ItemViewModel.ItemDetailViewModel.Title, UpdateSourceTrigger=PropertyChanged}"/>
+        <StackPanel Grid.Row="1" Margin="8" Grid.Column="0">
+            <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock HorizontalAlignment="Center">Search</TextBlock>
+                    <StackPanel Margin="0 10 0 0" Grid.Row="1" Orientation="Vertical">
+                        <StackPanel Margin="0 6 0 0" Orientation="Horizontal">
+                            <TextBlock>Item Ref</TextBlock>
+                            <ComboBox ItemsSource="{Binding ItemViewModel.ItemDetailViewModel.ItemRefList,IsAsync=True, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="8"
+                                      SelectedItem="{Binding ItemViewModel.ItemDetailViewModel.SelectedItemModel.TxtRef, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 12 0 0" HorizontalAlignment="Right">
+                            <Button IsDefault="True"
+                                            Command="{Binding ItemViewModel.ItemDetailViewModel.SearchCommand}">
+                                <materialDesign:PackIcon Kind="Magnify"/>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:Card>
+        </StackPanel>
+
+        <materialDesign:ColorZone  Margin="8" Grid.Row="1" Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock HorizontalAlignment="Center">Main Details</TextBlock>
+                <StackPanel Margin="0 10 0 0"  Grid.Row="1" Orientation="Vertical">
+                    <TextBox materialDesign:TextFieldAssist.Hint="Name" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"                
+                                         Margin="0 6 0 0" FontSize="12" Text="{Binding ItemViewModel.ItemDetailViewModel.SelectedItemModel.TxtName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Reference" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"  IsEnabled="{Binding Binding ItemViewModel.ItemDetailViewModel.SelectedItemModel.IsRefModifyEnable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"               
+                                         Margin="0 6 0 0" FontSize="12" Text="{Binding ItemViewModel.ItemDetailViewModel.SelectedItemModel.TxtRef, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Purchase price" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 6 0 0" FontSize="12" Text="{Binding ItemViewModel.ItemDetailViewModel.SelectedItemModel.TxtPrice_purchase, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Selling Price Adviced" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 6 0 0" FontSize="12" Text="{Binding ItemViewModel.ItemDetailViewModel.SelectedItemModel.TxtPrice_sell, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+        <StackPanel Grid.Row="2" Grid.Column="0">
+            <Border Background="{DynamicResource PrimaryHueDarkBrush}" Margin="8" >
+                <StackPanel Orientation="Vertical">
+                    <TextBlock HorizontalAlignment="Center">Comments / More detail on the item</TextBlock>
+                    <TextBox Style="{DynamicResource MaterialDesignFloatingHintTextBox}" MinLines="10" TextWrapping="Wrap" AcceptsReturn="True" Background="White"
+                                        Margin="0 8 0 0" Text="{Binding ItemViewModel.ItemDetailViewModel.SelectedItemModel.TxtComment}"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+        <materialDesign:ColorZone Margin="8" Grid.Row="2" Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock HorizontalAlignment="Center">Provider</TextBlock>
+                <StackPanel Grid.Row="1" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Center">Brand</TextBlock>
+                        <ComboBox ItemsSource="{Binding ItemViewModel.ItemDetailViewModel.BrandList,IsAsync=True, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="200"  Margin="8"
+                                      SelectedItem="{Binding ItemViewModel.ItemDetailViewModel.SelectedItemModel.TxtType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <TextBox materialDesign:TextFieldAssist.Hint="New Brand" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding ItemViewModel.ItemDetailViewModel.SelectedItemModel.TxtNewBrand, UpdateSourceTrigger=PropertyChanged}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Center">Family</TextBlock>
+                        <ComboBox ItemsSource="{Binding ItemViewModel.ItemDetailViewModel.FamilyList,IsAsync=True, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="8"
+                                      SelectedItem="{Binding ItemViewModel.ItemDetailViewModel.SelectedItemModel.TxtType_sub, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <TextBox materialDesign:TextFieldAssist.Hint="New family" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding ItemViewModel.ItemDetailViewModel.SelectedItemModel.TxtNewFamily, UpdateSourceTrigger=PropertyChanged}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Center">Provider</TextBlock>
+                        <ComboBox ItemsSource="{Binding ItemViewModel.ItemDetailViewModel.AllProviderList}" HorizontalAlignment="Right" materialDesign:TextFieldAssist.Text="Client ID"  Margin="8" Width="250"
+                                      SelectedItem="{Binding ItemViewModel.ItemDetailViewModel.SelectedItemModel.SelectedProvider.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                    <TextBox materialDesign:TextFieldAssist.Hint="New provider" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding ItemViewModel.ItemDetailViewModel.SelectedItemModel.TxtNewProvider, UpdateSourceTrigger=PropertyChanged}"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 12 0 0">
+                        <Button IsDefault="True"
+                                    Command="{Binding ItemViewModel.ItemDetailViewModel.btnDeleteCommand}" >
+                            <materialDesign:PackIcon Kind="Delete" FontSize="30"/>
+                        </Button>
+                        <Button IsDefault="True"
+                                    Command="{Binding ItemViewModel.ItemDetailViewModel.btnValidCommand}" >
+                            <materialDesign:PackIcon Kind="Pencil" FontSize="30"/>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+    </Grid>
+</UserControl>

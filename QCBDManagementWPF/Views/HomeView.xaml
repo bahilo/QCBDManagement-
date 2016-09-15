@@ -1,0 +1,226 @@
+﻿<UserControl x:Class="QCBDManagementWPF.Views.HomeView"
+             Name="HomeWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:Views ="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="700" Loaded="HomeWindow_Loaded">
+    <Grid>
+        <!--<TextBlock>Here is Home view page</TextBlock>-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <Label HorizontalAlignment="Center" FontSize="20" Foreground="DarkGray" Grid.ColumnSpan="3">Dashboard</Label>
+        <materialDesign:Card Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="8">
+            <StackPanel Orientation="Vertical">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical">
+                        <lvc:Gauge Uses360Mode="True" From="0" To="1" Width="250" Height="200" Margin="5"
+                                            Value="{Binding HomeViewModel.FirstBestItemModelSeller.Item.Number_of_sale, UpdateSourceTrigger=PropertyChanged}" LabelFormatter="{Binding Formatter}" />
+                        <TextBlock HorizontalAlignment="Center">1st best sale</TextBlock>
+                        <Label Content="{Binding HomeViewModel.FirstBestItemModelSeller.TxtRef}"  FontSize="18" HorizontalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="1">
+                        <lvc:Gauge Uses360Mode="True" From="0" To="1" Width="250" Height="200" Margin="5"
+                                            Value="{Binding HomeViewModel.SecondBestItemModelSeller.Item.Number_of_sale, UpdateSourceTrigger=PropertyChanged}" LabelFormatter="{Binding Formatter}" />
+                        <TextBlock HorizontalAlignment="Center">2nd best sale</TextBlock>
+                        <Label Content="{Binding HomeViewModel.SecondBestItemModelSeller.TxtRef}"  FontSize="18" HorizontalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="2">
+                        <lvc:Gauge Uses360Mode="True" From="0" To="1" Width="250" Height="200" Margin="5"
+                                            Value="{Binding HomeViewModel.ThirdBestItemModelSeller.Item.Number_of_sale, UpdateSourceTrigger=PropertyChanged}" LabelFormatter="{Binding Formatter}" />
+                        <TextBlock HorizontalAlignment="Center">3rd best sale</TextBlock>
+                        <Label Content="{Binding HomeViewModel.ThirdBestItemModelSeller.TxtRef}"  FontSize="18" HorizontalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="3">
+                        <lvc:Gauge Uses360Mode="True" From="0" To="1" Width="250" Height="200" Margin="5"
+                                            Value="{Binding HomeViewModel.FourthBestItemModelSeller.Item.Number_of_sale, UpdateSourceTrigger=PropertyChanged}" LabelFormatter="{Binding Formatter}" />
+                        <TextBlock HorizontalAlignment="Center">4th best sale</TextBlock>
+                        <Label Content="{Binding HomeViewModel.FourthBestItemModelSeller.TxtRef}"  FontSize="18" HorizontalAlignment="Center" /> 
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.ColumnSpan="4">
+                        <lvc:CartesianChart Series="{Binding HomeViewModel.PayReceivedSeriesCollection, UpdateSourceTrigger=PropertyChanged}" Zoom="X" >
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis LabelFormatter="{Binding HomeViewModel.XFormatter}" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
+                            </lvc:CartesianChart.AxisX>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis LabelFormatter="{Binding HomeViewModel.YFormatter}"/>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <Grid Grid.Row="2" Grid.ColumnSpan="2"  Margin="8">
+            <materialDesign:Card>
+                <StackPanel Orientation="Vertical">
+                    <materialDesign:Card>
+                        <Border Background="{DynamicResource PrimaryHueMidBrush}">
+                            <TextBlock FontSize="16"  Margin="16" Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
+                            Income chart
+                            </TextBlock>
+                        </Border>
+                    </materialDesign:Card>
+                    <lvc:CartesianChart Height="300" Series="{Binding HomeViewModel.PurchaseAndIncomeSeriesCollection, UpdateSourceTrigger=PropertyChanged}" LegendLocation="Right">
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Sales" LabelFormatter="{Binding HomeViewModel.YFormatter}"></lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Month" Labels="{Binding HomeViewModel.PurchaseAndIncomeLabels}"></lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                    </lvc:CartesianChart>
+                </StackPanel>
+            </materialDesign:Card>
+        </Grid>        
+
+        <materialDesign:Card Grid.Row="3" Grid.ColumnSpan="2" Margin="8">
+            <StackPanel Orientation="Vertical">
+            <materialDesign:Card>
+                <Border Background="{DynamicResource PrimaryHueMidBrush}">
+                        <TextBlock Margin="16" FontSize="16" Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
+                        Pay received and Bill
+                    </TextBlock>
+                </Border>
+            </materialDesign:Card>
+                <lvc:CartesianChart Height="300" Series="{Binding HomeViewModel.CreditSeriesCollection, UpdateSourceTrigger=PropertyChanged}" LegendLocation="Right">
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Sales" LabelFormatter="{Binding HomeViewModel.YFormatter}"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Month" Labels="{Binding HomeViewModel.PayReceivedAndBillLabels}"></lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                </lvc:CartesianChart>
+            </StackPanel>
+        </materialDesign:Card>
+        
+        <Grid Grid.Row="2" Grid.RowSpan="3" Grid.Column="2" Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <materialDesign:Card Margin="4 4 0 0">
+                <materialDesign:DialogHost>
+                    <materialDesign:DialogHost.DialogContent>
+                        <StackPanel Margin="16">
+                            <TextBlock>Add a new task.</TextBlock>
+                            <TextBox Margin="0 8 0 0" HorizontalAlignment="Stretch" x:Name="ToDoTextBox" Text="{Binding HomeViewModel.TxtNewTask, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                        IsDefault="True"
+                                        Margin="0 8 8 0"
+                                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                    <Button.CommandParameter>
+                                        <system:Boolean>True</system:Boolean>
+                                    </Button.CommandParameter>
+                                    ACCEPT
+                                </Button>
+                                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                        IsCancel="True"
+                                        Margin="0 8 8 0"
+                                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                    <Button.CommandParameter>
+                                        <system:Boolean>True</system:Boolean>
+                                    </Button.CommandParameter>
+                                    CANCEL
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </materialDesign:DialogHost.DialogContent>
+                    <Border BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                            MinWidth="200" MinHeight="256" ClipToBounds="True">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ListBox x:Name="ToDoListBox" ItemsSource="{Binding HomeViewModel.ToDoList, UpdateSourceTrigger=PropertyChanged}">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="50"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Padding="5" Text="{Binding TxtTask}"/>
+                                            <Button Grid.Column="1" HorizontalAlignment="Right"
+                                                    Command="{Binding DataContext.HomeViewModel.DeleteToDoTaskCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                                    CommandParameter="{Binding}">
+                                                <materialDesign:PackIcon Kind="Delete"/>
+                                            </Button>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="1" Effect="{DynamicResource MaterialDesignShadowDepth5}">
+                                <TextBlock Margin="16">To Do, add new task</TextBlock>
+                            </materialDesign:ColorZone>
+                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"                                
+                                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                    VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                                    Grid.Row="0" Margin="0 0 28 -20">
+                                <Viewbox Width="22" Height="22">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, Path=Foreground}" />
+                                    </Canvas>
+                                </Viewbox>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </materialDesign:DialogHost>
+            </materialDesign:Card>
+
+            <materialDesign:Card Grid.Row="1" Margin="0 4 0 0" Background="{DynamicResource PrimaryHueDarkBrush}"
+                                    Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                    Padding="8">
+                <StackPanel>
+                    <TextBlock FontSize="16" Margin="0 0 0 10">Notes</TextBlock>
+                    <ListBox ItemsSource="{Binding HomeViewModel.ToDoList, UpdateSourceTrigger=PropertyChanged}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <CheckBox Foreground="White" Style="{StaticResource MaterialDesignUserForegroundCheckBox}" IsChecked="{Binding IsDone, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                    <TextBlock Grid.Column="1" Foreground="White" Text="{Binding TxtTask, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+</UserControl>

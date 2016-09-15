@@ -1,0 +1,278 @@
+﻿<Window x:Class="QCBDManagementWPF.MainWindow"
+        x:Name="Window"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QCBDManagementWPF"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:Views ="clr-namespace:QCBDManagementWPF.Views"
+        xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+        Title="Quote Command Billing and Delivery Management" 
+        Closed="Window_Closing" >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- ViewModels -->
+            <DataTemplate DataType="{x:Type ViewModel:ClientViewModel}">
+                <Views:ClientView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:ItemViewModel}">
+                <Views:ItemView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:CommandViewModel}">
+                <Views:CommandView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:AgentViewModel}">
+                <Views:AgentView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:NotificationViewModel}">
+                <Views:NotificationView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:ReferentialViewModel}">
+                <Views:OptionView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:StatisticViewModel}">
+                <Views:StatisticView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:HomeViewModel}">
+                <Views:HomeView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:QuoteViewModel}">
+                <Views:QuoteView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:SecurityLoginViewModel}">
+                <Views:SecurityLoginView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:OptionSecurityViewModel}">
+                <Views:OptionSecurity/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:OptionGeneralViewModel}">
+                <Views:OptionGeneral/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:OptionDataAndDisplayViewModel}">
+                <Views:OptionDataAndDisplay/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:OptionEmailViewModel}">
+                <Views:OptionEmail/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:ConfirmationViewModel}">
+                <Views:ConfirmationView/>
+            </DataTemplate>
+
+            <!-- Detail views -->
+            <DataTemplate DataType="{x:Type ViewModel:ItemDetailViewModel}">
+                <Views:ItemDetailView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:ClientDetailViewModel}">
+                <Views:ClientDetailView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:AgentDetailViewModel}">
+                <Views:AgentDetail/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:CommandDetailViewModel}">
+                <Views:CommandDetailView/>
+            </DataTemplate>
+
+            <!-- Side Bar -->
+            <DataTemplate DataType="{x:Type ViewModel:CLientSideBarViewModel}">
+                <Views:CLientSideBarView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:AgentSideBarViewModel}">
+                <Views:AgentSideBarView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:CommandSideBarViewModel}">
+                <Views:CommandSideBarView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:ItemSideBarViewModel}">
+                <Views:ItemSideBarView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:NotificationSideBarViewModel}">
+                <Views:NotificationSideBarView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModel:ReferentialSideBarViewModel}">
+                <Views:OptionSideBarView/>
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <materialDesign:DialogHost Identifier="RootDialog" Loaded="DialogHost_Loaded"
+                               IsOpen="{Binding Dialog.IsDialogOpen, UpdateSourceTrigger=PropertyChanged}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="120"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid x:Name="gvHeader">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Left">
+                        <Image Source="{Binding LogoImageDisplay.ImageSource, UpdateSourceTrigger=PropertyChanged}" Stretch="Uniform"
+                           Width="{Binding DataContext.LogoImageDisplay.TxtWidth, ElementName=Window, UpdateSourceTrigger=PropertyChanged}"
+                           Height="{Binding DataContext.LogoImageDisplay.TxtHeight, ElementName=Window, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Image Source="{Binding HeaderImageDisplay.ImageSource, UpdateSourceTrigger=PropertyChanged}" Stretch="Uniform"
+                           Width="{Binding DataContext.HeaderImageDisplay.TxtWidth, ElementName=Window, UpdateSourceTrigger=PropertyChanged}"
+                           Height="{Binding DataContext.HeaderImageDisplay.TxtHeight, ElementName=Window, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1"  HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}" x:Name="btnEmail" ToolTip="Send Email">
+                            <materialDesign:PackIcon Kind="Email" />
+                        </Button>
+                        <Separator Margin="10 0 10 0" />
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="AccountCircle" FontSize="10"/>
+                            <TextBlock x:Name="txbWelcomeUser" Text="{Binding TxtUserName, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <Separator Margin="10 0 10 0" />
+                        <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="True">
+                            <StackPanel>
+                                <Button Content="Log Out" Command="{Binding SecurityLoginViewModel.LogoutCommand}"/>
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+
+                    </StackPanel>
+                    <StackPanel Grid.Column="0" Grid.ColumnSpan="2"  Grid.Row="1" VerticalAlignment="Bottom">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition  Width="*"/>
+                                <ColumnDefinition  Width="*"/>
+                                <ColumnDefinition  Width="*"/>
+                                <ColumnDefinition  Width="*"/>
+                                <ColumnDefinition  Width="*"/>
+                                <ColumnDefinition  Width="*"/>
+                                <ColumnDefinition  Width="*"/>
+                                <ColumnDefinition  Width="*"/>
+                                <ColumnDefinition  Width="*"/>
+                                <ColumnDefinition  Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="btnBack" Style="{DynamicResource MaterialDesignFlatButton}" Margin="0,0,0,1" Command="{Binding CommandNavig}" CommandParameter="back">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="ArrowLeftBold"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnHome" Grid.Column="1" Style="{DynamicResource MaterialDesignFlatButton}" Width="95" Margin="0,0,0,1" Command="{Binding CommandNavig}" CommandParameter="home">
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Home"/>
+                                        <TextBlock Margin="5 0 0 0">Home</TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="2" x:Name="btnCLient" Style="{DynamicResource MaterialDesignFlatButton}" Width="95" Margin="0,0,0,1" Command="{Binding CommandNavig}" CommandParameter="client">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="HumanMaleFemale"/>
+                                    <TextBlock Margin="5 0 0 0">Client</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="3" x:Name="btnCatalog" Style="{DynamicResource MaterialDesignFlatButton}" Width="102" Margin="0,0,0,1" Command="{Binding CommandNavig}" CommandParameter="item">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="FolderMultipleOutline"/>
+                                    <TextBlock Margin="5 0 0 0">Catalog</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="4" x:Name="btnQuote" Style="{DynamicResource MaterialDesignFlatButton}" Width="115" Margin="0,0,0,1" Command="{Binding CommandNavig}" CommandParameter="quote">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="FormatFloatLeft"/>
+                                    <TextBlock Margin="5 0 0 0">Quotation</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="5" x:Name="btnCommand" Style="{DynamicResource MaterialDesignFlatButton}" Width="125" Margin="0,0,0,1" Command="{Binding CommandNavig}" CommandParameter="command">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="FormatFloatRight"/>
+                                    <TextBlock Margin="5 0 0 0">Command</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="6" x:Name="btnStatistic" Style="{DynamicResource MaterialDesignFlatButton}" Width="110" Margin="0,0,0,1" Command="{Binding CommandNavig}" CommandParameter="statistic">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="ChartBar"/>
+                                    <TextBlock Margin="5 0 0 0">Statistic</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="7" x:Name="btnAgent" Style="{DynamicResource MaterialDesignFlatButton}" Width="100" Margin="0,0,0,1" Command="{Binding CommandNavig}" CommandParameter="agent">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Alarm"/>
+                                    <TextBlock Margin="5 0 0 0">Agent</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="8" x:Name="btnNotification" Style="{DynamicResource MaterialDesignFlatButton}" Width="135" Margin="0,0,0,1" Command="{Binding CommandNavig}" CommandParameter="notification">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Alarm"/>
+                                    <TextBlock Margin="5 0 0 0">Notification</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="9" x:Name="btnOption" Style="{DynamicResource MaterialDesignFlatButton}" Width="105" Margin="0,0,0,1" Command="{Binding CommandNavig}" CommandParameter="option">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Apps"/>
+                                    <TextBlock Margin="5 0 0 0">Option</TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.ColumnSpan="10" Height="3">
+                            <ProgressBar x:Name="pbarTop"
+                             materialDesign:ShadowAssist.ShadowDepth="Depth4" 
+                             VerticalAlignment="Center"
+                             Minimum="0"
+                             Value="{Binding ProgressBarPercentValue,UpdateSourceTrigger=PropertyChanged}"
+                             Maximum="100"/>
+                            <ProgressBar IsIndeterminate="True" materialDesign:ShadowAssist.ShadowDepth="Depth4" 
+                             Visibility="{Binding SearchProgressVisibility, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalAlignment="Top" />
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1" x:Name="gvMain" VerticalAlignment="Top" Margin="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="270"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Name="gvHome" Grid.Column="0" Grid.ColumnSpan="3" Visibility="{Binding BlockHomeVisibility, UpdateSourceTrigger=PropertyChanged}">
+                        <ContentControl Content="{Binding CurrentHomeViewModel, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+
+                    <Grid x:Name="gvLeftSide"  Height="{Binding Height, ElementName=gvMain, UpdateSourceTrigger=PropertyChanged}" 
+                          VerticalAlignment="Top" Width="270" Visibility="{Binding BlockSideBarVisibility, UpdateSourceTrigger=PropertyChanged}"
+                          HorizontalAlignment="Left">
+                        <ContentControl Content="{Binding CurrentSideBarViewModel, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+
+                    <Grid x:Name="gvCentral" Grid.Column="1" Grid.ColumnSpan="2" Visibility="{Binding BlockGridCentralVisibility, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 0 10">
+                        <ContentControl Content="{Binding CurrentViewModel, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <!--<materialDesign:DialogHost Identifier="CentralDialog" Loaded="DialogHost_Loaded"
+                               IsOpen="{Binding Dialog.IsDialogOpen, UpdateSourceTrigger=PropertyChanged}">
+                          
+                            <ContentControl Content="{Binding CurrentViewModel, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"/>
+                      
+                        </materialDesign:DialogHost>-->
+                        
+                    </Grid>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+    </materialDesign:DialogHost>
+</Window>

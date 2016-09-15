@@ -1,0 +1,415 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6C8AC36B-15E4-44BA-89F1-75C1C6F291E2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>QCBDManagementWPF</RootNamespace>
+    <AssemblyName>QCBDManagementWPF</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v15.1, Version=15.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Mvvm.v15.1, Version=15.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Core.v15.1, Version=15.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.LayoutControl.v15.1, Version=15.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="LiveCharts, Version=0.7.10.0, Culture=neutral, PublicKeyToken=c5935629d38af058, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.7.10\lib\portable-net40+sl5+win8+wp8+wpa81\LiveCharts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.7.10.0, Culture=neutral, PublicKeyToken=3b585c2a5f1a92c1, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.7.10\lib\net452\LiveCharts.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=1.5.0.523, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.1.5.0.523\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Classes\BindBase.cs" />
+    <Compile Include="Classes\Cart.cs" />
+    <Compile Include="Classes\CommandSearch.cs" />
+    <Compile Include="Classes\Context.cs" />
+    <Compile Include="Classes\DisplayLanguageComponent.cs" />
+    <Compile Include="Classes\DisplayAndData.cs" />
+    <Compile Include="Classes\FindParent.cs" />
+    <Compile Include="Classes\GeneralInfos.cs" />
+    <Compile Include="Classes\Startup.cs" />
+    <Compile Include="Classes\ToDo.cs" />
+    <Compile Include="Command\ButtonCommand.cs" />
+    <Compile Include="Helper\WPFHelper.cs" />
+    <Compile Include="InputDialog.xaml.cs">
+      <DependentUpon>InputDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\IState.cs" />
+    <Compile Include="Models\ActionModel.cs" />
+    <Compile Include="Models\AgentModel.cs" />
+    <Compile Include="Models\BillModel.cs" />
+    <Compile Include="Models\Cart_itemModel.cs" />
+    <Compile Include="Models\ClientModel.cs" />
+    <Compile Include="Models\CommandModel.cs" />
+    <Compile Include="Models\Command_itemModel.cs" />
+    <Compile Include="Models\InfosModel.cs" />
+    <Compile Include="Models\ItemModel.cs" />
+    <Compile Include="Models\Item_deliveryModel.cs" />
+    <Compile Include="Models\LanguageModel.cs" />
+    <Compile Include="Models\PrivilegeModel.cs" />
+    <Compile Include="Models\RoleModel.cs" />
+    <Compile Include="Models\StatisticModel.cs" />
+    <Compile Include="Models\TaxModel.cs" />
+    <Compile Include="ViewModel\AgentDetailViewModel.cs" />
+    <Compile Include="ViewModel\AgentSideBarViewModel.cs" />
+    <Compile Include="ViewModel\ClientDetailViewModel.cs" />
+    <Compile Include="ViewModel\CommandDetailViewModel.cs" />
+    <Compile Include="ViewModel\CommandSideBarViewModel.cs" />
+    <Compile Include="Models\DeliveryModel.cs" />
+    <Compile Include="ViewModel\ConfirmationViewModel.cs" />
+    <Compile Include="ViewModel\ItemCreateViewModel.cs" />
+    <Compile Include="ViewModel\ItemDetailViewModel.cs" />
+    <Compile Include="ViewModel\NotificationSideBarViewModel.cs" />
+    <Compile Include="ViewModel\OptionDataAndDisplayViewModel.cs" />
+    <Compile Include="ViewModel\OptionGeneralViewModel.cs" />
+    <Compile Include="ViewModel\OptionSecurityViewModel.cs" />
+    <Compile Include="ViewModel\OptionEmailViewModel.cs" />
+    <Compile Include="ViewModel\QuoteDetailViewModel.cs" />
+    <Compile Include="ViewModel\ReferentialSideBarViewModel.cs" />
+    <Compile Include="ViewModel\SecurityLoginViewModel.cs" />
+    <Compile Include="Views\AgentDetail.xaml.cs">
+      <DependentUpon>AgentDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AgentSideBarView.xaml.cs">
+      <DependentUpon>AgentSideBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ClientDetailView.xaml.cs">
+      <DependentUpon>ClientDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CommandDetailView.xaml.cs">
+      <DependentUpon>CommandDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CommandSideBarView.xaml.cs">
+      <DependentUpon>CommandSideBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\AgentViewModel.cs" />
+    <Compile Include="ViewModel\CLientSideBarViewModel.cs" />
+    <Compile Include="ViewModel\ClientViewModel.cs" />
+    <Compile Include="ViewModel\CommandViewModel.cs" />
+    <Compile Include="ViewModel\HomeViewModel.cs" />
+    <Compile Include="ViewModel\ItemSideBarViewModel.cs" />
+    <Compile Include="ViewModel\ItemViewModel.cs" />
+    <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\NotificationViewModel.cs" />
+    <Compile Include="ViewModel\QuoteViewModel.cs" />
+    <Compile Include="ViewModel\ReferentialViewModel.cs" />
+    <Compile Include="ViewModel\StatisticViewModel.cs" />
+    <Compile Include="Views\AgentView.xaml.cs">
+      <DependentUpon>AgentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CLientSideBarView.xaml.cs">
+      <DependentUpon>CLientSideBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ClientView.xaml.cs">
+      <DependentUpon>ClientView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CommandView.xaml.cs">
+      <DependentUpon>CommandView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfirmationSearchView.xaml.cs">
+      <DependentUpon>ConfirmationSearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfirmationView.xaml.cs">
+      <DependentUpon>ConfirmationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HomeView.xaml.cs">
+      <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemDetailView.xaml.cs">
+      <DependentUpon>ItemDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemSideBarView.xaml.cs">
+      <DependentUpon>ItemSideBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemView.xaml.cs">
+      <DependentUpon>ItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NotificationSideBarView.xaml.cs">
+      <DependentUpon>NotificationSideBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NotificationView.xaml.cs">
+      <DependentUpon>NotificationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OptionDataAndDisplay.xaml.cs">
+      <DependentUpon>OptionDataAndDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OptionEmail.xaml.cs">
+      <DependentUpon>OptionEmail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OptionGeneral.xaml.cs">
+      <DependentUpon>OptionGeneral.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OptionMonitoring.xaml.cs">
+      <DependentUpon>OptionMonitoring.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OptionSecurity.xaml.cs">
+      <DependentUpon>OptionSecurity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OptionSideBarView.xaml.cs">
+      <DependentUpon>OptionSideBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OptionView.xaml.cs">
+      <DependentUpon>OptionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QuoteView.xaml.cs">
+      <DependentUpon>QuoteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SecurityLoginView.xaml.cs">
+      <DependentUpon>SecurityLoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StatisticView.xaml.cs">
+      <DependentUpon>StatisticView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="InputDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\NotifyPropertyChangedExtension.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Views\AgentDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AgentSideBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ClientDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CommandDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CommandSideBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AgentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CLientSideBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ClientView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CommandView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfirmationSearchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfirmationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ItemDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ItemSideBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NotificationSideBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NotificationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OptionDataAndDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OptionEmail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OptionGeneral.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OptionMonitoring.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OptionSecurity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OptionSideBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OptionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QuoteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SecurityLoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StatisticView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QCBDManagementBusiness\QCBDManagementBusiness.csproj">
+      <Project>{0d090909-a17c-4c71-87e7-cfb3bc36614e}</Project>
+      <Name>QCBDManagementBusiness</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QCBDManagementCommon\QCBDManagementCommon.csproj">
+      <Project>{f7fe1aeb-2017-471e-82c5-6d896106c35d}</Project>
+      <Name>QCBDManagementCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QCBDManagementDAL\QCBDManagementDAL.csproj">
+      <Project>{cce0763a-a197-4acf-bfb3-7410f046182b}</Project>
+      <Name>QCBDManagementDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QCBDManagementGateway\QCBDManagementGateway.csproj">
+      <Project>{ad4c9ab7-8285-47a6-8680-924d0fbf3001}</Project>
+      <Name>QCBDManagementGateway</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logs\" />
+    <Folder Include="Themes\Images\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,127 @@
+﻿<UserControl x:Class="QCBDManagementWPF.Views.AgentDetail"
+             Name="AgentDetailWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+             xmlns:Main="clr-namespace:QCBDManagementWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="700" Loaded="AgentDetailWindow_Loaded" >
+  <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label FontSize="20" Grid.ColumnSpan="4" Foreground="DarkGray" HorizontalAlignment="Center" Content="{Binding AgentViewModel.AgentDetailViewModel.Title, UpdateSourceTrigger=PropertyChanged}"/>
+            <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth3" Margin="8" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock HorizontalAlignment="Center">Search</TextBlock>
+                    <StackPanel Margin="0 10 0 0" Grid.Row="1" Orientation="Vertical">
+                        <StackPanel Margin="0 6 0 0" Orientation="Horizontal">
+                            <TextBlock>Agent</TextBlock>
+                            <ComboBox Name="cbBoxAgent" ItemsSource="{Binding AgentViewModel.AgentDetailViewModel.AgentModelList, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Margin="6 0 0 0" Width="250">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding TxtFirstName}" Margin="0 0 5 0"/>
+                                        <TextBlock Text="{Binding TxtLastName}"/>
+                                    </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 12 0 0" HorizontalAlignment="Right">
+                            <Button IsDefault="True"
+                                    Command="{Binding AgentViewModel.AgentDetailViewModel.SearchCommand}"
+                                    CommandParameter="{Binding SelectedItem, ElementName=cbBoxAgent}">
+                                <materialDesign:PackIcon Kind="Magnify"/>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:Card>
+
+            <materialDesign:ColorZone  Margin="8" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock HorizontalAlignment="Center">Main Details</TextBlock>
+                    <StackPanel Margin="0 10 0 0"  Grid.Row="1"  Orientation="Vertical">
+                        <TextBox materialDesign:TextFieldAssist.Hint="Last Name" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding AgentViewModel.AgentDetailViewModel.SelectedAgentModel.TxtLastName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox materialDesign:TextFieldAssist.Hint="First Name" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding AgentViewModel.AgentDetailViewModel.SelectedAgentModel.TxtFirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox materialDesign:TextFieldAssist.Hint="Phone" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding AgentViewModel.AgentDetailViewModel.SelectedAgentModel.TxtPhone, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox materialDesign:TextFieldAssist.Hint="Fax" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding AgentViewModel.AgentDetailViewModel.SelectedAgentModel.TxtFax, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox materialDesign:TextFieldAssist.Hint="Email" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                        Margin="0 8 0 0" FontSize="12" Text="{Binding AgentViewModel.AgentDetailViewModel.SelectedAgentModel.TxtEmail, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="Login" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding AgentViewModel.AgentDetailViewModel.SelectedAgentModel.TxtLogin, UpdateSourceTrigger=PropertyChanged}"/>
+                    <PasswordBox Name="pwdBox" PasswordChar="*" materialDesign:TextFieldAssist.Hint="Password" 
+                                 Margin="0 8 0 0" FontSize="12" />
+                    <PasswordBox Name="pwdBoxVerification" PasswordChar="*" materialDesign:TextFieldAssist.Hint="Password Verification" 
+                                 Margin="0 8 0 0" FontSize="12" />
+                    <TextBox materialDesign:TextFieldAssist.Hint="Status" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" IsEnabled="False"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding AgentViewModel.AgentDetailViewModel.SelectedAgentModel.TxtStatus, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox materialDesign:TextFieldAssist.Hint="List size" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Margin="0 8 0 0" FontSize="12" Text="{Binding AgentViewModel.AgentDetailViewModel.SelectedAgentModel.TxtListSize, UpdateSourceTrigger=LostFocus}"/>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:ColorZone>
+
+            <materialDesign:ColorZone Margin="8" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock HorizontalAlignment="Center">Agent Rights</TextBlock>
+                    <StackPanel Margin="0 10 0 0"  Grid.Row="1"  Orientation="Vertical">
+                        <DataGrid/>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:ColorZone>
+
+            <materialDesign:ColorZone Margin="8" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock HorizontalAlignment="Center">Agent Statistics</TextBlock>
+                    <StackPanel Grid.Row="1" Orientation="Vertical">
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 12 0 0">
+                            
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:ColorZone>
+            
+            <Button IsDefault="True" Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center"
+                                    Command="{Binding AgentViewModel.AgentDetailViewModel.UpdateCommand}" >
+                <materialDesign:PackIcon Kind="Pencil" FontSize="30"/>
+            </Button>
+        </Grid>
+</UserControl>

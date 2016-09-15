@@ -1,0 +1,163 @@
+﻿<UserControl x:Class="QCBDManagementWPF.Views.OptionEmail"
+             Name="OptionEmailWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+             xmlns:Main="clr-namespace:QCBDManagementWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="700" Loaded="OptionEmailWindow_Loaded">
+    <Grid Margin="0 0 0 12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label FontSize="20" Grid.ColumnSpan="4" Foreground="DarkGray" HorizontalAlignment="Center" Content="{Binding ReferentialViewModel.OptionEmailViewModel.Title, UpdateSourceTrigger=PropertyChanged}"/>
+        <materialDesign:ColorZone Margin="8" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4">
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center">Email: Quote</TextBlock>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                        <Button ToolTip="Update" Command="{Binding ReferentialViewModel.OptionEmailViewModel.UpdateCommand}" CommandParameter="quote">
+                            <materialDesign:PackIcon Kind="Pencil"/>
+                        </Button>
+                        <Button ToolTip="Erase" HorizontalAlignment="Right"
+                                Command="{Binding ReferentialViewModel.OptionEmailViewModel.DeleteCommand}" Margin="1 0 0 0" 
+                                CommandParameter="quote">
+                            <materialDesign:PackIcon Kind="Delete"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Margin="0 10 0 0"  Grid.Row="1"  Orientation="Vertical">
+                    <TextBox Name="txbQuote" TextWrapping="Wrap" Height="300" MinLines="10" AcceptsReturn="True"
+                             Margin="0 8 0 0" FontSize="12" Text="{Binding DataContext.ReferentialViewModel.OptionEmailViewModel.QuoteEmailFile.TxtContent, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Self}}"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <materialDesign:ColorZone Margin="8" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center">Email: Confirm Command Validation</TextBlock>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                        <Button ToolTip="Update" Command="{Binding ReferentialViewModel.OptionEmailViewModel.UpdateCommand}" 
+                                CommandParameter="command_confirmation">
+                            <materialDesign:PackIcon Kind="Pencil"/>
+                        </Button>
+                        <Button ToolTip="Erase" HorizontalAlignment="Right"
+                                Command="{Binding ReferentialViewModel.OptionEmailViewModel.DeleteCommand}" Margin="1 0 0 0" 
+                                CommandParameter="command-confirmation">
+                            <materialDesign:PackIcon Kind="Delete"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Margin="0 10 0 0"  Grid.Row="1"  Orientation="Vertical">
+                    <TextBox Name="TxbCommandConfirmation" TextWrapping="Wrap" Height="300" MinLines="10" AcceptsReturn="True"
+                             Margin="0 8 0 0" FontSize="12" Text="{Binding ReferentialViewModel.OptionEmailViewModel.CommandConfirmationEmailFile.TxtContent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <materialDesign:ColorZone Margin="8" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4">
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center">Email: Bill First Reminder</TextBlock>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                        <Button ToolTip="Update" Command="{Binding ReferentialViewModel.OptionEmailViewModel.UpdateCommand}" 
+                                CommandParameter="reminder-1">
+                            <materialDesign:PackIcon Kind="Pencil"/>
+                        </Button>
+                        <Button ToolTip="Erase" HorizontalAlignment="Right"
+                                Command="{Binding ReferentialViewModel.OptionEmailViewModel.DeleteCommand}" Margin="1 0 0 0" 
+                                CommandParameter="reminder-1">
+                            <materialDesign:PackIcon Kind="Delete"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Margin="0 10 0 0"  Grid.Row="1"  Orientation="Vertical">
+                    <TextBox Name="TxbReminderOne" TextWrapping="Wrap" Height="300" MinLines="10" AcceptsReturn="True"
+                             Margin="0 8 0 0" FontSize="12" Text="{Binding ReferentialViewModel.OptionEmailViewModel.ReminderOneEmailFile.TxtContent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <materialDesign:ColorZone Margin="8" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4">
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center">Email: Bill Second Reminder</TextBlock>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                        <Button ToolTip="Update" Command="{Binding ReferentialViewModel.OptionEmailViewModel.UpdateCommand}" 
+                                CommandParameter="reminder-2">
+                            <materialDesign:PackIcon Kind="Pencil"/>
+                        </Button>
+                        <Button ToolTip="Erase" HorizontalAlignment="Right"
+                                Command="{Binding DataContext.ReferentialViewModel.OptionEmailViewModel.DeleteCommand, ElementName=TxbReminderTwo}" Margin="1 0 0 0" CommandParameter="reminder-2">
+                            <materialDesign:PackIcon Kind="Delete"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Margin="0 10 0 0"  Grid.Row="1"  Orientation="Vertical">
+                    <TextBox Name="TxbReminderTwo" TextWrapping="Wrap" Height="300" MinLines="10" AcceptsReturn="True"
+                             Margin="0 8 0 0" FontSize="12" Text="{Binding ReferentialViewModel.OptionEmailViewModel.ReminderTwoEmailFile.TxtContent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <materialDesign:ColorZone Margin="8" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4">
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center">Email: Sent along with Bill </TextBlock>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                        <Button ToolTip="Update" Command="{Binding ReferentialViewModel.OptionEmailViewModel.UpdateCommand}" 
+                                CommandParameter="bill">
+                            <materialDesign:PackIcon Kind="Pencil"/>
+                        </Button>
+                        <Button ToolTip="Erase" HorizontalAlignment="Right"
+                                Command="{Binding ReferentialViewModel.OptionEmailViewModel.DeleteCommand}" Margin="1 0 0 0" 
+                                CommandParameter="bill">
+                            <materialDesign:PackIcon Kind="Delete"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Margin="0 10 0 0"  Grid.Row="1"  Orientation="Vertical">
+                    <TextBox Name="TxbBill" TextWrapping="Wrap" Height="300" MinLines="10" AcceptsReturn="True"
+                             Margin="0 8 0 0" FontSize="12" Text="{Binding ReferentialViewModel.OptionEmailViewModel.BillEmailFile.TxtContent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>        
+    </Grid>
+</UserControl>

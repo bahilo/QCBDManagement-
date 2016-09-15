@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="QCBDManagementWPF.Views.CommandSideBarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+             xmlns:Main="clr-namespace:QCBDManagementWPF"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="300" Loaded="UserControl_Loaded">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <Expander IsExpanded="true" HorizontalAlignment="Stretch">
+                <Expander.Header>
+                    <TextBlock Text="Setups" />
+                </Expander.Header>
+                <StackPanel Orientation="Vertical" Margin="8">
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding CommandQuoteSideBar.SetupCommandCommand}"
+                                CommandParameter="select-client"
+                                HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Plus"/>
+                            <TextBlock Margin="8 0 0 0">Select A Client</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Expander>
+            <Expander IsExpanded="True" HorizontalAlignment="Stretch">
+                <Expander.Header>
+                    <TextBlock Text="Utilities" />
+                </Expander.Header>
+                <StackPanel Orientation="Vertical" Margin="8">
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding CommandQuoteSideBar.UtilitiesCommand}"
+                                CommandParameter="convert-quoteToCommand"
+                                HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="BookMultiple"/>
+                            <TextBlock Margin="8 0 0 0">Convert Quote into Command</TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding CommandQuoteSideBar.UtilitiesCommand}"
+                                CommandParameter="convert-commandToQuote"
+                                HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="BookMultiple"/>
+                            <TextBlock Margin="8 0 0 0">Convert Command into Quote</TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding CommandQuoteSideBar.UtilitiesCommand}"
+                                CommandParameter="convert-quoteToCredit"
+                                HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="BookMultiple"/>
+                            <TextBlock Margin="8 0 0 0">Convert Quote into Credit</TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding CommandQuoteSideBar.UtilitiesCommand}"
+                                CommandParameter="valid-command"
+                                HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="BookOpen"/>
+                            <TextBlock Margin="8 0 0 0">Valid Command</TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding CommandQuoteSideBar.UtilitiesCommand}"
+                                CommandParameter="valid-credit"
+                                HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="BookOpen"/>
+                            <TextBlock Margin="8 0 0 0">Valid Credit</TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding CommandQuoteSideBar.UtilitiesCommand}"
+                                CommandParameter="close-command"
+                                HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="BookmarkCheck"/>
+                            <TextBlock Margin="8 0 0 0">Close Command</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Expander>
+            <!-- -->
+        </StackPanel>
+
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="QCBDManagementWPF.Views.AgentSideBarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+             xmlns:Main="clr-namespace:QCBDManagementWPF"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
+    <materialDesign:DialogHost >
+        <materialDesign:DialogHost.DialogContent>
+            <StackPanel>
+
+            </StackPanel>
+        </materialDesign:DialogHost.DialogContent>
+        <Grid>
+            <StackPanel Orientation="Vertical">
+                <Expander IsExpanded="true" HorizontalAlignment="Stretch">
+                    <Expander.Header>
+                        <TextBlock Text="Setups" />
+                    </Expander.Header>
+                    <StackPanel Orientation="Vertical" Margin="8">
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}"                                 
+                                Command="{Binding AgentViewModel.AgentSideBarViewModel.SetupAgentCommand}"
+                                CommandParameter="new-agent"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Plus"/>
+                                <TextBlock Margin="8 0 0 0">
+                                      Add New Agent
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Expander>
+                <Expander IsExpanded="True" HorizontalAlignment="Stretch">
+                    <Expander.Header>
+                        <TextBlock Text="Utilities" />
+                    </Expander.Header>
+                    <StackPanel Orientation="Vertical" Margin="8">                        
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding AgentViewModel.AgentSideBarViewModel.UtilitiesCommand}"
+                                CommandParameter="activate"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="LockOpen"/>
+                                <TextBlock Margin="8 0 0 0">Activate Agent</TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding AgentViewModel.AgentSideBarViewModel.UtilitiesCommand}"
+                                CommandParameter="deactivate"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="LockOutline"/>
+                                <TextBlock Margin="8 0 0 0">Deactivate Agent</TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding AgentViewModel.AgentSideBarViewModel.UtilitiesCommand}"
+                                CommandParameter="use"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="AccountMultiple"/>
+                                <TextBlock Margin="8 0 0 0">Connect As</TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+
+
+        </Grid>
+    </materialDesign:DialogHost>
+</UserControl>

@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="QCBDManagementWPF.Views.OptionSideBarView"
+             Name="OptionSideBarWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+             xmlns:Main="clr-namespace:QCBDManagementWPF"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="OptionSideBarWindow_Loaded">
+    <Grid>
+        <Grid>
+            <StackPanel Orientation="Vertical">
+
+
+                <Expander IsExpanded="true" HorizontalAlignment="Stretch">
+                    <Expander.Header>
+                        <TextBlock Text="Security" />
+                    </Expander.Header>
+                    <StackPanel Orientation="Vertical" Margin="8">
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                			Command="{Binding ReferentialViewModel.ReferentialSideBarViewModel.SetupCommand}"
+                			CommandParameter="credential"
+                			HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="LockOutline"/>
+                                <TextBlock Margin="8 0 0 0"><Run Text="Agents Credentials"/></TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                			Command="{Binding ReferentialViewModel.ReferentialSideBarViewModel.SetupCommand}"
+                			CommandParameter="data-display"
+                			HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Database"/>
+                                <TextBlock Margin="8 0 0 0"><Run Text="Data / Display"/></TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Expander>
+
+
+                <Expander IsExpanded="True" HorizontalAlignment="Stretch">
+                    <Expander.Header>
+                        <TextBlock Text="Utilities" />
+                    </Expander.Header>
+                    <StackPanel Orientation="Vertical" Margin="8">
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding DataContext.ReferentialViewModel.ReferentialSideBarViewModel.UtilitiesCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                CommandParameter="monitoring"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Monitor"/>
+                                <TextBlock Margin="8 0 0 0"><Run Text="Activities Monitoring"/></TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding DataContext.ReferentialViewModel.ReferentialSideBarViewModel.UtilitiesCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                CommandParameter="email"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Email"/>
+                                <TextBlock Margin="8 0 0 0"><Run Text="Email"/></TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,108 @@
+﻿<UserControl x:Class="QCBDManagementWPF.Views.CLientSideBarView"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
+             TextElement.FontWeight="Medium"
+             TextElement.FontSize="14"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+             xmlns:Main="clr-namespace:QCBDManagementWPF"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
+    <!--<UserControl.DataContext>
+        <Main:MainWindowViewModel/>
+    </UserControl.DataContext>-->
+    <Grid>        
+            <StackPanel Orientation="Vertical">
+                <Expander IsExpanded="true" HorizontalAlignment="Stretch">
+                    <Expander.Header>
+                        <TextBlock Text="Setups" />
+                    </Expander.Header><!--Command="{Binding ClientSideBarViewModel.SetupCLientCommand}"-->
+                    <StackPanel Orientation="Vertical" Margin="8">  <!--Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"-->                      
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}"                                 
+                                Command="{Binding ClientViewModel.ClientSideBarViewModel.CLientSetupCommand}"
+                                CommandParameter="new-client"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Plus"/>
+                                <TextBlock Margin="8 0 0 0">
+                                      New Client/Prospect
+                               </TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding ClientViewModel.ClientSideBarViewModel.CLientSetupCommand}"
+                                CommandParameter="new-contact"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="PlusCircleOutline"/>
+                                <TextBlock Margin="8 0 0 0">
+                                      New Contact
+                                </TextBlock>
+                            </StackPanel>                            
+                        </Button>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding ClientViewModel.ClientSideBarViewModel.CLientSetupCommand}"
+                                CommandParameter="new-address"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="PlusCircle" FontSize="30"/>
+                                <TextBlock Margin="8 0 0 0">
+                                      New Delivery/Bill Address
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Expander>
+                <Expander IsExpanded="True" HorizontalAlignment="Stretch">
+                    <Expander.Header>
+                        <TextBlock Text="Utilities" />
+                    </Expander.Header>
+                    <StackPanel Orientation="Vertical" Margin="8">
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding ClientViewModel.ClientSideBarViewModel.ClientUtilitiesCommand}"
+                                CommandParameter="search-client"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Magnify"/>
+                                <TextBlock Margin="8 0 0 0">Search Client/Prospect</TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding ClientViewModel.ClientSideBarViewModel.ClientUtilitiesCommand}"
+                                CommandParameter="select-quote-client"
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Pin"/>
+                                <TextBlock Margin="8 0 0 0">Select Client For a Quote</TextBlock>
+                            </StackPanel>
+                    </Button>
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding ClientViewModel.ClientSideBarViewModel.ClientUtilitiesCommand}"
+                                CommandParameter="client-command"
+                                HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Eye"/>
+                            <TextBlock Margin="8 0 0 0">See Client Commands</TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{DynamicResource MaterialDesignFlatButton}" 
+                                Command="{Binding ClientViewModel.ClientSideBarViewModel.ClientUtilitiesCommand}"
+                                CommandParameter="client-quote"
+                                HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Eye"/>
+                            <TextBlock Margin="8 0 0 0">See Client Quote</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                </Expander>
+            </StackPanel>
+        </Grid>
+</UserControl>

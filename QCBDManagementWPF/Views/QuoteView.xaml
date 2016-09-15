@@ -1,0 +1,192 @@
+﻿<UserControl x:Class="QCBDManagementWPF.Views.QuoteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QCBDManagementWPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
+             xmlns:Main="clr-namespace:QCBDManagementWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800" Loaded="UserControl_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label FontSize="20" Foreground="DarkGray" HorizontalAlignment="Center" Content="{Binding QuoteViewModel.Title, UpdateSourceTrigger=PropertyChanged}"/>
+        <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <TextBlock Name="txtBWaitValid" HorizontalAlignment="Center">Search one or several items</TextBlock>
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock HorizontalAlignment="Center">Brand</TextBlock>
+                    <ComboBox ItemsSource="{Binding QuoteViewModel.ItemViewModel.BrandList, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="200"
+                            SelectedItem="{Binding QuoteViewModel.ItemViewModel.ItemModel.SelectedBrand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="100 0 0 0">
+                    <TextBlock HorizontalAlignment="Center">And/Or in Family</TextBlock>
+                    <ComboBox ItemsSource="{Binding QuoteViewModel.ItemViewModel.FamilyList}" Width="200"
+                            SelectedItem="{Binding QuoteViewModel.ItemViewModel.ItemModel.SelectedFamily, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <materialDesign:PackIcon Kind="Magnify"/>
+                <TextBox x:Name="tbTxtSearch" Width="300" Margin="8 0 0 0" Text="{Binding QuoteViewModel.ItemModel.TxtName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Command="{Binding ItemViewModel.btnSearchCommand}" CommandParameter="{Binding Path=Text, ElementName=tbTxtSearch}">
+                    <materialDesign:PackIcon Kind="Microphone"/>
+                </Button>
+            </StackPanel>
+            <StackPanel Margin="0 8 0 0" Orientation="Horizontal" HorizontalAlignment="Center">
+                <CheckBox Name="cbRef" Margin="8 0 0 0" Content="Reference" IsChecked="True" IsEnabled="False"/>
+                <CheckBox Name="cbName" Margin="8 0 0 0" Content="Item Name"
+                        IsChecked="{Binding QuoteViewModel.ItemModel.IsSearchByItemName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <CheckBox Name="cbMatch" Margin="8 0 0 0" Content="Match Exactly"
+                        IsChecked="{Binding QuoteViewModel.ItemModel.IsExactMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <CheckBox Name="cbDeep" Margin="8 0 0 0" Content="Match Exactly"
+                        IsChecked="{Binding QuoteViewModel.ItemModel.IsDeepSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+        </StackPanel>
+
+        <Grid Grid.Row="2" VerticalAlignment="Top" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="0 0 0 10">
+                <materialDesign:ColorZone Mode="PrimaryMid">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="CartOutline"/>
+                            <TextBlock>Card</TextBlock>
+                        </StackPanel>
+                        <DataGrid Name="dgCart" ItemsSource="{Binding QuoteViewModel.Cart.CartItemList, IsAsync=True, UpdateSourceTrigger=PropertyChanged}" 
+                                  Margin="0 0 8 0" AutoGenerateColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected" MaxWidth="1000" 
+                                  EnableColumnVirtualization="True" EnableRowVirtualization="True" CanUserAddRows="False" MaxHeight="500">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Item" Binding="{Binding TxtName}"/>
+                                <DataGridTextColumn Header="Quantity" Binding="{Binding TxtQuantity}"/>
+                                <DataGridTextColumn Header="Total Selling Price" Binding="{Binding TxtTotalSellingPrice}"/>
+                            </DataGrid.Columns>
+                            <DataGrid.RowDetailsTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Grid Grid.Row="1">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.ColumnSpan="2" Text="{Binding TxtName}"/>
+                                            <Button ToolTip="Delete" Grid.Column="3" Style="{DynamicResource MaterialDesignFlatButton}"
+                                                            Command="{Binding DataContext.ItemViewModel.DeleteFromCartCommand, ElementName=dgCart}"
+                                                            CommandParameter="{Binding Path=CurrentItem, ElementName=dgCart}">
+                                                <materialDesign:PackIcon Kind="Delete" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="3"/>
+                                            </Button>
+                                            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                                <TextBlock Text="Purchase Price:"/>
+                                                <TextBox Text="{Binding TxtPrice_purchase}" IsEnabled="False" Width="50" Margin="8 0 0 0"/>
+                                                <TextBlock Text="Selling Price:" Margin="8 0 0 0"/>
+                                                <TextBox Text="{Binding TxtPrice_sell}" IsEnabled="False" Width="50" Margin="8 0 0 0"/>
+                                                <TextBlock Text="Quantity" Margin="8 0 0 0"/>
+                                                <TextBox Text="{Binding TxtQuantity}" IsEnabled="False" Width="50" Margin="8 0 0 0"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                                <TextBlock Text="Total:"/>
+                                                <TextBlock Text="{Binding TxtTotalSellingPrice}" Margin="8 0 0 0"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Horizontal">
+                                                <Button ToolTip="Validate" Style="{DynamicResource MaterialDesignFlatButton}">
+                                                    <materialDesign:PackIcon Kind="CheckboxMarkedOutline"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGrid.RowDetailsTemplate>
+                            <!--DataGrid.Columns>
+                                        <DataGridTextColumn Header="Items" Binding="{Binding TxtName}"/>
+                                        <DataGridTemplateColumn Header="Delte">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                            
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns-->
+                        </DataGrid>
+                    </StackPanel>
+                </materialDesign:ColorZone>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Total Purchase Price:"/>
+                        <TextBox Width="50" Margin="20 0 0 0" Text="{Binding QuoteViewModel.Cart.TxtCartTotalPurchasePrice, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Margin="20 0 0 0" Text="Total Selling Price:"/>
+                        <TextBox Width="50" Margin="20 0 0 0" Text="{Binding QuoteViewModel.Cart.TxtCartTotalSellingPrice, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <Label Foreground="Red" HorizontalAlignment="Center" Content="{Binding QuoteViewModel.MissingCLientMessage}"/>
+                    <Button HorizontalAlignment="Right" Command="{Binding QuoteViewModel.ValidCartToQuoteCommand}">
+                        <materialDesign:PackIcon Kind="Check"/>
+                    </Button>
+
+                </StackPanel>
+            </StackPanel>
+
+            <materialDesign:Card Grid.Row="1" VerticalAlignment="Top">
+                <StackPanel Orientation="Vertical">
+                    <materialDesign:ColorZone Mode="PrimaryMid">
+                        <StackPanel Orientation="Vertical">                            
+                            <TextBlock Name="txtBWaitValid2" HorizontalAlignment="Center">Quotes List - In Process</TextBlock>
+                            <DataGrid Grid.Row="1" x:Name="dgQuoteModelList" AutoGenerateColumns="False"
+                                    ItemsSource="{Binding QuoteViewModel.QuoteModelList, IsAsync=True, UpdateSourceTrigger=PropertyChanged}" 
+                                    MaxHeight="600" MaxWidth="1000" EnableColumnVirtualization="True" EnableRowVirtualization="True" CanUserAddRows="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding TxtID}"/>
+                                    <DataGridTextColumn Header="Date" Binding="{Binding TxtDate}"/>
+                                    <DataGridTextColumn Header="CLient" Binding="{Binding CLientModel.TxtLastName}"/>
+                                    <DataGridTextColumn Header="Agent" Binding="{Binding AgentModel.TxtLastName}"/>
+                                    <DataGridTemplateColumn Header="Detail">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Style="{DynamicResource MaterialDesignFlatButton}" Name="btnDetail"
+                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                        Content="Detail"
+                                                        Command="{Binding DataContext.CommandViewModel.GetCurrentCommandCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                                        CommandParameter="{Binding ElementName=dgQuoteModelList,Path=CurrentItem}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{Binding DataContext.QuoteViewModel.DeleteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                                CommandParameter="{Binding CurrentItem, ElementName=dgQuoteModelList}">
+                                                    <materialDesign:PackIcon Kind="Delete"/>
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </materialDesign:ColorZone>
+                </StackPanel>
+            </materialDesign:Card>
+        </Grid>
+
+    </Grid>
+</UserControl>
