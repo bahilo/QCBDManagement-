@@ -58,6 +58,7 @@ namespace QCBDManagementDAL.Core
             if (e.PropertyName.Equals("Credential"))
             {
                 DALHelper.doActionAsync(retrieveGateWayData);
+                _gateWayStatistic.PropertyChanged -= onCredentialChange_loadStatisticDataFromWebService;
             }
         }
 
@@ -70,13 +71,24 @@ namespace QCBDManagementDAL.Core
         public void retrieveGateWayData()
         {
             lock (_lock) _isLodingDataFromWebServiceToLocal = true;
-            var savedStatisticList = new NotifyTaskCompletion<List<Statistic>>(UpdateStatistic(new NotifyTaskCompletion<List<Statistic>>(_gateWayStatistic.GetStatisticData(_loadSize)).Task.Result)).Task.Result;
-            lock (_lock)
+            try
             {
-                _rogressBarFunc(_rogressBarFunc(0) + 100 / _progressStep);
-                IsLodingDataFromWebServiceToLocal = false;
-                Log.write("Statistics loaded!", "TES");
+                var statisticList = new NotifyTaskCompletion<List<Statistic>>(_gateWayStatistic.GetStatisticData(_loadSize)).Task.Result;
+                if (statisticList.Count > 0)
+                {
+                    var savedStatisticList = new NotifyTaskCompletion<List<Statistic>>(UpdateStatistic(statisticList)).Task.Result;
+                }                
             }
+            finally
+            {
+                lock (_lock)
+                {
+                    _rogressBarFunc(_rogressBarFunc(0) + 100 / _progressStep);
+                    IsLodingDataFromWebServiceToLocal = false;
+                    Log.write("Statistics loaded!", "TES");
+                }
+            }
+            
         }
 
         public void progressBarManagement(Func<double, double> progressBarFunc)

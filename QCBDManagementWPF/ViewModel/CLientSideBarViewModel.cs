@@ -14,26 +14,114 @@ namespace QCBDManagementWPF.ViewModel
 {
     public class CLientSideBarViewModel : BindBase
     {
-        private Func<Object, Object> _page;
-        private ClientModel _selectedClient;
+        private Func<Object, Object> _page;        
         private Cart _cart;
         private Func<string, object> _getObjectFromMainWindowViewModel;
-        private MainWindowViewModel _main;
 
+
+        //----------------------------[ Models ]------------------
+
+        private MainWindowViewModel _main;
+        private ClientModel _selectedClient;
+
+        //----------------------------[ Commands ]------------------
 
         public ButtonCommand<string> CLientSetupCommand { get; set; }
         public ButtonCommand<string> ClientUtilitiesCommand { get; set; }
 
 
+
         public CLientSideBarViewModel() : base()
+        {
+            instances();
+            instancesModel();
+            instancesCommand();
+            initEvents();
+        }
+
+        //----------------------------[ Initialization ]------------------
+
+        private void initEvents()
+        {
+            PropertyChanged += onGetObjectFromMainWindowViewModelChange;
+        }
+
+        private void instances()
+        {
+            _cart = new Cart();
+        }
+
+        private void instancesModel()
+        {
+            _selectedClient = new ClientModel();
+        }
+
+        private void instancesCommand()
         {
             CLientSetupCommand = new ButtonCommand<string>(executeSetupAction, canExecuteSetupAction);
             ClientUtilitiesCommand = new ButtonCommand<string>(executeUtilityAction, canExecuteUtilityAction);
-            _selectedClient = new ClientModel();
-            _cart = new Cart();
-            PropertyChanged += onGetObjectFromMainWindowViewModelChange;
 
         }
+
+        //----------------------------[ Properties ]------------------
+
+        public Cart Cart
+        {
+            get { return _cart; }
+            set { setProperty(ref _cart, value, "Cart"); }
+        }
+
+        public ClientModel SelectedClient
+        {
+            get { return _selectedClient; }
+            set { setProperty(ref _selectedClient, value, "SelectedClient"); }
+        }
+
+        public Func<string, object> GetObjectFromMainWindowViewModel
+        {
+            get { return _getObjectFromMainWindowViewModel; }
+            set { setProperty(ref _getObjectFromMainWindowViewModel, value, "GetObjectFromMainWindowViewModel"); }
+        }
+
+        //----------------------------[ Actions ]------------------
+
+        public void mainNavigObject(Func<Object, Object> navigObject)
+        {
+            _page = navigObject;
+        }
+
+        internal void setObjectAccessorFromMainWindowViewModel(Func<string, object> getObject)
+        {
+            GetObjectFromMainWindowViewModel = getObject;
+        }
+
+        private object getCurrentPage()
+        {
+            if (_page != null)
+            {
+                Object PageViewModel = _page(null) as ClientDetailViewModel;
+                if (PageViewModel != null)
+                    return PageViewModel;
+
+                PageViewModel = _page(null) as ClientViewModel;
+                if (PageViewModel != null)
+                    return PageViewModel;
+            }
+            return null;
+        }
+
+        private void updateCommand()
+        {
+            ClientUtilitiesCommand.raiseCanExecuteActionChanged();
+            CLientSetupCommand.raiseCanExecuteActionChanged();
+        }
+
+        public override void Dispose()
+        {
+            PropertyChanged -= onGetObjectFromMainWindowViewModelChange;
+        }
+
+        //----------------------------[ Event Handler ]------------------
 
         private void onSelectedCLientChange(object sender, PropertyChangedEventArgs e)
         {
@@ -63,6 +151,8 @@ namespace QCBDManagementWPF.ViewModel
                 updateCommand();
         }
 
+        //----------------------------[ Action Commands ]------------------
+        
         private void executeUtilityAction(string obj)
         {
             if (_main != null)
@@ -163,55 +253,9 @@ namespace QCBDManagementWPF.ViewModel
             return true;
         }
 
-        public Cart Cart
-        {
-            get { return _cart; }
-            set { setProperty(ref _cart, value, "Cart"); }
-        }
+        
 
-        public ClientModel SelectedClient
-        {
-            get { return _selectedClient; }
-            set { setProperty(ref _selectedClient, value, "SelectedClient"); }
-        }
-
-        public Func<string, object> GetObjectFromMainWindowViewModel
-        {
-            get { return _getObjectFromMainWindowViewModel; }
-            set { setProperty(ref _getObjectFromMainWindowViewModel, value, "GetObjectFromMainWindowViewModel"); }
-        }
-
-        public void mainNavigObject(Func<Object, Object> navigObject)
-        {
-            _page = navigObject;
-        }
-
-        internal void setObjectAccessorFromMainWindowViewModel(Func<string, object> getObject)
-        {
-            GetObjectFromMainWindowViewModel = getObject;
-        }
-
-        private object getCurrentPage()
-        {
-            if (_page != null)
-            {
-                Object PageViewModel = _page(null) as ClientDetailViewModel;
-                if (PageViewModel != null)
-                    return PageViewModel;
-
-                PageViewModel = _page(null) as ClientViewModel;
-                if (PageViewModel != null)
-                    return PageViewModel;
-            }
-            return null;
-        }
-
-        private void updateCommand()
-        {
-            ClientUtilitiesCommand.raiseCanExecuteActionChanged();
-            CLientSetupCommand.raiseCanExecuteActionChanged();
-        }
-
+        
 
     }
 }

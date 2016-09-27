@@ -11,14 +11,14 @@ namespace QCBDManagementWPF.Models
 {
     public class Cart_itemModel : BindBase
     {
-        private List<Item_deliveryModel> _item_deliveryModelList;
+        //private List<Item_deliveryModel> _item_deliveryModelList;
         private decimal _totalPurchasePrice;
         private decimal _totalSellingPrice; // PT
         private decimal _total;
         private decimal _cartTotalPurchasePrice; // PAT
         private decimal _cartTotalSellingPrice; //PTT
         private bool _isSelected;
-        private bool _isModifyEnable;
+        //private bool _isModifyEnable;
         private Item _item;
         private int _quantity;
 

@@ -14,8 +14,25 @@ namespace QCBDManagementCommon.Classes
     {
         public static DateTime DateTimeMinValueInSQL2005 = new DateTime(1753, 1, 1);
 
-        public static DateTime convertToDateTime(string dateString)
+        public static DateTime convertToDateTime(string dateString, bool? isFromDatePicker = false)
         {
+            var listDateElement = dateString.Split('/');
+
+            try
+            {
+                if (isFromDatePicker == true && listDateElement.Count() > 1)
+                {
+                    int day = Convert.ToInt32(listDateElement[1]);
+                    int month = Convert.ToInt32(listDateElement[0]);
+                    int year = Convert.ToInt32(listDateElement[2].Split(' ')[0]);
+                    dateString = day + "/" + month + "/" + year;// +" "+ DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
+                }
+            }
+            catch (Exception)
+            {
+                Log.write("Error parsing date " + dateString, "WAR");
+            }
+
             DateTime outDate = new DateTime();
             if (DateTime.TryParse(dateString, out outDate) && outDate > DateTimeMinValueInSQL2005)
                 return outDate;
@@ -47,7 +64,7 @@ namespace QCBDManagementCommon.Classes
 
         public static string decodeBase64ToString(string encodedString)
         {
-            string returnValue ="";
+            string returnValue = "";
             /*bool isValidBase64Encoded;
             if (!string.IsNullOrEmpty(encodedString))
             {
@@ -64,7 +81,7 @@ namespace QCBDManagementCommon.Classes
                     Debug.WriteLine(string.Format("[Warning] - decode base64 of not encoded variable ({0})", encodedString));
                 }
             }*/
-            
+
             try
             {
                 byte[] encodedDataAsBytes = System.Convert.FromBase64String(encodedString);
@@ -84,31 +101,44 @@ namespace QCBDManagementCommon.Classes
             bool isComplete = false;
             FtpWebRequest req = (FtpWebRequest)WebRequest.Create(ftpUrl);
             req.UseBinary = true;
-            req.UsePassive = true;
+            //req.UsePassive = true;
             req.KeepAlive = true;
             req.Method = WebRequestMethods.Ftp.UploadFile;
             req.Credentials = new NetworkCredential(username, password);
+            Stream requestStream = null;
+            FileStream stream = null;
 
             // Copy the file contents to the request stream.
             const int bufferLength = 2048;
             byte[] buffer = new byte[bufferLength];
-
             int count = 0;
             int readBytes = 0;
-            FileStream stream = File.OpenRead(fileFullPath);
 
-            Stream requestStream = req.GetRequestStream();
-
-            do
+            try
             {
-                readBytes = stream.Read(buffer, 0, bufferLength);
-                requestStream.Write(buffer, 0, bufferLength);
-                count += readBytes;
+                stream = File.OpenRead(fileFullPath);
+
+                requestStream = req.GetRequestStream();
+
+                do
+                {
+                    readBytes = stream.Read(buffer, 0, bufferLength);
+                    requestStream.Write(buffer, 0, bufferLength);
+                    count += readBytes;
+                }
+                while (readBytes != 0);
             }
-            while (readBytes != 0);
+            catch (WebException ex)
+            {
+                String status = ((FtpWebResponse)ex.Response).StatusDescription;
+                Log.error(status);
+            }
+            finally
+            {
+                requestStream.Close();
+            }
 
-
-            requestStream.Close();
+            downloadFIle(ftpUrl, fileFullPath, username, password);
 
             FtpWebResponse response = (FtpWebResponse)req.GetResponse();
             if (response.StatusCode.Equals(FtpStatusCode.ClosingData) && count > 0)
@@ -122,39 +152,47 @@ namespace QCBDManagementCommon.Classes
             bool isComplete = false;
             FtpWebRequest req = (FtpWebRequest)WebRequest.Create(ftpUrl);
             req.UseBinary = true;
-            req.UsePassive = true;
+            //req.UsePassive = true;
             req.KeepAlive = true;
             req.Method = WebRequestMethods.Ftp.DownloadFile;
             req.Credentials = new NetworkCredential(username, password);
             req.Timeout = 600000;
-
-            FtpWebResponse response = (FtpWebResponse)req.GetResponse();
-            Stream ftpStream = response.GetResponseStream();
-
-            long cl = response.ContentLength;
-            int bufferSize = 4096;  //Image file cannot be greater than 40 Kb
-            int readCount = 0;
-            byte[] buffer = new byte[bufferSize];
-            
-            readCount = ftpStream.Read(buffer, 0, bufferSize);
-            //File.WriteAllBytes(fileFullPath, buffer);
-
-            FileStream fs = new FileStream(fileFullPath, FileMode.Create, FileAccess.Write, FileShare.Read);
-            /*while ((len = objReader.BaseStream.Read(buffer, 0, buffer.Length)) != 0)
+            FtpWebResponse response = null;
+            Stream ftpStream = null;
+            FileStream fs = null;
+            try
             {
-                objFS.Write(buffer, 0, len);
-            }
-            objFS.Close();*/
+                response = (FtpWebResponse)req.GetResponse();
+                ftpStream = response.GetResponseStream();
 
-            while (readCount > 0)
-            {
-                fs.Write(buffer, 0, readCount);
+                long cl = response.ContentLength;
+                int bufferSize = 4096;  //Image file cannot be greater than 40 Kb
+                int readCount = 0;
+                byte[] buffer = new byte[bufferSize];
+
                 readCount = ftpStream.Read(buffer, 0, bufferSize);
+
+                fs = new FileStream(fileFullPath, FileMode.Create, FileAccess.Write, FileShare.Read);
+
+                while (readCount > 0)
+                {
+                    fs.Write(buffer, 0, readCount);
+                    readCount = ftpStream.Read(buffer, 0, bufferSize);
+                }
+            }
+            catch (WebException ex)
+            {
+                String status = ((FtpWebResponse)ex.Response).StatusDescription;
+                Log.error(status);
+            }
+            finally
+            {
+                fs.Close();
+                response.Close();
+                ftpStream.Close();
             }
 
-            fs.Close();
-            response.Close();
-            ftpStream.Close();
+
             if (response.StatusCode.Equals(FtpStatusCode.ClosingData))
                 isComplete = true;
 

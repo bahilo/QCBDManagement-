@@ -119,7 +119,7 @@ namespace QCBDManagementWPF.ViewModel
             _paramQuoteToPdf = new ParamCommandToPdf(EStatusCommand.Quote, 2);
             _paramCommandToPdf = new ParamCommandToPdf(EStatusCommand.Command);
             _paramCommandToPdf.Currency = _paramQuoteToPdf.Currency = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
-            _paramCommandToPdf.Lang = _paramQuoteToPdf.Lang = _paramDeliveryToPdf.Lang = CultureInfo.CurrentCulture.Name.Split('-').FirstOrDefault();
+            _paramCommandToPdf.Lang = _paramQuoteToPdf.Lang = _paramDeliveryToPdf.Lang = CultureInfo.CurrentCulture.Name.Split('-').FirstOrDefault() ?? "en";
 
             _mailFile = new GeneralInfos.FileWriter("");
             //_quoteEmailFile.TxtSubject = "** CODSIMEX – Votre devis n°{BILL_ID} **";
@@ -486,31 +486,34 @@ namespace QCBDManagementWPF.ViewModel
             if (CommandSelected != null)
             {
                 var infos = (await Bl.BlReferential.searchInfos(new Infos { Name = "Company_name" }, "AND")).FirstOrDefault();
+                var infosFTP = (await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = "ftp_" }, "AND")).ToList();
+                string login = infosFTP.Where(x => x.Value == "ftp_login").Select(x => x.Value).FirstOrDefault() ?? "";
+                string password = infosFTP.Where(x => x.Value == "ftp_password").Select(x => x.Value).FirstOrDefault() ?? "";
                 switch (CommandSelected.TxtStatus)
                 {
                     case "Quote":
-                        EmailFile = new GeneralInfos.FileWriter("quote");
+                        EmailFile = new GeneralInfos.FileWriter("quote", ftpLogin: login, ftpPassword: password);
                         if (infos != null)
                             EmailFile.TxtSubject = "** " + infos.Value + " – Your Quote n°{BILL_ID} **";
                         else
                             EmailFile.TxtSubject = "** Your Quote n°{BILL_ID} **";
                         break;
                     case "Pre_Command":
-                        EmailFile = new GeneralInfos.FileWriter("command_confirmation");
+                        EmailFile = new GeneralInfos.FileWriter("command_confirmation", ftpLogin: login, ftpPassword: password);
                         if (infos != null)
                             EmailFile.TxtSubject = "** " + infos.Value + " – Your Command n°{BILL_ID} **";
                         else
                             EmailFile.TxtSubject = "** Your Command n°{BILL_ID} **";
                         break;
                     case "Pre_Credit":
-                        EmailFile = new GeneralInfos.FileWriter("command_confirmation");
+                        EmailFile = new GeneralInfos.FileWriter("command_confirmation", ftpLogin: login, ftpPassword: password);
                         if (infos != null)
                             EmailFile.TxtSubject = "** " + infos.Value + " – Your Credit n°{BILL_ID} **";
                         else
                             EmailFile.TxtSubject = "** Your Credit n°{BILL_ID} **";
                         break;
                     case "Command":
-                        EmailFile = new GeneralInfos.FileWriter("bill");
+                        EmailFile = new GeneralInfos.FileWriter("bill", ftpLogin: login, ftpPassword: password);
                         if (infos != null)
                             EmailFile.TxtSubject = "** " + infos.Value + " – Bill n°{BILL_ID} **";
                         else
@@ -670,7 +673,7 @@ namespace QCBDManagementWPF.ViewModel
                 || obj.Equals("BlockDeliveryReceiptCreationVisiblity")
                 || obj.Equals("BlockBillCreationVisibility")))
                 return "Hidden";
-            
+
             return "Visible";
         }
 
@@ -724,6 +727,8 @@ namespace QCBDManagementWPF.ViewModel
                 CommandSelected.TxtStatus = status.ToString();
                 CommandSelected.Command.Date = DateTime.Now;
                 var savedCommandList = await Bl.BlCommand.UpdateCommand(new List<Entity.Command> { { CommandSelected.Command } });
+                if (savedCommandList.Count > 0)
+                    CommandSelected.Command = savedCommandList[0];
             }
         }
 
@@ -744,7 +749,7 @@ namespace QCBDManagementWPF.ViewModel
 
             if (canDelete)
             {
-                var Item_deliveryFoundListToDelete = await Bl.BlItem.GetItem_deliveryDataByDeliveryList(DeliveryModelList.Select(x=>x.Delivery).ToList());
+                var Item_deliveryFoundListToDelete = await Bl.BlItem.GetItem_deliveryDataByDeliveryList(DeliveryModelList.Select(x => x.Delivery).ToList());
                 var tax_commandFoundListToDelete = await Bl.BlCommand.GetTax_commandDataByCommandList(new List<Entity.Command> { CommandSelected.Command });
 
                 // deleting
@@ -765,12 +770,48 @@ namespace QCBDManagementWPF.ViewModel
             }
             else
                 await Dialog.show("Command bills are not the latest!");
-            
+
         }
 
         private void refreshBindings()
         {
             loadInvoicesAndDeliveryReceipts();
+        }
+
+
+        private async void lockCommand_itemItems()
+        {
+            List<Item> itemToSaveList = new List<Item>();
+            foreach (var command_itemModel in Command_ItemModelList)
+            {
+                command_itemModel.ItemModel.TxtErasable = EItem.No.ToString();
+                itemToSaveList.Add(command_itemModel.ItemModel.Item);
+            }
+            await Bl.BlItem.UpdateItem(itemToSaveList);
+        }
+
+
+        private async void createCredit(bool isReset = false)
+        {
+            List<Command_item> command_itemToSave = new List<Command_item>();
+            foreach (Command_itemModel command_itemModel in Command_ItemModelList)
+            {
+                command_itemModel.Command_Item.Price = (!isReset) ? Math.Abs(command_itemModel.Command_Item.Price) * (-1) : Math.Abs(command_itemModel.Command_Item.Price);
+                command_itemModel.Command_Item.Price_purchase = (!isReset) ? Math.Abs(command_itemModel.Command_Item.Price_purchase) * (-1) : Math.Abs(command_itemModel.Command_Item.Price);
+                command_itemToSave.Add(command_itemModel.Command_Item);
+            }
+            var savedCommand_item = await Bl.BlCommand.UpdateCommand_item(command_itemToSave);
+        }
+
+        public override void Dispose()
+        {
+            PropertyChanged -= onCommandSelectedChange;
+            PropertyChanged -= onCommand_itemModelWorkFlowChange;
+            Command_ItemTask.PropertyChanged -= onCommand_itemTaskComplete_getCommandModel;
+            foreach (var command_itemModel in Command_ItemModelList)
+            {
+                command_itemModel.PropertyChanged -= onTotalSelling_PriceOrPrice_purchaseChange;
+            }
         }
 
         #endregion
@@ -816,31 +857,6 @@ namespace QCBDManagementWPF.ViewModel
             {
                 updateStepBinding();
             }
-        }
-
-
-        private async void lockCommand_itemItems()
-        {
-            List<Item> itemToSaveList = new List<Item>();
-            foreach (var command_itemModel in Command_ItemModelList)
-            {
-                command_itemModel.ItemModel.TxtErasable = EItem.No.ToString();
-                itemToSaveList.Add(command_itemModel.ItemModel.Item);
-            }
-            await Bl.BlItem.UpdateItem(itemToSaveList);
-        }
-
-
-        private async void createCredit(bool isReset = false)
-        {
-            List<Command_item> command_itemToSave = new List<Command_item>();
-            foreach (Command_itemModel command_itemModel in Command_ItemModelList)
-            {
-                command_itemModel.Command_Item.Price = (!isReset) ? Math.Abs(command_itemModel.Command_Item.Price) * (-1) : Math.Abs(command_itemModel.Command_Item.Price);
-                command_itemModel.Command_Item.Price_purchase = (!isReset) ? Math.Abs(command_itemModel.Command_Item.Price_purchase) * (-1) : Math.Abs(command_itemModel.Command_Item.Price);
-                command_itemToSave.Add(command_itemModel.Command_Item);
-            }
-            var savedCommand_item = await Bl.BlCommand.UpdateCommand_item(command_itemToSave);
         }
 
         #endregion
@@ -1073,10 +1089,10 @@ namespace QCBDManagementWPF.ViewModel
             searchClient.ID = CommandSelected.CLientModel.Client.ID;
             var foundClients = await Bl.BlClient.searchClient(searchClient, "AND");
             int payDelay = (foundClients.Count > 0) ? foundClients[0].PayDelay : 0;
-            int months = (((DateTime.Now.Day + payDelay)/ 30) != 0) ? (DateTime.Now.Day + payDelay) / 30 : 1;
+            int months = (((DateTime.Now.Day + payDelay) / 30) != 0) ? (DateTime.Now.Day + payDelay) / 30 : 1;
             int days = (((DateTime.Now.Day + payDelay) % 30) != 0) ? (DateTime.Now.Day + payDelay) % 30 : 1;
             DateTime expire = new DateTime(DateTime.Now.Year, DateTime.Now.Month + months, days, 23, 59, 58);
-            
+
             int first = 0;
 
             foreach (var item_deliveryModel in Item_deliveryModelBillingInProcess)
@@ -1084,54 +1100,52 @@ namespace QCBDManagementWPF.ViewModel
                 if (item_deliveryModel.IsSelected)
                 {
                     // search of the last inserted bill 
-                    Bill lastBill = await Bl.BlCommand.GetLastBill();
-                    if (lastBill != null)
+                    Bill lastBill = (await Bl.BlCommand.GetLastBill()) ?? new Bill();
+
+                    if (first == 0)
                     {
-                        if (first == 0)
-                        {
-                            // We increment the bill id ourself 
-                            //to make sure the IDs follow each others                      
-                            int billId = lastBill.ID + 1;
-                            Bill bill = new Bill();
-                            bill.ID = billId;
-                            bill.CommandId = CommandSelected.Command.ID;
-                            bill.ClientId = CommandSelected.Command.ClientId;
-                            bill.Date = DateTime.Now;
-                            bill.DateLimit = expire;
-                            bill.PayReceived = 0m;
+                        // We increment the bill id ourself 
+                        //to make sure the IDs follow each others                      
+                        int billId = lastBill.ID + 1;
+                        Bill bill = new Bill();
+                        bill.ID = billId;
+                        bill.CommandId = CommandSelected.Command.ID;
+                        bill.ClientId = CommandSelected.Command.ClientId;
+                        bill.Date = DateTime.Now;
+                        bill.DateLimit = expire;
+                        bill.PayReceived = 0m;
 
-                            // we create the bill
-                            billSavedList = await Bl.BlCommand.InsertBill(new List<Bill> { bill });
-                            first = 1;
+                        // we create the bill
+                        billSavedList = await Bl.BlCommand.InsertBill(new List<Bill> { bill });
+                        first = 1;
+                    }
+
+                    // Update of delivery bill status
+                    if (billSavedList.Count > 0)
+                    {
+                        DeliveryModel searchDeliveryModelFound = null;
+                        //var searchDeliveryFound = (await Bl.BlCommand.searchDelivery(new Delivery { ID= item_deliveryModel.DeliveryModel.Delivery.ID, Status = EStatusCommand.Not_Billed.ToString() }, "AND")).FirstOrDefault();
+                        command_itemInProcess = Command_ItemModelList.Where(x => x.TxtItem_ref == item_deliveryModel.TxtItem_ref).ToList();
+                        var deliveryModelFoundList = command_itemInProcess.Select(x => x.ItemModel.Item_deliveryModelList.Where(y => y.DeliveryModel.Delivery.ID == item_deliveryModel.DeliveryModel.Delivery.ID && y.DeliveryModel.TxtStatus == EStatusCommand.Not_Billed.ToString()).Select(z => z.DeliveryModel)).FirstOrDefault().ToList();
+                        //.Where(x => x.ItemModel.Item_deliveryModelList.Select()
+                        //.Where(y => y.DeliveryModel.Delivery.ID == item_deliveryModel.DeliveryModel.Delivery.ID && y.DeliveryModel.TxtStatus == EStatusCommand.Not_Billed.ToString()).Count() > 0)
+                        //    .Select(x => x.ItemModel.Item_deliveryModelList.Select(y => y.DeliveryModel))
+                        //        .FirstOrDefault();
+                        if (deliveryModelFoundList != null && deliveryModelFoundList.Count() > 0)
+                            searchDeliveryModelFound = deliveryModelFoundList.FirstOrDefault();
+
+                        if (searchDeliveryModelFound != null)
+                        {
+                            searchDeliveryModelFound.Delivery.Status = EStatusCommand.Billed.ToString();
+                            searchDeliveryModelFound.Delivery.BillId = billSavedList[0].ID;
+                            var savedDeliveryList = await Bl.BlCommand.UpdateDelivery(new List<Delivery> { searchDeliveryModelFound.Delivery });
+
+                            if (savedDeliveryList.Count > 0)
+                                searchDeliveryModelFound.Delivery = savedDeliveryList[0];
                         }
 
-                        // Update of delivery bill status
-                        if (billSavedList.Count > 0)
-                        {
-                            DeliveryModel searchDeliveryModelFound = null;
-                            //var searchDeliveryFound = (await Bl.BlCommand.searchDelivery(new Delivery { ID= item_deliveryModel.DeliveryModel.Delivery.ID, Status = EStatusCommand.Not_Billed.ToString() }, "AND")).FirstOrDefault();
-                            command_itemInProcess = Command_ItemModelList.Where(x => x.TxtItem_ref == item_deliveryModel.TxtItem_ref).ToList();
-                            var deliveryModelFoundList = command_itemInProcess.Select(x => x.ItemModel.Item_deliveryModelList.Where(y => y.DeliveryModel.Delivery.ID == item_deliveryModel.DeliveryModel.Delivery.ID && y.DeliveryModel.TxtStatus == EStatusCommand.Not_Billed.ToString()).Select(z => z.DeliveryModel)).FirstOrDefault().ToList();
-                            //.Where(x => x.ItemModel.Item_deliveryModelList.Select()
-                            //.Where(y => y.DeliveryModel.Delivery.ID == item_deliveryModel.DeliveryModel.Delivery.ID && y.DeliveryModel.TxtStatus == EStatusCommand.Not_Billed.ToString()).Count() > 0)
-                            //    .Select(x => x.ItemModel.Item_deliveryModelList.Select(y => y.DeliveryModel))
-                            //        .FirstOrDefault();
-                            if (deliveryModelFoundList != null && deliveryModelFoundList.Count() > 0)
-                                searchDeliveryModelFound = deliveryModelFoundList.FirstOrDefault();
-
-                            if (searchDeliveryModelFound != null)
-                            {
-                                searchDeliveryModelFound.Delivery.Status = EStatusCommand.Billed.ToString();
-                                searchDeliveryModelFound.Delivery.BillId = billSavedList[0].ID;
-                                var savedDeliveryList = await Bl.BlCommand.UpdateDelivery(new List<Delivery> { searchDeliveryModelFound.Delivery });
-
-                                if (savedDeliveryList.Count > 0)
-                                    searchDeliveryModelFound.Delivery = savedDeliveryList[0];
-                            }
-
-                            if (command_itemInProcess.Count > 0)
-                                totalInvoiceAmount += command_itemInProcess[0].Command_Item.Price * command_itemInProcess[0].Command_Item.Quantity_delivery;
-                        }
+                        if (command_itemInProcess.Count > 0)
+                            totalInvoiceAmount += command_itemInProcess[0].Command_Item.Price * command_itemInProcess[0].Command_Item.Quantity_delivery;
                     }
                 }
             }
@@ -1368,17 +1382,17 @@ namespace QCBDManagementWPF.ViewModel
             if (CommandSelected == null)
                 return false;
 
-            if (isSendEmailValidPrecommand && CommandSelected.TxtStatus.Equals(EStatusCommand.Pre_Command))
+            if (isSendEmailValidPrecommand && CommandSelected.TxtStatus.Equals(EStatusCommand.Pre_Command.ToString()))
                 return true;
 
-            if (isSendEmailQuote && CommandSelected.TxtStatus.Equals(EStatusCommand.Quote))
+            if (isSendEmailQuote && CommandSelected.TxtStatus.Equals(EStatusCommand.Quote.ToString()))
                 return true;
 
-            if (isSendEmailValidCommand 
-                && ( CommandSelected.TxtStatus.Equals(EStatusCommand.Command.ToString())
+            if (isSendEmailValidCommand
+                && (CommandSelected.TxtStatus.Equals(EStatusCommand.Command.ToString())
                 || CommandSelected.TxtStatus.Equals(EStatusCommand.Credit.ToString())))
                 return true;
-            
+
             return false;
         }
 

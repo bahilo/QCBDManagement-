@@ -262,9 +262,14 @@ namespace QCBDManagementWPF.ViewModel
             }
         }*/
 
-        public void Dispose()
+        public override void Dispose()
         {
-            //Bl.BlClient.Dispose();
+            _clientDetailViewModel.PropertyChanged -= onSelectedClientChange;
+            _selectedCLientTask.PropertyChanged -= onSelectedCLientTaskCompletion_saveSelectedClient;
+            PropertyChanged -= onStartupChange;
+            PropertyChanged -= onDialogChange;
+            ClientDetailViewModel.Dispose();
+            ClientSideBarViewModel.Dispose();
         }
 
         internal void sideBarContentManagement(Func<object, object> sideBarManagement)

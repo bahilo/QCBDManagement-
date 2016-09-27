@@ -168,7 +168,7 @@ namespace QCBDManagementGateway.Core
                 _channel.Close();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;

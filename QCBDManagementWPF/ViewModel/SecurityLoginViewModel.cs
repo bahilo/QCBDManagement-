@@ -168,6 +168,14 @@ namespace QCBDManagementWPF.ViewModel
             await authenticateAgent();
         }
 
+        public override void Dispose()
+        {
+            AgentModel.PropertyChanged -= onAgentChange;
+            AgentModel.PropertyChanged -= onAgentChange_goToHomePage;
+            _DialogtaskCompletion.PropertyChanged -= onDialogDisplayTaskComplete_authenticateUser;
+            _authenticateUsertaskCompletion.PropertyChanged -= onAuthenticateUserTaskComplete_checkIfUserFound;
+        }
+
         //----------------------------[ Event Handler ]------------------
 
         private void onAgentChange(object sender, PropertyChangedEventArgs e)

@@ -78,7 +78,9 @@ namespace QCBDManagementWPF.Models
         public Agent Agent
         {
             get { return _agent; }
-            set { setProperty(ref _agent, value, "Agent"); }
+            set {
+                _agent = value; onPropertyChange("Agent");
+                /*setProperty(ref _agent, value, "Agent");*/ }
         }
 
         public string TxtID

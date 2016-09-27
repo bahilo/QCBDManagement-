@@ -77,6 +77,7 @@ namespace QCBDManagementDAL.Core
             if (e.PropertyName.Equals("Credential"))
             {
                 DALHelper.doActionAsync(retrieveGateWayDataClient);
+                _gateWayClient.PropertyChanged -= onCredentialChange_loadClientDataFromWebService;
             }
         }
 
@@ -90,19 +91,23 @@ namespace QCBDManagementDAL.Core
             lock (_lock) _isLodingDataFromWebServiceToLocal = true;
             try
             {
-                List<Client> savedClientList = new NotifyTaskCompletion<List<Client>>(UpdateClient(clientList.ToList())).Task.Result;
-
-                for (int i = 0; i < (savedClientList.Count() / loadUnit) || loadUnit >= savedClientList.Count() && i == 0; i++)
+                if (clientList.Count > 0)
                 {
-                    ConcurrentBag<Address> addressFoundList = new ConcurrentBag<Address>(new NotifyTaskCompletion<List<Address>>(_gateWayClient.GetAddressDataByClientList(savedClientList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result); // await dalItem.GateWayItem.GetItemDataByCommand_itemList(new List<Command_item>(command_itemList.Skip(i * loadUnit).Take(loadUnit)));
-                    addressList = new ConcurrentBag<Address>(addressList.Concat(new ConcurrentBag<Address>(addressFoundList)));
+                    List<Client> savedClientList = new NotifyTaskCompletion<List<Client>>(UpdateClient(clientList.ToList())).Task.Result;
 
-                    ConcurrentBag<Contact> contactFoundList = new ConcurrentBag<Contact>(new NotifyTaskCompletion<List<Contact>>(_gateWayClient.GetContactDataByClientList(savedClientList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result); // await dalItem.GateWayItem.GetItemDataByCommand_itemList(new List<Command_item>(command_itemList.Skip(i * loadUnit).Take(loadUnit)));
-                    contactList = new ConcurrentBag<Contact>(contactList.Concat(new ConcurrentBag<Contact>(contactFoundList)));
+                    for (int i = 0; i < (savedClientList.Count() / loadUnit) || loadUnit >= savedClientList.Count() && i == 0; i++)
+                    {
+                        ConcurrentBag<Address> addressFoundList = new ConcurrentBag<Address>(new NotifyTaskCompletion<List<Address>>(_gateWayClient.GetAddressDataByClientList(savedClientList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result); // await dalItem.GateWayItem.GetItemDataByCommand_itemList(new List<Command_item>(command_itemList.Skip(i * loadUnit).Take(loadUnit)));
+                        addressList = new ConcurrentBag<Address>(addressList.Concat(new ConcurrentBag<Address>(addressFoundList)));
+
+                        ConcurrentBag<Contact> contactFoundList = new ConcurrentBag<Contact>(new NotifyTaskCompletion<List<Contact>>(_gateWayClient.GetContactDataByClientList(savedClientList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result); // await dalItem.GateWayItem.GetItemDataByCommand_itemList(new List<Command_item>(command_itemList.Skip(i * loadUnit).Take(loadUnit)));
+                        contactList = new ConcurrentBag<Contact>(contactList.Concat(new ConcurrentBag<Contact>(contactFoundList)));
+                    }
+
+                    List<Address> savedAddressList = new NotifyTaskCompletion<List<Address>>(UpdateAddress(addressList.ToList())).Task.Result; // UpdateAddress(addressList.ToList());
+                    List<Contact> savedContactList = new NotifyTaskCompletion<List<Contact>>(UpdateContact(new NotifyTaskCompletion<List<Contact>>(_gateWayClient.GetContactDataByClientList(clientList.ToList())).Task.Result)).Task.Result;
+
                 }
-
-                List<Address> savedAddressList = new NotifyTaskCompletion<List<Address>>(UpdateAddress(addressList.ToList())).Task.Result; // UpdateAddress(addressList.ToList());
-                List<Contact> savedContactList = new NotifyTaskCompletion<List<Contact>>(UpdateContact(new NotifyTaskCompletion<List<Contact>>(_gateWayClient.GetContactDataByClientList(clientList.ToList())).Task.Result)).Task.Result;
 
             }
             finally

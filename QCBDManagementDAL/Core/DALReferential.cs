@@ -48,6 +48,7 @@ namespace QCBDManagementDAL.Core
             if (e.PropertyName.Equals("Credential"))
             {
                 DALHelper.doActionAsync(retrieveGateWayDataReferential);
+                _gateWayReferential.PropertyChanged -= onCredentialChange_loadReferentialDataFromWebService;
             }
         }
 

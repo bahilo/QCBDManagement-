@@ -96,13 +96,13 @@ namespace QCBDManagementWPF.Classes
         public string StartDate
         {
             get { return _startDate.ToString(); }
-            set {  _startDate = Utility.convertToDateTime(value); onPropertyChange("StartDate"); }
+            set {  _startDate = Utility.convertToDateTime(value, true); onPropertyChange("StartDate"); }
         }
 
         public string EndDate
         {
             get { return _endDate.ToString(); }
-            set { _endDate = Utility.convertToDateTime(value); onPropertyChange("EndDate"); }
+            set { _endDate = Utility.convertToDateTime(value, true); onPropertyChange("EndDate"); }
         }
 
         public bool IsDeepSearch

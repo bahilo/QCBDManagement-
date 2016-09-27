@@ -21,6 +21,7 @@ namespace QCBDManagementWPF.ViewModel
         private List<GeneralInfos.Contact> _addressDetails;
         private GeneralInfos _generalInfos;
         private GeneralInfos.FileWriter _legalInformationFileManagement;
+        private GeneralInfos.FileWriter _saleGeneralConditionFileManagement;
         private string _validationEmail;
         private string _reminderEmail;
         private string _invoiceEmail;
@@ -42,7 +43,9 @@ namespace QCBDManagementWPF.ViewModel
         public ButtonCommand<object> AddTaxCommand { get; set; }
         public ButtonCommand<TaxModel> DeleteTaxCommand { get; set; }
         public ButtonCommand<object> UpdateLegalInformationCommand { get; set; }
+        public ButtonCommand<object> UpdateSaleGeneralConditionCommand { get; set; }
         public ButtonCommand<object> NewLegalInformationCommand { get; set; }
+        public ButtonCommand<object> NewSaleGeneralConditionCommand { get; set; }
         public ButtonCommand<object> UpdateEmailCommand { get; set; }
 
 
@@ -63,7 +66,8 @@ namespace QCBDManagementWPF.ViewModel
 
         private void instances()
         {
-            _legalInformationFileManagement = new GeneralInfos.FileWriter("legal_information");
+            _legalInformationFileManagement = new GeneralInfos.FileWriter("legal_information", "text");
+            _saleGeneralConditionFileManagement = new GeneralInfos.FileWriter("sale_general_condition", "text");
             _addressDetails = new List<GeneralInfos.Contact>();
             _bankDetails = new List<GeneralInfos.Bank>();
             _generalInfos = new GeneralInfos();
@@ -82,7 +86,9 @@ namespace QCBDManagementWPF.ViewModel
             UpdateAddressCommand = new ButtonCommand<object>(updateAddress, canUpdateAddress);
             UpdateBankDetailCommand = new ButtonCommand<object>(updateBankDetail, canUpdateBankDetail);
             UpdateLegalInformationCommand = new ButtonCommand<object>(updateLegalInformation, canUpdateLegalInformation);
+            UpdateSaleGeneralConditionCommand = new ButtonCommand<object>(updateSaleGeneralCondition, canUpdateSaleGeneralCondition);
             NewLegalInformationCommand = new ButtonCommand<object>(eraseLegalInformation, canEraseLegalInformation);
+            NewSaleGeneralConditionCommand = new ButtonCommand<object>(eraseSaleGeneralCondition, canEraseSaleGeneralCondition);
             UpdateListSizeCommand = new ButtonCommand<object>(updateListSize, canUpdateListSize);
             AddTaxCommand = new ButtonCommand<object>(addTax, canAddTax);
             DeleteTaxCommand = new ButtonCommand<TaxModel>(deleteTax, canDeleteTax);
@@ -108,6 +114,12 @@ namespace QCBDManagementWPF.ViewModel
         {
             get { return _legalInformationFileManagement; }
             set { setProperty(ref _legalInformationFileManagement, value, "LegalInformationFileManagement"); }
+        }
+
+        public GeneralInfos.FileWriter SaleGeneralConditionFileManagement
+        {
+            get { return _saleGeneralConditionFileManagement; }
+            set { setProperty(ref _saleGeneralConditionFileManagement, value, "SaleGeneralConditionFileManagement"); }
         }
 
         public Func<string, object> GetObjectFromMainWindowViewModel
@@ -226,6 +238,13 @@ namespace QCBDManagementWPF.ViewModel
             BankDetailList = new List<GeneralInfos.Bank> { new GeneralInfos.Bank(infosFoundList) };
             AddressList = new List<GeneralInfos.Contact> { new GeneralInfos.Contact(infosFoundList) };
             LoadEmail();
+            string login = ((await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = "ftp_login" }, "OR")).FirstOrDefault() ?? new Infos()).Value;
+            string password = ((await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = "ftp_password" }, "OR")).FirstOrDefault() ?? new Infos()).Value;
+            SaleGeneralConditionFileManagement.TxtLogin = LegalInformationFileManagement.TxtLogin = login;
+            SaleGeneralConditionFileManagement.TxtPassword = LegalInformationFileManagement.TxtPassword = password;
+            LegalInformationFileManagement.read();
+            SaleGeneralConditionFileManagement.read();
+            
             Dialog.IsDialogOpen = false;
         }
 
@@ -352,10 +371,22 @@ namespace QCBDManagementWPF.ViewModel
         {
             LegalInformationFileManagement.TxtContent = "";
             LegalInformationFileManagement.save();
-            await Dialog.show("Legal Information has been erased Successfully!");
+            await Dialog.show("Legal Information content has been erased Successfully!");
         }
 
         private bool canEraseLegalInformation(object arg)
+        {
+            return true;
+        }
+
+        private async void eraseSaleGeneralCondition(object obj)
+        {
+            SaleGeneralConditionFileManagement.TxtContent = "";
+            SaleGeneralConditionFileManagement.save();
+            await Dialog.show("Sale General Condition content has been erased Successfully!");
+        }
+
+        private bool canEraseSaleGeneralCondition(object arg)
         {
             return true;
         }
@@ -365,11 +396,25 @@ namespace QCBDManagementWPF.ViewModel
             Dialog.showSearch("Legal information updating...");
             bool isSuccessful = LegalInformationFileManagement.save();
             if (isSuccessful)
-                await Dialog.show("Legal Information has been saved Successfully!");
+                await Dialog.show("Legal Information content has been saved Successfully!");
             Dialog.IsDialogOpen = false;
         }
 
         private bool canUpdateLegalInformation(object arg)
+        {
+            return true;
+        }
+
+        private async void updateSaleGeneralCondition(object obj)
+        {
+            Dialog.showSearch("Sale General Condition updating...");
+            bool isSuccessful = SaleGeneralConditionFileManagement.save();
+            if (isSuccessful)
+                await Dialog.show("Sale General Condition content has been saved Successfully!");
+            Dialog.IsDialogOpen = false;
+        }
+
+        private bool canUpdateSaleGeneralCondition(object arg)
         {
             return true;
         }

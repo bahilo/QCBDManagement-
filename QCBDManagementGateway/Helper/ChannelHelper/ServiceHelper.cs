@@ -1044,7 +1044,8 @@ namespace QCBDManagementGateway.Helper.ChannelHelper
             object _lock = new object(); List<Bill> returnList = new List<Bill>();
             if (BillQCBDManagementList != null)
             {
-                Parallel.ForEach(BillQCBDManagementList, (BillQCBD) =>
+                //Parallel.ForEach(BillQCBDManagementList, (BillQCBD) =>
+                foreach(var BillQCBD in BillQCBDManagementList)
                {
                    Bill Bill = new Bill();
                    Bill.ID = BillQCBD.ID;
@@ -1060,7 +1061,8 @@ namespace QCBDManagementGateway.Helper.ChannelHelper
                    Bill.PayReceived = BillQCBD.PayReceived;
 
                    lock (_lock) returnList.Add(Bill);
-               });
+               }
+                //);
             }
             return returnList;
         }
@@ -1071,7 +1073,8 @@ namespace QCBDManagementGateway.Helper.ChannelHelper
             BillQCBDManagement[] returnQCBDArray = new BillQCBDManagement[BillList.Count];
             if (BillList != null)
             {
-                Parallel.ForEach(BillList, (Bill) =>
+                //Parallel.ForEach(BillList, (Bill) =>
+                foreach(var Bill in BillList)
                {
                    BillQCBDManagement BillQCBD = new BillQCBDManagement();
                    BillQCBD.ID = Bill.ID;
@@ -1088,7 +1091,8 @@ namespace QCBDManagementGateway.Helper.ChannelHelper
 
                    returnQCBDArray[i] = BillQCBD;
                    i++;
-               });
+               }
+               //);
             }
             return returnQCBDArray;
         }

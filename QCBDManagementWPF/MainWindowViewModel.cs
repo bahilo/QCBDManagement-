@@ -13,12 +13,12 @@ using QCBDManagementWPF.Interfaces;
 using System.Windows.Threading;
 using System.IO;
 using System.Threading;
-using QCBDManagementCommon.Enum; 
+using QCBDManagementCommon.Enum;
 
 namespace QCBDManagementWPF
 {
 
-    public class MainWindowViewModel : BindBase, IDisposable
+    public class MainWindowViewModel : BindBase
     {
         public MainWindow MainWindow { get; set; }
         public bool isNewAgentAuthentication { get; set; }
@@ -36,7 +36,7 @@ namespace QCBDManagementWPF
         private DisplayAndData.Display.Image _logoImageDisplay;
         private DisplayAndData.Display.Image _billImageDisplay;
         private bool _isThroughContext;
-        
+
         //----------------------------[ Models ]------------------
 
         public ClientViewModel ClientViewModel { get; set; }
@@ -65,8 +65,8 @@ namespace QCBDManagementWPF
             instancesCommand();
             setInitEvents();
             setObjectsManagement();
-            //SecurityLoginViewModel.showView();
-            SecurityLoginViewModel.startAuthentication();
+            SecurityLoginViewModel.showView();
+            //SecurityLoginViewModel.startAuthentication();
 
         }
 
@@ -208,7 +208,7 @@ namespace QCBDManagementWPF
             get { return _navigButtonStyle; }
             set { setProperty(ref _navigButtonStyle, value, "NavigButtonStyle"); }
         }*/
-        
+
 
         public Context Context
         {
@@ -292,43 +292,47 @@ namespace QCBDManagementWPF
             get { return _blockHomeVisibility; }
             set { setProperty(ref _blockHomeVisibility, value, "BlockHomeVisibility"); }
         }
-        
+
         //----------------------------[ Actions ]------------------
-        
+
         private async void downloadHeaderImages()
         {
+            string login = ((await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = "ftp_login" }, "OR")).FirstOrDefault() ?? new Infos()).Value;
+            string password = ((await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = "ftp_password" }, "OR")).FirstOrDefault() ?? new Infos()).Value;
+            HeaderImageDisplay.TxtLogin = LogoImageDisplay.TxtLogin = BillImageDisplay.TxtLogin = login;
+            HeaderImageDisplay.TxtPassword = LogoImageDisplay.TxtPassword = BillImageDisplay.TxtPassword = password;
+
             //var allImages = await Startup.Bl.BlReferential.searchInfosFromWebService(new Infos { Option = 1 }, "AND"); // option = 1 ( = retrieving all images)
-            var headerImageFoundDisplay = await loadImage(HeaderImageDisplay.TxtFileNameWithoutExtension, HeaderImageDisplay.TxtName);
+            var headerImageFoundDisplay = await loadImage(HeaderImageDisplay.TxtFileNameWithoutExtension, HeaderImageDisplay.TxtName, login, password);
             if (!string.IsNullOrEmpty(headerImageFoundDisplay.TxtFileFullPath) && File.Exists(headerImageFoundDisplay.TxtFileFullPath))
                 HeaderImageDisplay = headerImageFoundDisplay;
 
-            var logoImageFoundDisplay = await loadImage(LogoImageDisplay.TxtFileNameWithoutExtension, LogoImageDisplay.TxtName);
+            var logoImageFoundDisplay = await loadImage(LogoImageDisplay.TxtFileNameWithoutExtension, LogoImageDisplay.TxtName, login, password);
             if (!string.IsNullOrEmpty(logoImageFoundDisplay.TxtFileFullPath) && File.Exists(logoImageFoundDisplay.TxtFileFullPath))
                 LogoImageDisplay = logoImageFoundDisplay;
 
-            var billImageFoundDisplay = await loadImage(BillImageDisplay.TxtFileNameWithoutExtension, BillImageDisplay.TxtName);
+            var billImageFoundDisplay = await loadImage(BillImageDisplay.TxtFileNameWithoutExtension, BillImageDisplay.TxtName, login, password);
             if (!string.IsNullOrEmpty(billImageFoundDisplay.TxtFileFullPath) && File.Exists(billImageFoundDisplay.TxtFileFullPath))
                 BillImageDisplay = billImageFoundDisplay;
 
-            //LogoImageDisplay = await loadImage("logo_image");
-            //LogoImageDisplay.ImageSource = new System.Windows.Media.Imaging.BitmapImage();
+
         }
 
-        private async Task<DisplayAndData.Display.Image> loadImage(string fileName, string imageName)
+        private async Task<DisplayAndData.Display.Image> loadImage(string fileName, string imageName, string login, string password)
         {
             var imageDataList = new List<Infos>();
+
             var infosFoundImage = (await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = fileName }, "AND")).FirstOrDefault();
-            //var infosFoundImage = imageList.Where(x => x.Name.Equals(fileName)).FirstOrDefault();
             DisplayAndData.Display.Image imageObject = new DisplayAndData.Display.Image();
 
             if (infosFoundImage != null)
             {
                 imageObject.TxtFileNameWithoutExtension = fileName;
                 imageObject.TxtName = imageName;
+                imageObject.TxtLogin = login;
+                imageObject.TxtPassword = password;
                 var infosWidthFound = (await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = fileName + "_width" }, "AND")).FirstOrDefault();
-                //var infosWidthFound = imageList.Where(x => x.Name.Equals(fileName + "_width")).FirstOrDefault();
                 var infosHeightFound = (await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = fileName + "_height" }, "AND")).FirstOrDefault();
-                //var infosHeightFound = imageList.Where(x => x.Name.Equals(fileName + "_height")).FirstOrDefault();
 
                 if (infosWidthFound != null)
                     imageDataList.Add(infosWidthFound);
@@ -343,14 +347,15 @@ namespace QCBDManagementWPF
         }
 
         public Object navigation(Object centralPageContent = null)
-        {            
+        {
             if (centralPageContent != null)
             {
-                MainWindow.onUIThreadSync(() => {
+                MainWindow.onUIThreadSync(() =>
+                {
                     Context.PreviousState = CurrentViewModel as IState;
                     CurrentViewModel = centralPageContent;
                     Context.NextState = centralPageContent as IState;
-                });                
+                });
             }
 
             return CurrentViewModel;
@@ -360,11 +365,12 @@ namespace QCBDManagementWPF
         {
             if (homeContent != null)
             {
-                MainWindow.onUIThreadSync(() => {
+                MainWindow.onUIThreadSync(() =>
+                {
                     Context.PreviousState = CurrentViewModel as IState;
                     CurrentHomeViewModel = homeContent;
                     Context.NextState = homeContent as IState;
-                });                
+                });
             }
 
             return CurrentViewModel;
@@ -375,9 +381,9 @@ namespace QCBDManagementWPF
             if (sideBarContent != null)
             {
                 //MainWindow.onUIThreadSync(() => {
-                    CurrentSideBarViewModel = sideBarContent;
+                CurrentSideBarViewModel = sideBarContent;
                 //});
-                
+
             }
             return CurrentSideBarViewModel;
         }
@@ -387,9 +393,9 @@ namespace QCBDManagementWPF
             if (status != 0)
             {
                 //MainWindow.onUIThreadSync(() => {
-                    ProgressBarPercentValue = status;
-                    if (status != -1)
-                        SearchProgressVisibility = "Hidden";
+                ProgressBarPercentValue = status;
+                if (status != -1)
+                    SearchProgressVisibility = "Hidden";
                 //});                
             }
             return ProgressBarPercentValue;
@@ -400,28 +406,31 @@ namespace QCBDManagementWPF
             if (fileType.ToUpper().Equals("HEADER"))
             {
                 if (newImage != null)
-                    MainWindow.onUIThreadSync(() => {
+                    MainWindow.onUIThreadSync(() =>
+                    {
                         HeaderImageDisplay = newImage;
                     });
-                
+
                 return HeaderImageDisplay;
             }
 
             if (fileType.ToUpper().Equals("LOGO"))
             {
                 if (newImage != null)
-                    MainWindow.onUIThreadSync(() => {
+                    MainWindow.onUIThreadSync(() =>
+                    {
                         LogoImageDisplay = newImage;
-                    });                
+                    });
                 return LogoImageDisplay;
             }
 
             if (fileType.ToUpper().Equals("BILL"))
             {
                 if (newImage != null)
-                    MainWindow.onUIThreadSync(() => {
+                    MainWindow.onUIThreadSync(() =>
+                    {
                         BillImageDisplay = newImage;
-                    });                
+                    });
                 return BillImageDisplay;
             }
 
@@ -471,7 +480,7 @@ namespace QCBDManagementWPF
                     break;
                 case "CONTEXT":
                     ObjectToReturn = Context;
-                break;
+                    break;
                 case "WINDOW":
                     ObjectToReturn = MainWindow;
                     break;
@@ -483,31 +492,48 @@ namespace QCBDManagementWPF
         private void loadUIData()
         {
             //await MainWindow.onUIThreadAsync(() => {
-                if (isNewAgentAuthentication)
-                {
-                    _startup.Dal.SetUserCredential(SecurityLoginViewModel.Bl.BlSecurity.GetAuthenticatedUser(), isNewAgentAuthentication);
-                    isNewAgentAuthentication = false;
-                }
-                else
-                {
-                    _startup.Dal.ProgressBarFunc = progressBarManagement;
-                    _startup.Dal.SetUserCredential(SecurityLoginViewModel.Bl.BlSecurity.GetAuthenticatedUser());
-                    _startup.Dal.DALReferential.PropertyChanged += onLodingGeneralInfosDataFromWebServiceToLocalChange_loadHeaderImage;
-                    //downloadHeaderImages();                    
-                }
+            if (isNewAgentAuthentication)
+            {
+                _startup.Dal.SetUserCredential(SecurityLoginViewModel.Bl.BlSecurity.GetAuthenticatedUser(), isNewAgentAuthentication);
+                isNewAgentAuthentication = false;
+            }
+            else
+            {
+                _startup.Dal.ProgressBarFunc = progressBarManagement;
+                _startup.Dal.SetUserCredential(SecurityLoginViewModel.Bl.BlSecurity.GetAuthenticatedUser());
+                _startup.Dal.DALReferential.PropertyChanged += onLodingGeneralInfosDataFromWebServiceToLocalChange_loadHeaderImage;
+                //downloadHeaderImages();                    
+            }
             CommandNavig.raiseCanExecuteActionChanged();
             onPropertyChange("TxtUserName");
             //}); 
         }
-        
+
         /*private void setPageActive(object page)
         {
             string defaultStyle = "DynamicResource MaterialDesignFlatButton";
         }*/
 
-        public void Dispose()
+        private void unsubscribeEvents()
+        {
+            SecurityLoginViewModel.AgentModel.PropertyChanged -= onAuthenticatedAgentChange;
+            _startup.Dal.DALReferential.PropertyChanged -= onLodingGeneralInfosDataFromWebServiceToLocalChange_loadHeaderImage;
+
+        }
+
+        public override void Dispose()
         {
             _startup.Dal.Dispose();
+            ItemViewModel.Dispose();
+            ClientViewModel.Dispose();
+            QuoteViewModel.Dispose();
+            CommandViewModel.Dispose();
+            ReferentialViewModel.Dispose();
+            AgentViewModel.Dispose();
+            NotificationViewModel.Dispose();
+            SecurityLoginViewModel.Dispose();
+            HomeViewModel.Dispose();
+            unsubscribeEvents();
             GC.Collect();
         }
 
@@ -517,29 +543,32 @@ namespace QCBDManagementWPF
         {
             if (e.PropertyName.Equals("Agent"))
             {
-                await MainWindow.onUIThreadAsync(()=> {
+                await MainWindow.onUIThreadAsync(() =>
+                {
                     loadUIData();
                 });
-                
+
             }
         }
 
-        private async  void onLodingGeneralInfosDataFromWebServiceToLocalChange_loadHeaderImage(object sender, PropertyChangedEventArgs e)
+        private async void onLodingGeneralInfosDataFromWebServiceToLocalChange_loadHeaderImage(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName.Equals("IsLodingDataFromWebServiceToLocal"))
             {
-                await MainWindow.onUIThreadAsync(() => {
+                await MainWindow.onUIThreadAsync(() =>
+                {
                     downloadHeaderImages();
-                });               
+                });
             }
         }
-        
-        
+
+
         //----------------------------[ Action Commands ]------------------
 
         private async void appNavig(string propertyName)
         {
-            await MainWindow.onUIThreadAsync(() => {
+            await MainWindow.onUIThreadAsync(() =>
+            {
                 IsThroughContext = false;
                 BlockGridCentralVisibility = BlockSideBarVisibility = "Visible";
                 BlockHomeVisibility = "Hidden";
@@ -593,7 +622,7 @@ namespace QCBDManagementWPF
                         //InputDialog.show("Going back!");
                         break;
                 }
-            });            
+            });
         }
 
         private bool canAppNavig(string arg)

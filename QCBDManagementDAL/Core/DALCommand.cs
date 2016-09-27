@@ -56,7 +56,7 @@ namespace QCBDManagementDAL.Core
             if (e.PropertyName.Equals("Credential"))
             {
                 DALHelper.doActionAsync(retrieveGateWayDataCommand);
-                //retrieveGateWayDataCommand();
+                _gateWayCommand.PropertyChanged -= onCredentialChange_loadCommandDataFromWebService;
             }
         }
 
@@ -887,34 +887,46 @@ namespace QCBDManagementDAL.Core
             if (isActiveProgress) lock (_lock) _progressBarFunc(_progressBarFunc(0) + 100 / _progressStep);
 
             // Command_item Loading
-            for (int i = 0; i < (commandList.Count() / loadUnit) || loadUnit > commandList.Count() && i == 0; i++)
+            if (commandList.Count > 0)
             {
-                ConcurrentBag<Command_item> command_itemFoundList = new ConcurrentBag<Command_item>(new NotifyTaskCompletion<List<Command_item>>(GateWayCommand.GetCommand_itemByCommandList(commandList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result); // await GateWayCommand.GetCommand_itemByCommandList(new List<Command>(commandList.Skip(i * loadUnit).Take(loadUnit)));
-                command_itemList = new ConcurrentBag<Command_item>(command_itemList.Concat(new ConcurrentBag<Command_item>(command_itemFoundList)));
+                for (int i = 0; i < (commandList.Count() / loadUnit) || loadUnit > commandList.Count() && i == 0; i++)
+                {
+                    ConcurrentBag<Command_item> command_itemFoundList = new ConcurrentBag<Command_item>(new NotifyTaskCompletion<List<Command_item>>(GateWayCommand.GetCommand_itemByCommandList(commandList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result); // await GateWayCommand.GetCommand_itemByCommandList(new List<Command>(commandList.Skip(i * loadUnit).Take(loadUnit)));
+                    command_itemList = new ConcurrentBag<Command_item>(command_itemList.Concat(new ConcurrentBag<Command_item>(command_itemFoundList)));
+                }
+                //);
+                var savedCommand_itemList = new ConcurrentBag<Command_item>(new NotifyTaskCompletion<List<Command_item>>(UpdateCommand_item(command_itemList.ToList())).Task.Result);
+
             }
-            //);
-            var savedCommand_itemList = new ConcurrentBag<Command_item>(new NotifyTaskCompletion<List<Command_item>>(UpdateCommand_item(command_itemList.ToList())).Task.Result);
             if (isActiveProgress) lock (_lock) _progressBarFunc(_progressBarFunc(0) + 100 / _progressStep);
 
 
             // Item Loading
-            for (int i = 0; i < (command_itemList.Count() / loadUnit) || loadUnit > command_itemList.Count() && i == 0; i++)
+            if (command_itemList.Count > 0)
             {
-                ConcurrentBag<Item> itemFoundList = new ConcurrentBag<Item>(new NotifyTaskCompletion<List<Item>>(dalItem.GateWayItem.GetItemDataByCommand_itemList(command_itemList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result); // await dalItem.GateWayItem.GetItemDataByCommand_itemList(new List<Command_item>(command_itemList.Skip(i * loadUnit).Take(loadUnit)));
-                itemList = new ConcurrentBag<Item>(itemList.Concat(new ConcurrentBag<Item>(itemFoundList)));
-            }           
-            var savedItemList = new ConcurrentBag<Item>(new NotifyTaskCompletion<List<Item>>(dalItem.UpdateItem(itemList.ToList())).Task.Result);
+                for (int i = 0; i < (command_itemList.Count() / loadUnit) || loadUnit > command_itemList.Count() && i == 0; i++)
+                {
+                    ConcurrentBag<Item> itemFoundList = new ConcurrentBag<Item>(new NotifyTaskCompletion<List<Item>>(dalItem.GateWayItem.GetItemDataByCommand_itemList(command_itemList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result); // await dalItem.GateWayItem.GetItemDataByCommand_itemList(new List<Command_item>(command_itemList.Skip(i * loadUnit).Take(loadUnit)));
+                    itemList = new ConcurrentBag<Item>(itemList.Concat(new ConcurrentBag<Item>(itemFoundList)));
+                }
+                var savedItemList = new ConcurrentBag<Item>(new NotifyTaskCompletion<List<Item>>(dalItem.UpdateItem(itemList.ToList())).Task.Result);
+
+            }
             if (isActiveProgress) lock (_lock) _progressBarFunc(_progressBarFunc(0) + 100 / _progressStep);
 
 
             // Provider_item Loading
-            for (int i = 0; i < (itemList.Count() / loadUnit) || loadUnit > itemList.Count() && i == 0; i++)
+            if (itemList.Count > 0)
             {
-                ConcurrentBag<Provider_item> provider_itemFoundList = new ConcurrentBag<Provider_item>(new NotifyTaskCompletion<List<Provider_item>>(dalItem.GateWayItem.GetProvider_itemDataByItemList(itemList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result); // await dalItem.GateWayItem.GetProvider_itemDataByItemList(new List<Item>(itemList.Skip(i * loadUnit).Take(loadUnit)));
-                provider_itemList = new ConcurrentBag<Provider_item>(provider_itemList.Concat(new ConcurrentBag<Provider_item>(provider_itemFoundList)).OrderBy(x => x.Provider_name).Distinct());
-            }
+                for (int i = 0; i < (itemList.Count() / loadUnit) || loadUnit > itemList.Count() && i == 0; i++)
+                {
+                    ConcurrentBag<Provider_item> provider_itemFoundList = new ConcurrentBag<Provider_item>(new NotifyTaskCompletion<List<Provider_item>>(dalItem.GateWayItem.GetProvider_itemDataByItemList(itemList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result); // await dalItem.GateWayItem.GetProvider_itemDataByItemList(new List<Item>(itemList.Skip(i * loadUnit).Take(loadUnit)));
+                    provider_itemList = new ConcurrentBag<Provider_item>(provider_itemList.Concat(new ConcurrentBag<Provider_item>(provider_itemFoundList)).OrderBy(x => x.Provider_name).Distinct());
+                }
 
-            var savedProvider_itemList = new ConcurrentBag<Provider_item>(new NotifyTaskCompletion<List<Provider_item>>(dalItem.UpdateProvider_item(provider_itemList.ToList())).Task.Result);
+                var savedProvider_itemList = new ConcurrentBag<Provider_item>(new NotifyTaskCompletion<List<Provider_item>>(dalItem.UpdateProvider_item(provider_itemList.ToList())).Task.Result);
+
+            }
             if (isActiveProgress) lock (_lock) _progressBarFunc(_progressBarFunc(0) + 100 / _progressStep);
 
 
@@ -936,14 +948,18 @@ namespace QCBDManagementDAL.Core
                 List<Item_delivery> savedItem_deliveryList = new NotifyTaskCompletion<List<Item_delivery>>(dalItem.UpdateItem_delivery(item_deliveryList.ToList())).Task.Result;
             }
             if (isActiveProgress) lock (_lock) _progressBarFunc(_progressBarFunc(0) + 100 / _progressStep);
-            
+
             // Tax_item Loading
-            for (int i = 0; i < (itemList.Count() / loadUnit) || loadUnit > itemList.Count() && i == 0; i++)
+            if (itemList.Count > 0)
             {
-                ConcurrentBag<Tax_item> tax_itemFoundList = new ConcurrentBag<Tax_item>(new NotifyTaskCompletion<List<Tax_item>>(dalItem.GateWayItem.GetTax_itemDataByItemList(itemList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result); // await dalItem.GateWayItem.GetTax_itemDataByItemList(new List<Item>(itemList.Skip(i * loadUnit).Take(loadUnit)));
-                tax_itemList = new ConcurrentBag<Tax_item>(tax_itemList.Concat(new ConcurrentBag<Tax_item>(tax_itemFoundList)));
+                for (int i = 0; i < (itemList.Count() / loadUnit) || loadUnit > itemList.Count() && i == 0; i++)
+                {
+                    ConcurrentBag<Tax_item> tax_itemFoundList = new ConcurrentBag<Tax_item>(new NotifyTaskCompletion<List<Tax_item>>(dalItem.GateWayItem.GetTax_itemDataByItemList(itemList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result); // await dalItem.GateWayItem.GetTax_itemDataByItemList(new List<Item>(itemList.Skip(i * loadUnit).Take(loadUnit)));
+                    tax_itemList = new ConcurrentBag<Tax_item>(tax_itemList.Concat(new ConcurrentBag<Tax_item>(tax_itemFoundList)));
+                }
+                var savedTax_itemList = new ConcurrentBag<Tax_item>(new NotifyTaskCompletion<List<Tax_item>>(dalItem.UpdateTax_item(tax_itemList.ToList())).Task.Result);
+
             }
-            var savedTax_itemList = new ConcurrentBag<Tax_item>(new NotifyTaskCompletion<List<Tax_item>>(dalItem.UpdateTax_item(tax_itemList.ToList())).Task.Result);
             if (isActiveProgress) lock (_lock) _progressBarFunc(_progressBarFunc(0) + 100 / _progressStep);
 
 

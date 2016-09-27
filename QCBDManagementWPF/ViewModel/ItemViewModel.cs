@@ -36,7 +36,6 @@ namespace QCBDManagementWPF.ViewModel
 
         private ItemModel _itemModel;
         private IEnumerable<ItemModel> _itemsModel;   
-        private ItemCreateViewModel _itemCreateViewModel;
         private ItemDetailViewModel _itemDetailViewModel;
         private ItemSideBarViewModel _itemSideBarViewModel;
         
@@ -82,7 +81,6 @@ namespace QCBDManagementWPF.ViewModel
         private void instancesModel()
         {
             _itemModel = new ItemModel();
-            _itemCreateViewModel = new ItemCreateViewModel();
             _itemDetailViewModel = new ItemDetailViewModel();
             _itemSideBarViewModel = new ItemSideBarViewModel();            
         }
@@ -304,6 +302,15 @@ namespace QCBDManagementWPF.ViewModel
             Cart = cart;
         }
 
+        public override void Dispose()
+        {
+            PropertyChanged -= onStartupChange;
+            PropertyChanged -= onDialogChange;
+            ItemDetailViewModel.PropertyChanged -= onSelectedItemChange;
+            ItemDetailViewModel.Dispose();
+            ItemSideBarViewModel.Dispose();
+        }
+
         //----------------------------[ Event Handler ]------------------
 
         private void onSelectedItemChange(object sender, PropertyChangedEventArgs e)
@@ -435,6 +442,7 @@ namespace QCBDManagementWPF.ViewModel
             //foreach (var cart_itemModel in Cart.CartItemList.Where(x => x.Item.ID == obj.Item.ID).ToList())
             Cart.CartItemList.Remove(obj);
             ItemModelList.Where(x=>x.TxtID == obj.TxtID).Single().IsItemSelected = false;
+            GoToQuoteCommand.raiseCanExecuteActionChanged();
         }
 
         private void saveSelectedItem(ItemModel obj)

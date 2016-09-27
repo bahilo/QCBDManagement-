@@ -206,9 +206,15 @@ namespace QCBDManagementWPF.ViewModel
             AgentSideBarViewModel.Page = navigObject;
         }
 
-        public void Dispose()
-        {
+        public override void Dispose()
+        {            
+            PropertyChanged -= onSelectedAgentChange;
+            PropertyChanged -= onNavigToChange;
+            PropertyChanged -= onStartupChange;
+            PropertyChanged -= onDialogChange;
             Bl.BlAgent.Dispose();
+            AgentDetailViewModel.Dispose();
+            AgentSideBarViewModel.Dispose();
         }
 
 

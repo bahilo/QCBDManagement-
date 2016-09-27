@@ -27,7 +27,7 @@ namespace QCBDManagementWPF.ViewModel
         private Func<DisplayAndData.Display.Image, string, DisplayAndData.Display.Image> _imageManagement;        
         private List<DisplayAndData.Data> _dataList;
         private CultureInfo[] _cultureInfoArray;
-        private bool _isUserAdmin;
+        //private bool _isUserAdmin;
         private string _title;
 
         //----------------------------[ Models ]------------------
@@ -157,6 +157,7 @@ namespace QCBDManagementWPF.ViewModel
         private void loadImages()
         {
             Dialog.showSearch("Loading...");
+            Dispose();
             ImageList.Clear();
 
             //----[ Bill Image ]
@@ -173,7 +174,7 @@ namespace QCBDManagementWPF.ViewModel
             displayLogoImage.PropertyChanged += onHeightChange_saveImageHeight;
             ImageList.Add(displayLogoImage);
 
-            //----[ Header Image ]
+            //----[ Header Image ] 
             DisplayAndData.Display.Image displayHeaderImage = _imageManagement(null, "header"); // get Header image created by MainWindowViewModel for displaying in the UI Header
             displayHeaderImage.PropertyChanged += onFilePathChange_updateUIImage;
             displayHeaderImage.PropertyChanged += onWidthChange_saveImageWidth;
@@ -212,25 +213,19 @@ namespace QCBDManagementWPF.ViewModel
             return outputFile;
         }
 
-        /*private async Task<List<Language>> checkPrivilegesBeforeSaving(List<Language> languageList)
-        {
-            var output = new List<Language>();
-            if (!_isUserAdmin)
-            {                
-                output = saveLanguageConfigurationToXml(languageList);
-            }
-            else
-            {
-                var languageInfosSavedList = await Bl.BlReferential.UpdateInfos(new List<Infos> { new Infos { LangList = languageList } });
-                if (languageInfosSavedList.Count > 0)
-                    output = languageInfosSavedList[0].LangList;
-            }
-            return output;
-        }*/
-
         internal void setImageManagement(Func<DisplayAndData.Display.Image, string, DisplayAndData.Display.Image> imageManagement)
         {
             _imageManagement = imageManagement;
+        }
+
+        public override void Dispose()
+        {
+            foreach (var image in ImageList)
+            {
+                image.PropertyChanged -= onFilePathChange_updateUIImage;
+                image.PropertyChanged -= onWidthChange_saveImageWidth;
+                image.PropertyChanged -= onHeightChange_saveImageHeight;
+            }
         }
 
         //----------------------------[ Event Handler ]------------------

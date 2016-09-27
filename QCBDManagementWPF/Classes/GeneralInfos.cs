@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Configuration;
+using System.Globalization;
 
 namespace QCBDManagementWPF.Classes
 {
@@ -307,14 +309,32 @@ namespace QCBDManagementWPF.Classes
             private string _remotePath;
             private string _localPath;
             private string _fileNameWithoutExtension;
+            private string _login;
+            private string _password;
+            private string _typeOfFile;
 
-            public FileWriter(string fileName)
+            public FileWriter(string fileName, string typeOfFile = "mails", string ftpLogin = "", string ftpPassword = "" )
             {
+                _typeOfFile = typeOfFile;
+                _login = ftpLogin;
+                _password = ftpPassword;
                 _fileNameWithoutExtension = fileName;
                 _content = "Message here";
                 _path = Directory.GetCurrentDirectory() + @"\Docs\Files\";
                 //setup();
-                read();
+                //read();
+            }
+
+            public string TxtLogin
+            {
+                get { return _login; }
+                set { setProperty(ref _login, value, "TxtLogin"); }
+            }
+
+            public string TxtPassword
+            {
+                get { return _password; }
+                set { setProperty(ref _password, value, "TxtPassword"); }
             }
 
             public string TxtContent
@@ -351,8 +371,9 @@ namespace QCBDManagementWPF.Classes
 
             private void setup()
             {
-                _ftpHost = "ftp://ftpperso.free.fr";
-                _remotePath = string.Format(@"/{0}/{1}/", "dev", "mails");
+                string lang = CultureInfo.CurrentCulture.Name.Split('-').FirstOrDefault() ?? "en";
+                _ftpHost = ConfigurationManager.AppSettings["ftp"];// "ftp://ftpperso.free.fr";
+                _remotePath = string.Format(@"/qobd/{0}/{1}/{2}/", "Files", lang, _typeOfFile);
                 _localPath = Directory.GetCurrentDirectory() + string.Format(@"\{0}\{1}\", "Docs", "Mails");
 
                 TxtFileName = TxtFileNameWithoutExtension + ".txt";
@@ -361,31 +382,6 @@ namespace QCBDManagementWPF.Classes
 
                 if (!Directory.Exists(_localPath))
                     Directory.CreateDirectory(_localPath);
-
-                /*switch (typeOfFile)
-                {
-                    case "reminder-1":                        
-                        TxtFileName = "reminder_1.txt";
-                        break;
-                    case "reminder-2":
-                        TxtFileName = "reminder_2.txt";
-                        break;
-                    case "bill":
-                        TxtFileName = "bill.txt";
-                        break;
-                    case "command-confirmation":
-                        TxtFileName = "command_confirmation.txt";
-                        break;
-                    case "command-validation":
-                        TxtFileName = "command_validation.txt";
-                        break;
-                    case "quote":
-                        TxtFileName = "quote.txt";
-                        break;
-                    case "legal-information":
-                        TxtFileName = "legal_information.txt";
-                        break;
-                }*/
 
                 TxtFileFullPath = Path.Combine(_path, TxtFileName);
                 if (!Directory.Exists(_path))
@@ -403,18 +399,21 @@ namespace QCBDManagementWPF.Classes
 
                 try
                 {
-                    isSavedSuccessfully = Utility.uploadFIle(TxtFtpUrl, TxtFileFullPath, "sodpagnekita", "bahilo225");
+                    isSavedSuccessfully = Utility.uploadFIle(TxtFtpUrl, TxtFileFullPath, _login, _password);
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("[ERR] - " + e.Message);
+                    
                     //Task.Delay(1000).ContinueWith((t) => { save(); });
                 }
+
+                TxtContent = File.ReadAllText(TxtFileFullPath);
 
                 return isSavedSuccessfully;
             }
 
-            private void read()
+            public void read()
             {
                 bool isFileFound = false;
                 setup();
@@ -422,11 +421,12 @@ namespace QCBDManagementWPF.Classes
                     try
                     {
                         //updateImageSource(isClosingImageStream: true);
-                        isFileFound = Utility.downloadFIle(TxtFtpUrl, TxtFileFullPath, "sodpagnekita", "bahilo225");
+                        isFileFound = Utility.downloadFIle(TxtFtpUrl, TxtFileFullPath, _login, _password);
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine("[ERR] - " + e.Message);
+                        Log.error(e.Message);
+                        TxtContent = "";
                         //Task.Delay(1000).ContinueWith((t) => { read(); });
                     }
 

@@ -186,7 +186,14 @@ namespace QCBDManagementWPF.Models
 
         private void profitCalcul()
         {
-            TxtPercentProfit = string.Format("{0:0.00}", (((_command_item.Price - _command_item.Price_purchase) / _command_item.Price) * 100));
+            try
+            {
+                TxtPercentProfit = string.Format("{0:0.00}", (((_command_item.Price - _command_item.Price_purchase) / _command_item.Price) * 100));
+            }
+            catch (DivideByZeroException)
+            {
+                TxtPercentProfit = 0.ToString();
+            }
             TxtProfit = string.Format("{0:0.00}", (_command_item.Price - _command_item.Price_purchase) * _command_item.Quantity);
         }
 

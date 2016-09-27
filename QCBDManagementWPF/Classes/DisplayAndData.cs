@@ -11,6 +11,7 @@ using System.ComponentModel;
 using QCBDManagementCommon.Entities;
 using System.Diagnostics;
 using System.Windows.Media.Imaging;
+using System.Configuration;
 
 namespace QCBDManagementWPF.Classes
 {
@@ -55,9 +56,13 @@ namespace QCBDManagementWPF.Classes
                 private string _fileNameWithoutExtension;
                 private List<string> _filter;
                 private BitmapImage _imageSource;
+                private string _password;
+                private string _login;
 
-                public Image()
+                public Image(string login = "", string password = "")
                 {
+                    _login = login;
+                    _password = password;
                     _filter = new List<string> {
                         "_width",
                         "_height"
@@ -102,7 +107,7 @@ namespace QCBDManagementWPF.Classes
 
                 private void onTxtChosenFileChange_setup(object sender, PropertyChangedEventArgs e)
                 {
-                    if (e.PropertyName.Equals("TxtChosenFile"))
+                    if (e.PropertyName.Equals("TxtChosenFile") && !string.IsNullOrEmpty(TxtChosenFile))
                     {
                         setup();
                         copyImage();
@@ -147,6 +152,18 @@ namespace QCBDManagementWPF.Classes
                         return _imageData;
                     }
                     set { _imageData = value; onPropertyChange("ImageDataList"); }
+                }
+
+                public string TxtLogin
+                {
+                    get { return _login; }
+                    set { setProperty(ref _login, value, "TxtLogin"); }
+                }
+
+                public string TxtPassword
+                {
+                    get { return _password; }
+                    set { setProperty(ref _password, value, "TxtPassword"); }
                 }
 
                 public string TxtName
@@ -201,12 +218,12 @@ namespace QCBDManagementWPF.Classes
                 {
                     if (!string.IsNullOrEmpty(TxtChosenFile))
                     {
-                        _ftpHost = "ftp://ftpperso.free.fr";
-                        _remotePath = string.Format(@"/{0}/{1}/", "dev", "images");
+                        _ftpHost = ConfigurationManager.AppSettings["ftp"];// "ftp://ftpperso.free.fr";
+                        _remotePath = string.Format(@"/qobd/{0}/", "images");//string.Format(@"//{0}/", "images");
                         _localPath = Directory.GetCurrentDirectory() + string.Format(@"\{0}\{1}\", "Docs", "Images");
 
                         var chosenFileName = Path.GetFileName(TxtChosenFile);
-                        var filseExtension = chosenFileName.Split(new char[] { '.' }).LastOrDefault();
+                        var filseExtension = chosenFileName.Split('.').LastOrDefault();
                         TxtFileName = TxtFileNameWithoutExtension + "." + filseExtension;
                         TxtFtpUrl = _ftpHost + _remotePath + TxtFileName;
                         TxtFileFullPath = Path.Combine(_localPath, TxtFileName);
@@ -233,7 +250,14 @@ namespace QCBDManagementWPF.Classes
                     }
                     
                     if (File.Exists(TxtFileFullPath))
-                        updateImageSource();
+                        try
+                        {
+                            updateImageSource();
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.write(ex.Message, "ERR");
+                        }
 
                     if (ImageWidth != null)
                         int.TryParse(ImageWidth.Value, out _width);
@@ -254,7 +278,7 @@ namespace QCBDManagementWPF.Classes
                             try
                             {
                                 //updateImageSource(isClosingImageStream: true);
-                                isFileFound = Utility.downloadFIle(TxtFtpUrl, TxtFileFullPath, "sodpagnekita", "bahilo225");
+                                isFileFound = Utility.downloadFIle(TxtFtpUrl, TxtFileFullPath, _login, _password);
                             }
                             catch (Exception e)
                             {
@@ -301,11 +325,12 @@ namespace QCBDManagementWPF.Classes
 
                         try
                         {
-                            isSavedSuccessfully = Utility.uploadFIle(TxtFtpUrl, TxtFileFullPath, "sodpagnekita", "bahilo225");
+                            isSavedSuccessfully = Utility.uploadFIle(TxtFtpUrl, TxtFileFullPath, _login, _password);
                         }
                         catch (Exception e)
                         {
                             Debug.WriteLine("[ERR] - " + e.Message);
+                            
                             //Task.Delay(1000).ContinueWith((t) => { save(); });
                         }
                     }

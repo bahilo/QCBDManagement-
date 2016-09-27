@@ -18,7 +18,7 @@ namespace QCBDManagementWPF.ViewModel
 {
     public class AgentDetailViewModel : BindBase
     {
-        private string _listSize;
+        //private string _listSize;
         private string _title;
         private Func<string, object> _getObjectFromMainWindowViewModel;
 

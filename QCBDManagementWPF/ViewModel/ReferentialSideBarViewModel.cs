@@ -112,6 +112,12 @@ namespace QCBDManagementWPF.ViewModel
             _sideBarManagement = sideBarManagement;
         }
 
+        public override void Dispose()
+        {
+            PropertyChanged -= onNavigToChange;
+            
+        }
+
         //----------------------------[ Event Handler ]------------------
 
         private void onNavigToChange(object sender, PropertyChangedEventArgs e)

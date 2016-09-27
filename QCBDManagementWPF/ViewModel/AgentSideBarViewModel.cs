@@ -104,6 +104,12 @@ namespace QCBDManagementWPF.ViewModel
             SetupAgentCommand.raiseCanExecuteActionChanged();
         }
 
+        public override void Dispose()
+        {
+            PropertyChanged -= onGetObjectFromMainWindowViewModelChange;
+            PropertyChanged -= onSelectedAgentModelChange;
+        }
+
         //----------------------------[ Event Handler ]------------------
 
         private void onGetObjectFromMainWindowViewModelChange(object sender, PropertyChangedEventArgs e)
@@ -220,7 +226,5 @@ namespace QCBDManagementWPF.ViewModel
                     break;
             }
         }
-
-
     }
 }

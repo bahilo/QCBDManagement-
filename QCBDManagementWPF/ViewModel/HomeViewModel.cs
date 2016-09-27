@@ -349,6 +349,11 @@ namespace QCBDManagementWPF.ViewModel
             return results;
         }
 
+        public override void Dispose()
+        {
+            PropertyChanged -= onNewTaskChange_SaveToToDoList;
+        }
+
         //----------------------------[ Event Handler ]------------------
 
         private void onNewTaskChange_SaveToToDoList(object sender, PropertyChangedEventArgs e)

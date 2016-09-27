@@ -142,6 +142,15 @@ namespace QCBDManagementWPF.ViewModel
             OptionSecurityViewModel.mainNavigObject(_page);
         }
 
+        public override void Dispose()
+        {
+            PropertyChanged -= onStartupChange;
+            PropertyChanged -= onDialogChange;
+            OptionDataAndDisplayViewModel.Dispose();
+            OptionEmailViewModel.Dispose();
+            OptionGeneralViewModel.Dispose();
+            OptionSecurityViewModel.Dispose();
+        }
 
         //----------------------------[ Event Handler ]------------------
 

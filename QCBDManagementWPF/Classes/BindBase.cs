@@ -16,7 +16,7 @@ using System.Xml.Serialization;
 
 namespace QCBDManagementWPF.Classes
 {
-    public class BindBase : INotifyPropertyChanged, IState
+    public class BindBase : INotifyPropertyChanged, IState, IDisposable
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected Startup _startup;
@@ -101,7 +101,20 @@ namespace QCBDManagementWPF.Classes
             }  
             return false;
         }
-        
+
+        public virtual void Dispose()
+        {
+            
+        }
+
+        /*protected async void getFtpCredential(out string login, out string password)
+        {
+            var infosLoginFTP = (await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = "ftp_login" }, "OR")).FirstOrDefault() ?? new Infos();
+            var infosPasswordFTP = (await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = "ftp_password" }, "OR")).FirstOrDefault() ?? new Infos();
+            login = infosLoginFTP.Value;
+            password = infosPasswordFTP.Value;
+        }*/
+
 
     }
 }

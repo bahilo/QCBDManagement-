@@ -1259,8 +1259,9 @@ namespace QCBDManagementGateway.Core
             try
             {
                 client.Credentials = new NetworkCredential(_channel.ClientCredentials.UserName.UserName, _channel.ClientCredentials.UserName.Password);
-                var uri = "http://localhost/WebServiceSOAP/fpdf/"+paramDeliveryToPdf.Lang+"/BL_Codsimex.php?num_dev=" + paramDeliveryToPdf.CommandId + " &num_bl=" + paramDeliveryToPdf.DeliveryId;
-                launchBrowser(uri);
+                var uri = "http://qobdmanagement-001-site1.htempurl.com/fpdf/" + paramDeliveryToPdf.Lang+"/BL_Codsimex.php?num_dev=" + paramDeliveryToPdf.CommandId + " &num_bl=" + paramDeliveryToPdf.DeliveryId;
+
+                System.Diagnostics.Process.Start(uri);
             }
             catch (Exception ex)
             {
@@ -1278,8 +1279,8 @@ namespace QCBDManagementGateway.Core
             try
             {
                 client.Credentials = new NetworkCredential(_channel.ClientCredentials.UserName.UserName, _channel.ClientCredentials.UserName.Password);
-                string uri = "http://localhost/WebServiceSOAP/fpdf/" + paramCommandToPdf.Lang + "/Facture_Codsimex.php?";
-
+                //string uri = "http://qobdmanagement-001-site1.htempurl.com/WebServiceSOAP/fpdf/" + paramCommandToPdf.Lang + "/Facture_Codsimex.php?";
+                string uri = "http://qobdmanagement-001-site1.htempurl.com/fpdf/" + paramCommandToPdf.Lang + "/Facture_Codsimex.php?";
                 uri += "num_dev=" + paramCommandToPdf.CommandId;
                 uri += "&num_fact=" + paramCommandToPdf.BillId;
                 uri += "&currency=" + paramCommandToPdf.Currency;
@@ -1294,8 +1295,8 @@ namespace QCBDManagementGateway.Core
 
                 if (paramCommandToPdf.IsQuoteConstructorReferencesVisible)
                     uri += "&refv=" + paramCommandToPdf.IsQuoteConstructorReferencesVisible;
-                
-                launchBrowser(uri);
+
+                System.Diagnostics.Process.Start(uri);
             }
             finally
             {
@@ -1309,7 +1310,7 @@ namespace QCBDManagementGateway.Core
             try
             {
                 client.Credentials = new NetworkCredential(_channel.ClientCredentials.UserName.UserName, _channel.ClientCredentials.UserName.Password);
-                string uri = "http://localhost/WebServiceSOAP/fpdf/" + paramCommandToPdf.Lang + "/Devis_Codsimex.php?";
+                string uri = "http://qobdmanagement-001-site1.htempurl.com/fpdf/" + paramCommandToPdf.Lang + "/Devis_Codsimex.php?";
 
                 uri += "num_dev=" + paramCommandToPdf.CommandId;
                 uri += "&delay=" + paramCommandToPdf.ValidityDay;
@@ -1326,38 +1327,14 @@ namespace QCBDManagementGateway.Core
                 if (paramCommandToPdf.IsQuoteConstructorReferencesVisible)
                     uri += "&refv=" + paramCommandToPdf.IsQuoteConstructorReferencesVisible;
 
-                launchBrowser(uri);
+                System.Diagnostics.Process.Start(uri);
             }
             finally
             {
                 client.Dispose();
             }
         }
-
-        public void launchBrowser(string url)
-        {
-            string browserName = "iexplore.exe";
-            using (RegistryKey userChoiceKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice"))
-            {
-                if (userChoiceKey != null)
-                {
-                    object progIdValue = userChoiceKey.GetValue("Progid");
-                    if (progIdValue != null)
-                    {
-                        if (progIdValue.ToString().ToLower().Contains("chrome"))
-                            browserName = "chrome.exe";
-                        else if (progIdValue.ToString().ToLower().Contains("firefox"))
-                            browserName = "firefox.exe";
-                        else if (progIdValue.ToString().ToLower().Contains("safari"))
-                            browserName = "safari.exe";
-                        else if (progIdValue.ToString().ToLower().Contains("opera"))
-                            browserName = "opera.exe";
-                    }
-                }
-            }
-
-            Process.Start(new ProcessStartInfo(browserName, url));
-        }
+        
 
         public void Dispose()
         {

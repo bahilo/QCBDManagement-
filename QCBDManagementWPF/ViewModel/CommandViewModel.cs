@@ -76,9 +76,7 @@ namespace QCBDManagementWPF.ViewModel
             PropertyChanged += onBlockSearchResultVisibilityChange;
             PropertyChanged += onStartupChange;
             PropertyChanged += onDialogChange;
-            CommandTask.PropertyChanged += onCommandTaskCompletion_getCommandModel;
             TaxTask.PropertyChanged += onTaxTaskCompletion_getTax;
-            //CommandModelTask.PropertyChanged += onCommandModelTaskCompletion_separateCommandsByStatus;
         }
 
         private void instances()
@@ -289,25 +287,26 @@ namespace QCBDManagementWPF.ViewModel
             {
                 await main.MainWindow.onUIThreadAsync(async() =>
                 {
+                    Dialog.showSearch("Loading...");
+                    TaxList = await Bl.BlCommand.GetTaxData(999);
+                    CommandSearch.AgentList = await Bl.BlAgent.GetAgentData(-999);
+
                     if (SelectedClient.Client.ID != 0)
                     {
                         Title = string.Format("Command for the Company {0}", SelectedClient.Client.Company);
-                        //CommandTask.initializeNewTask(Bl.BlCommand.searchCommandFromWebService(new Entity.Command { ClientId = SelectedClient.Client.ID }, "AND"));
-                        Dialog.showSearch("Loading...");
-                        //_commandModelList = new List<CommandModel>();
-                        TaxList = await Bl.BlCommand.GetTaxData(999);
-                        CommandSearch.AgentList = await Bl.BlAgent.GetAgentData(-999);
+                        
                         //CommandModelTask.initializeNewTask(CommandListToModelList(CommandTask.Result));
                         CommandModelList = (await CommandListToModelList(await Bl.BlCommand.searchCommandFromWebService(new Entity.Command { ClientId = SelectedClient.Client.ID }, "AND"))).OrderByDescending(x => x.Command.ID).ToList();
-                        Dialog.IsDialogOpen = false;
                         SelectedClient = new ClientModel();
                     }
                     else
                     {
                         Title = "Command Management";
-                        CommandTask.initializeNewTask(Bl.BlCommand.searchCommand(new QCBDManagementCommon.Entities.Command { AgentId = Bl.BlSecurity.GetAuthenticatedUser().ID }, "AND"));
+                        CommandModelList = (await CommandListToModelList(await Bl.BlCommand.searchCommand(new QCBDManagementCommon.Entities.Command { AgentId = Bl.BlSecurity.GetAuthenticatedUser().ID }, "AND"))).OrderByDescending(x => x.Command.ID).ToList();
+                        //CommandTask.initializeNewTask(Bl.BlCommand.searchCommand(new QCBDManagementCommon.Entities.Command { AgentId = Bl.BlSecurity.GetAuthenticatedUser().ID }, "AND"));
                     }
                     BlockSearchResultVisibility = "Hidden";
+                    Dialog.IsDialogOpen = false;
                 });
             }
             
@@ -386,9 +385,17 @@ namespace QCBDManagementWPF.ViewModel
             }
         }*/
 
-        public void Dispose()
+        public override void Dispose()
         {
             Bl.BlCommand.Dispose();
+            PropertyChanged -= onSelectedCommandChange;
+            PropertyChanged -= onNavigToChange;
+            PropertyChanged -= onBlockSearchResultVisibilityChange;
+            PropertyChanged -= onStartupChange;
+            PropertyChanged -= onDialogChange;
+            TaxTask.PropertyChanged -= onTaxTaskCompletion_getTax;
+            CommandDetailViewModel.Dispose();
+            CommandSideBarViewModel.Dispose();
         }
 
         //----------------------------[ Event Handler ]------------------
@@ -444,38 +451,6 @@ namespace QCBDManagementWPF.ViewModel
                 TaxList = TaxTask.Result;
             }
         }
-
-        private async void onCommandTaskCompletion_getCommandModel(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName.Equals("IsSuccessfullyCompleted"))
-            {
-                //var main = GetObjectFromMainWindowViewModel("main") as MainWindowViewModel;
-                //if (main != null)
-                //{
-                //    await main.MainWindow.onUIThreadAsync(async () =>
-                //   {
-                Dialog.showSearch("Loading...");
-                //_commandModelList = new List<CommandModel>();
-                TaxList = await Bl.BlCommand.GetTaxData(999);
-                CommandSearch.AgentList = await Bl.BlAgent.GetAgentData(-999);
-                //CommandModelTask.initializeNewTask(CommandListToModelList(CommandTask.Result));
-                CommandModelList = (await CommandListToModelList(CommandTask.Result)).OrderByDescending(x => x.Command.ID).ToList();
-                Dialog.IsDialogOpen = false;
-                //   });
-                //}
-            }
-        }
-
-
-        /*private void onCommandModelTaskCompletion_separateCommandsByStatus(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName.Equals("IsSuccessfullyCompleted") && CommandModelTask.Result.Count() > 0)
-            {
-                CommandModelList = CommandModelTask.Result.OrderByDescending(x => x.Command.ID).ToList();
-                SelectedClient = new ClientModel();
-            }
-        }*/
-
 
         private void onBlockSearchResultVisibilityChange(object sender, PropertyChangedEventArgs e)
         {

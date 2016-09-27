@@ -163,9 +163,20 @@ namespace QCBDManagementWPF.ViewModel
             Cart = cart;
         }
 
+        public override void Dispose()
+        {
+            PropertyChanged -= onNavigToChange;
+            PropertyChanged -= onSelectedCommandModelChange;
+            PropertyChanged -= onGetObjectFromMainWindowViewModelChange;
+            if (_mainWindowViewModel != null)
+            {
+                _mainWindowViewModel.PropertyChanged -= onCurrentPageChange_updateCommand;
+                _mainWindowViewModel.CommandViewModel.CommandDetailViewModel.PropertyChanged -= onCommand_ItemModelListChange;
+            }
+        }
+
         //----------------------------[ Event Handler ]------------------
-
-
+        
         private void onGetObjectFromMainWindowViewModelChange(object sender, PropertyChangedEventArgs e)
         {
             if (string.Equals(e.PropertyName, "GetObjectFromMainWindowViewModel"))

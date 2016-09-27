@@ -108,9 +108,9 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="Quantity Pending" Binding="{Binding TxtQuantity_pending, UpdateSourceTrigger=PropertyChanged}"/>
-                                <DataGridTextColumn Header="Total Selling" Binding="{Binding TxtTotalSelling}"/>
-                                <DataGridTextColumn Header="Percentage Profit" Binding="{Binding TxtPercentProfit}"/>
-                                <DataGridTextColumn Header="Profit" Binding="{Binding TxtProfit}"/>
+                                <DataGridTextColumn Header="Total Selling" Binding="{Binding TxtTotalSelling, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="Percentage Profit" Binding="{Binding TxtPercentProfit, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="Profit" Binding="{Binding TxtProfit, UpdateSourceTrigger=PropertyChanged}"/>
                                 <DataGridTemplateColumn>
                                     <DataGridTemplateColumn.Header>
                                         <TextBlock>Delete</TextBlock>
@@ -141,17 +141,17 @@
         <Grid Grid.Row="3" Margin="0 0 0 15">
             <StackPanel Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock  Margin="0 0 10 0">Total Before Taxes</TextBlock>
-                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalBeforeTax}" IsEnabled="False" Margin="0 0 10 0" Width="50" HorizontalAlignment="Center"  />
+                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalBeforeTax, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Margin="0 0 10 0" Width="50" HorizontalAlignment="Center"  />
                 <TextBlock Margin="0 0 10 0">Total After Tax</TextBlock>
-                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalAfterTax}" Margin="0 0 10 0" Width="50"  IsEnabled="False" HorizontalAlignment="Center" />
+                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalAfterTax, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 10 0" Width="50"  IsEnabled="False" HorizontalAlignment="Center" />
                 <TextBlock Margin="0 0 10 0">Total Precentage Profit</TextBlock>
-                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalPercentProfit}" Margin="0 0 10 0" Width="50"  IsEnabled="False" HorizontalAlignment="Center" />
+                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalPercentProfit, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 10 0" Width="50"  IsEnabled="False" HorizontalAlignment="Center" />
                 <TextBlock Margin="0 0 10 0">Total Profit</TextBlock>
-                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalProfit}" Margin="0 0 10 0" Width="50"  IsEnabled="False" HorizontalAlignment="Center" />
+                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalProfit, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 10 0" Width="50"  IsEnabled="False" HorizontalAlignment="Center" />
                 <TextBlock Margin="0 0 10 0">Total Taxes Amount</TextBlock>
-                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalTaxAmount}" Margin="0 0 10 0" Width="50"  IsEnabled="False" HorizontalAlignment="Center" />
+                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.TxtTotalTaxAmount, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 10 0" Width="50"  IsEnabled="False" HorizontalAlignment="Center" />
                 <TextBlock Margin="0 0 10 0">Tax</TextBlock>
-                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.Tax.Value}" IsEnabled="False" Margin="0 0 10 0" Width="50"  HorizontalAlignment="Center" />
+                <TextBox Text="{Binding CommandViewModel.CommandDetailViewModel.Tax.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Margin="0 0 10 0" Width="50"  HorizontalAlignment="Center" />
             </StackPanel>
         </Grid>
 
@@ -162,7 +162,7 @@
                         <Border Background="{DynamicResource PrimaryHueMidBrush}">
                             <StackPanel Width="300" Orientation="Vertical" Margin="0 0 10 0">
                                 <TextBlock HorizontalAlignment="Center">Private Comment</TextBlock>
-                                <TextBox Background="White" Text="{Binding CommandViewModel.SelectedCommandModel.TxtPrivateComment, Mode=TwoWay}" MinLines="5" TextWrapping="Wrap" AcceptsReturn="True"/>
+                                <TextBox Background="White" Text="{Binding CommandViewModel.SelectedCommandModel.TxtPrivateComment, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MinLines="5" TextWrapping="Wrap" AcceptsReturn="True"/>
                             </StackPanel>
                         </Border>
                     </materialDesign:Card>
@@ -170,7 +170,7 @@
                         <Border Background="{DynamicResource PrimaryHueLightBrush}">
                             <StackPanel Width="300" Orientation="Vertical" Margin="0 0 10 0">
                                 <TextBlock HorizontalAlignment="Center">Comment will be seen by the CLient on Quote</TextBlock>
-                                <TextBox Text="{Binding CommandViewModel.SelectedCommandModel.TxtPublicComment, Mode=TwoWay}" MinLines="5" TextWrapping="Wrap" AcceptsReturn="True"
+                                <TextBox Text="{Binding CommandViewModel.SelectedCommandModel.TxtPublicComment, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MinLines="5" TextWrapping="Wrap" AcceptsReturn="True"
                                              Background="White"/>
                             </StackPanel>
                         </Border>
@@ -179,7 +179,7 @@
                         <Border Background="{DynamicResource PrimaryHueDarkBrush}">
                             <StackPanel Width="300" Orientation="Vertical" Margin="0 0 10 0">
                                 <TextBlock HorizontalAlignment="Center">Admin Comment Only</TextBlock>
-                                <TextBox Background="White" Text="{Binding CommandViewModel.SelectedCommandModel.TxtAdminComment, Mode=TwoWay}" MinLines="5" TextWrapping="Wrap" AcceptsReturn="True"/>
+                                <TextBox Background="White" Text="{Binding CommandViewModel.SelectedCommandModel.TxtAdminComment, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MinLines="5" TextWrapping="Wrap" AcceptsReturn="True"/>
                             </StackPanel>
                         </Border>
                     </materialDesign:Card>
@@ -265,13 +265,13 @@
                     </Button>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Center" Grid.Row="1" Grid.Column="2" Orientation="Vertical">
-                    <TextBlock Text="{Binding SelectedItem.AddressName, ElementName=cbxDeliveryAddress}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding SelectedItem.AddressName, ElementName=cbxDeliveryAddress, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding SelectedItem.CityName, ElementName=cbxDeliveryAddress}" HorizontalAlignment="Center"/>
-                        <TextBlock Text="{Binding SelectedItem.Postcode, ElementName=cbxDeliveryAddress}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding SelectedItem.CityName, ElementName=cbxDeliveryAddress, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding SelectedItem.Postcode, ElementName=cbxDeliveryAddress, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
                     </StackPanel>
-                    <TextBlock Text="{Binding SelectedItem.Country, ElementName=cbxDeliveryAddress}" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding SelectedItem.Comment, ElementName=cbxDeliveryAddress}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding SelectedItem.Country, ElementName=cbxDeliveryAddress, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding SelectedItem.Comment, ElementName=cbxDeliveryAddress, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -343,12 +343,12 @@
                                     ItemsSource="{Binding CommandViewModel.CommandDetailViewModel.Item_deliveryModelBillingInProcess, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False"
                                     CanUserAddRows="False" MaxWidth="990">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Delivery ID" Binding="{Binding DeliveryModel.TxtID}"/>
-                                    <DataGridTextColumn Header="Create date" Binding="{Binding DeliveryModel.TxtDate}"/>
-                                    <DataGridTextColumn Header="Packages" Binding="{Binding DeliveryModel.TxtPackage}"/>
-                                    <DataGridTextColumn Header="Item Reference" Binding="{Binding TxtItem_ref}"/>
-                                    <DataGridTextColumn Header="Item Name" Binding="{Binding Item.Name}"/>
-                                    <DataGridTextColumn Header="Quantity" Binding="{Binding TxtQuantity_delivery}"/>
+                                    <DataGridTextColumn Header="Delivery ID" Binding="{Binding DeliveryModel.TxtID, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridTextColumn Header="Create date" Binding="{Binding DeliveryModel.TxtDate, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridTextColumn Header="Packages" Binding="{Binding DeliveryModel.TxtPackage, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridTextColumn Header="Item Reference" Binding="{Binding TxtItem_ref, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridTextColumn Header="Item Name" Binding="{Binding Item.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridTextColumn Header="Quantity" Binding="{Binding TxtQuantity_delivery, UpdateSourceTrigger=PropertyChanged}"/>
                                     <DataGridTemplateColumn>
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
@@ -450,10 +450,10 @@
                     <DataGrid Name="dgBillCreated"  ItemsSource="{Binding CommandViewModel.CommandDetailViewModel.BillModelList, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False"
                               CanUserAddRows="False" MaxWidth="990">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Bill ID" Binding="{Binding TxtID}"/>
-                            <DataGridTextColumn Header="Created Date" Binding="{Binding TxtDate}"/>
-                            <DataGridTextColumn Header="Amount" Binding="{Binding TxtPay}"/>
-                            <DataGridTextColumn Header="Limit Date" Binding="{Binding TxtDateLimit}"/>
+                            <DataGridTextColumn Header="Bill ID" Binding="{Binding TxtID, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Created Date" Binding="{Binding TxtDate, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Amount" Binding="{Binding TxtPay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Limit Date" Binding="{Binding TxtDateLimit, UpdateSourceTrigger=LostFocus}"/>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.Header>
                                     <TextBlock>Bill</TextBlock>
@@ -511,7 +511,7 @@
                                             <ColumnDefinition Width="300"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="1"  Orientation="Horizontal">
-                                            <TextBox Text="{Binding TxtPayReceived, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                            <TextBox Text="{Binding TxtPayReceived, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
                                                      Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
                                                      materialDesign:TextFieldAssist.Hint="Amount Payed"/>
                                         </StackPanel>
@@ -520,10 +520,8 @@
                                                      Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
                                                      materialDesign:TextFieldAssist.Hint="Pay Method"/>
                                         </StackPanel>
-                                        <!--<TextBlock Grid.Row="2">Pay Date (DD-MM-YYYY)</TextBlock>-->
                                         <StackPanel Grid.Row="2" Grid.Column="1"  Orientation="Horizontal">
-                                            <DatePicker SelectedDate="{Binding TxtPayDate, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"  Width="100" HorizontalAlignment="Left" Margin="0 16 0 0" materialDesign:TextFieldAssist.Hint="Pay Date" />
-                                            <!--<TextBox Text="{Binding TxtPayDate}"/>-->
+                                            <DatePicker SelectedDate="{Binding TxtPayDate, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"  Width="100" HorizontalAlignment="Left" Margin="0 16 0 0" materialDesign:TextFieldAssist.Hint="Pay Dat" SelectedDateFormat="Short" />
                                         </StackPanel>
                                         <Border Grid.Row="3" Grid.Column="2" Background="{DynamicResource PrimaryHueMidBrush}">
                                             <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
@@ -606,7 +604,7 @@
                     <StackPanel Grid.Row="3" Orientation="Vertical" HorizontalAlignment="Center" Visibility="{Binding CommandViewModel.CommandDetailViewModel.BlockStepThreeVisibility, UpdateSourceTrigger=PropertyChanged}">
                         <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                 Command="{Binding DataContext.CommandViewModel.CommandDetailViewModel.BilledCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
-                            <TextBlock>Step 3/3 Confirm sending and bills of all items of this Command (Status: waiting to be paid)</TextBlock>
+                            <TextBlock>Step 3/3 Confirm sending and billing all items of this Command (Status: waiting to be paid)</TextBlock>
                         </Button>
                         <TextBlock>Caution: Make sure you have generated all Delivery receipts and Bills before updating the status</TextBlock>
                     </StackPanel>

@@ -27,11 +27,51 @@ namespace QCBDManagementCommon.Classes
                 File.Create(fileFullPath);
         }
 
-        public static void write(string message, string messageType, [CallerMemberName] string callerName = null)
+        public static void error(string message, [CallerMemberName] string callerName = null, string localCallerName = null)
         {
             initialize();
-            lock(_lock)
-                File.AppendAllLines(fileFullPath, new List<string> { string.Format(@"[{0}]-[{1}] - [{2}] {3}", DateTime.Now.ToString("dd/MM/yy HH:mm:ss"), messageType, callerName, message) });
+            lock (_lock)
+                   if (string.IsNullOrEmpty(localCallerName))
+                    File.AppendAllLines(fileFullPath, new List<string> { string.Format(@"[{0}]-[{1}] - [{2}] {3}", DateTime.Now.ToString("dd/MM/yy HH:mm:ss"), "ERR", callerName, message) });
+                else
+                    File.AppendAllLines(fileFullPath, new List<string> { string.Format(@"[{0}]-[{1}] - [{2}] {3}", DateTime.Now.ToString("dd/MM/yy HH:mm:ss"), "ERR", localCallerName, message) });
+        }
+
+        public static void warning(string message, [CallerMemberName] string callerName = null, string localCallerName = null)
+        {
+            initialize();
+            lock (_lock)
+                   if (string.IsNullOrEmpty(localCallerName))
+                    File.AppendAllLines(fileFullPath, new List<string> { string.Format(@"[{0}]-[{1}] - [{2}] {3}", DateTime.Now.ToString("dd/MM/yy HH:mm:ss"), "WAR", callerName, message) });
+                else
+                    File.AppendAllLines(fileFullPath, new List<string> { string.Format(@"[{0}]-[{1}] - [{2}] {3}", DateTime.Now.ToString("dd/MM/yy HH:mm:ss"), "WAR", localCallerName, message) });
+        }
+
+        public static void debug(string message, [CallerMemberName] string callerName = null, string localCallerName = null)
+        {
+            initialize();
+            lock (_lock)
+                if(string.IsNullOrEmpty(localCallerName))
+                    File.AppendAllLines(fileFullPath, new List<string> { string.Format(@"[{0}]-[{1}] - [{2}] {3}", DateTime.Now.ToString("dd/MM/yy HH:mm:ss"), "TES", callerName, message) });
+                else
+                    File.AppendAllLines(fileFullPath, new List<string> { string.Format(@"[{0}]-[{1}] - [{2}] {3}", DateTime.Now.ToString("dd/MM/yy HH:mm:ss"), "TES", localCallerName, message) });
+
+        }
+
+        public static void write(string message, string messageType, [CallerMemberName] string callerName = null)
+        {
+            switch (messageType)
+            {
+                case "ERR":
+                    error(message, localCallerName: callerName);
+                    break;
+                case "WAR":
+                    warning(message, localCallerName: callerName);
+                    break;
+                default:
+                    debug(message, localCallerName: callerName);
+                    break;
+            }
         }
     }
 }

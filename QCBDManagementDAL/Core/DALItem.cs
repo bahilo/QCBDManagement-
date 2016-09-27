@@ -66,7 +66,7 @@ namespace QCBDManagementDAL.Core
             if (e.PropertyName.Equals("Credential"))
             {
                 DALHelper.doActionAsync(retrieveGateWayDataItem);
-                DALHelper.doActionAsync(retrieveGateWayDataAuto_ref);
+                _gateWayItem.PropertyChanged -= onCredentialChange_loadItemDataFromWebService;
             }
         }
 
@@ -90,16 +90,21 @@ namespace QCBDManagementDAL.Core
             lock (_lock) _isLodingDataFromWebServiceToLocal = true;
             try
             {
-                List<Item> savedItemList = new NotifyTaskCompletion<List<Item>>(UpdateItem(new NotifyTaskCompletion<List<Item>>(_gateWayItem.GetItemData(_loadSize)).Task.Result)).Task.Result;
-
-                for (int i = 0; i < (savedItemList.Count() / loadUnit) || loadUnit >= savedItemList.Count() && i == 0; i++)
+                var itemList = new NotifyTaskCompletion<List<Item>>(_gateWayItem.GetItemData(_loadSize)).Task.Result;
+                if (itemList.Count > 0)
                 {
-                    lock (_lock)
+                    List<Item> savedItemList = new NotifyTaskCompletion<List<Item>>(UpdateItem(itemList)).Task.Result;
+
+                    for (int i = 0; i < (savedItemList.Count() / loadUnit) || loadUnit >= savedItemList.Count() && i == 0; i++)
                     {
-                        List<Provider_item> savedProvider_itemList = new NotifyTaskCompletion<List<Provider_item>>(UpdateProvider_item(new NotifyTaskCompletion<List<Provider_item>>(_gateWayItem.GetProvider_itemDataByItemList(savedItemList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result)).Task.Result;
-                        List<Provider> savedProviderList = new NotifyTaskCompletion<List<Provider>>(UpdateProvider(new NotifyTaskCompletion<List<Provider>>(_gateWayItem.GetProviderDataByProvider_itemList(savedProvider_itemList.OrderBy(x => x.Provider_name).Distinct().ToList())).Task.Result)).Task.Result;
+                        lock (_lock)
+                        {
+                            List<Provider_item> savedProvider_itemList = new NotifyTaskCompletion<List<Provider_item>>(UpdateProvider_item(new NotifyTaskCompletion<List<Provider_item>>(_gateWayItem.GetProvider_itemDataByItemList(savedItemList.Skip(i * loadUnit).Take(loadUnit).ToList())).Task.Result)).Task.Result;
+                            List<Provider> savedProviderList = new NotifyTaskCompletion<List<Provider>>(UpdateProvider(new NotifyTaskCompletion<List<Provider>>(_gateWayItem.GetProviderDataByProvider_itemList(savedProvider_itemList.OrderBy(x => x.Provider_name).Distinct().ToList())).Task.Result)).Task.Result;
+                        }
                     }
                 }
+                
             }
             finally
             {
@@ -114,7 +119,7 @@ namespace QCBDManagementDAL.Core
             
         }
 
-        private void retrieveGateWayDataAuto_ref()
+        /*private void retrieveGateWayDataAuto_ref()
         {
             lock (_lock) _isLodingDataFromWebServiceToLocal = true;
             var savedAuto_refList = new NotifyTaskCompletion<List<Auto_ref>>(UpdateAuto_ref(new NotifyTaskCompletion<List<Auto_ref>>(_gateWayItem.GetAuto_refData(_loadSize)).Task.Result)).Task.Result;
@@ -123,7 +128,7 @@ namespace QCBDManagementDAL.Core
                 _isLodingDataFromWebServiceToLocal = false;
                 _rogressBarFunc(_rogressBarFunc(0) + 100 / _progressStep);
             }
-        }
+        }*/
 
         public void progressBarManagement(Func<double, double> progressBarFunc)
         {
@@ -468,7 +473,7 @@ namespace QCBDManagementDAL.Core
             using (GateWayItem gateWayItem = new GateWayItem())
             {
                 gateWayItem.setServiceCredential(AuthenticatedUser.Login, AuthenticatedUser.HashedPassword);
-                gateWayResultList = (!_isLodingDataFromWebServiceToLocal) ? await gateWayItem.InsertAuto_ref(listAuto_ref) : listAuto_ref;
+                gateWayResultList = (!_isLodingDataFromWebServiceToLocal) ? await gateWayItem.UpdateAuto_ref(listAuto_ref) : listAuto_ref;
                 foreach (var Auto_ref in gateWayResultList)
                 {
                     int returnResult = _auto_refTableAdapter
@@ -674,8 +679,14 @@ namespace QCBDManagementDAL.Core
         public async Task<List<Auto_ref>> GetAuto_refData(int nbLine)
         {
             List<Auto_ref> result = new List<Auto_ref>();
-            using (auto_refsTableAdapter _auto_refTableAdapter = new auto_refsTableAdapter())
-                result = (await DALHelper.doActionAsync<QCBDDataSet.auto_refsDataTable>(_auto_refTableAdapter.get_data_auto_ref)).DataTableTypeToAuto_ref();
+            using (GateWayItem gateWayItem = new GateWayItem())
+            {
+                gateWayItem.setServiceCredential(AuthenticatedUser.Login, AuthenticatedUser.HashedPassword);
+                result = await gateWayItem.GetAuto_refData(nbLine);
+            }
+                
+            //using (auto_refsTableAdapter _auto_refTableAdapter = new auto_refsTableAdapter())
+            //    result = (await DALHelper.doActionAsync<QCBDDataSet.auto_refsDataTable>(_auto_refTableAdapter.get_data_auto_ref)).DataTableTypeToAuto_ref();
 
             if (nbLine.Equals(999) || result.Count == 0)
                 return result;

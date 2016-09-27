@@ -56,7 +56,8 @@ namespace QCBDManagementDAL.Core
         {
             if (e.PropertyName.Equals("Credential"))
             {
-                DALHelper.doActionAsync(retrieveGateWayData);                
+                DALHelper.doActionAsync(retrieveGateWayData);
+                _gateWayAgent.PropertyChanged -= onCredentialChange_loadAgentDataFromWebService;
             }
         }
         
@@ -77,7 +78,11 @@ namespace QCBDManagementDAL.Core
             try
             { 
                 lock (_lock) _isLodingDataFromWebServiceToLocal = true;
-                var savedAgentList = new NotifyTaskCompletion<List<Agent>>(UpdateAgent(new NotifyTaskCompletion<List<Agent>>(_gateWayAgent.GetAgentData(_loadSize)).Task.Result)).Task.Result;
+                var agentList = new NotifyTaskCompletion<List<Agent>>(_gateWayAgent.GetAgentData(_loadSize)).Task.Result;
+                if (agentList.Count > 0)
+                {
+                    var savedAgentList = new NotifyTaskCompletion<List<Agent>>(UpdateAgent(agentList));
+                }                
             }
             finally
             {

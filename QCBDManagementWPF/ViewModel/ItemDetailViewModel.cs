@@ -142,17 +142,19 @@ namespace QCBDManagementWPF.ViewModel
             if (!String.IsNullOrEmpty(SelectedItemModel.TxtNewProvider))
             {
                 // Check that the new Provider doesn't exist
-                var searchProvider = new Provider();
-                searchProvider.Name = SelectedItemModel.TxtNewProvider;
-                var providerFoundList = await Bl.BlItem.searchProvider(searchProvider, "AND");
+                var providerFoundList = await Bl.BlItem.searchProvider(new Provider { Name = SelectedItemModel.TxtNewProvider }, "AND");
                 if (providerFoundList.Count == 0)
                 {
                     var provider = new Provider();
                     provider.Name = SelectedItemModel.TxtNewProvider;
                     provider.Source = Bl.BlSecurity.GetAuthenticatedUser().ID;
                     SelectedItemModel.SelectedProvider = provider;
-                    returnResult.Add(provider);
+                    var providerSavedList = await Bl.BlItem.InsertProvider(new List<Provider> { provider });
+                    if(providerSavedList.Count > 0)
+                        returnResult.Add(providerSavedList[0]);
                 }
+                else
+                    returnResult.Add(providerFoundList[0]);
             }
             else if (SelectedItemModel.SelectedProvider.ID != 0)
                 returnResult.Add(SelectedItemModel.SelectedProvider);
@@ -272,33 +274,34 @@ namespace QCBDManagementWPF.ViewModel
                 var auto_reflist = await Bl.BlItem.GetAuto_refData(999);
                 var auto_ref = (auto_reflist.Count > 0) ? auto_reflist[0] : new Auto_ref();
                 newRef = "QCBD" + auto_ref.RefId;
-                newRef += " : " + SelectedItemModel.Item.Name;
+                newRef += " : " + SelectedItemModel.TxtRef;
                 auto_ref.RefId++;
-                auto_refToSaveList.Add(auto_ref);
 
-                // Process the field New Brand in case of updated by user
+                // Process the field New Brand
                 processEntryNewBrand();
-                // Process the field New Family in case of updated by user
+
+                // Process the field New Family
                 processEntryNewFamily();
 
-                SelectedItemModel.Item.Name = newRef;
-                SelectedItemModel.Item.Source = Bl.BlSecurity.GetAuthenticatedUser().ID;
-                SelectedItemModel.Item.Erasable = EItem.No.ToString();
-                itemToSaveList.Add(SelectedItemModel.Item);
+                // process the field New Provider
+                var providerFoundList = await getEntryNewProvider();
 
-                var providerSavedList = await Bl.BlItem.InsertProvider(await getEntryNewProvider());
-                foreach (var auto_refToSave in auto_refToSaveList)
-                {
-                    if (auto_refToSave.ID == 0)
-                        await Bl.BlItem.InsertAuto_ref(auto_refToSaveList);
-                    else
-                        await Bl.BlItem.UpdateAuto_ref(auto_refToSaveList);
-                }
+                SelectedItemModel.Item.Name = SelectedItemModel.TxtName;
+                SelectedItemModel.Item.Ref = newRef;
+                SelectedItemModel.Item.Source = Bl.BlSecurity.GetAuthenticatedUser().ID;
+                SelectedItemModel.Item.Erasable = EItem.Yes.ToString();
+                itemToSaveList.Add(SelectedItemModel.Item);
                 var itemSavedList = await Bl.BlItem.InsertItem(itemToSaveList);
+                                
+                if (auto_ref.ID == 0)
+                        await Bl.BlItem.InsertAuto_ref(new List<Auto_ref> { auto_ref });
+                else
+                    await Bl.BlItem.UpdateAuto_ref(new List<Auto_ref> { auto_ref });
+                                
                 if (itemSavedList.Count > 0)
                     await Dialog.show("Item has been created successfully!");
-                var provider_itemResultList = updateProvider_itemTable(itemSavedList[0], ((providerSavedList.Count > 0) ? providerSavedList[0] : new Provider()));
 
+                var provider_itemResultList = updateProvider_itemTable(itemSavedList[0], ((providerFoundList.Count > 0) ? providerFoundList[0] : new Provider()));
                 SelectedItemModel.ProviderList = await loadProviderFromProvider_item(await provider_itemResultList, SelectedItemModel.Item.Source);
             }
             // Otherwise update the current item

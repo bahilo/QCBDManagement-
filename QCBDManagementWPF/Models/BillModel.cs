@@ -54,19 +54,19 @@ namespace QCBDManagementWPF.Models
         public string TxtAmountAfterTax
         {
             get { return _amountAfterTax.ToString(); }
-            set { setProperty(ref _amountAfterTax, Convert.ToDecimal(value), "TxtAmountAfterTax"); }
+            set { decimal converted; if (decimal.TryParse(value, out converted)) { _amountAfterTax = converted; } else _amountAfterTax = 0; onPropertyChange("TxtAmountAfterTax"); }
         }
 
         public string TxtAmount
         {
             get { return _amount.ToString(); }
-            set { setProperty(ref _amount, Convert.ToDecimal(value), "TxtAmount"); }
+            set { decimal converted; if (decimal.TryParse(value, out converted)) { _amount = converted; } else _amount = 0; onPropertyChange("TxtAmount");}
         }
 
         public string TxtTaxValue
         {
             get { return _taxValue.ToString(); }
-            set { setProperty(ref _taxValue, Convert.ToDouble(value), "TxtTaxValue"); }
+            set { double converted; if (double.TryParse(value, out converted)) { _taxValue = converted; } else _taxValue = 0; onPropertyChange("TxtTaxValue"); }
         }
 
         public Bill Bill
@@ -78,19 +78,19 @@ namespace QCBDManagementWPF.Models
         public string TxtID
         {
             get { return _bill.ID.ToString(); }
-            set { _bill.ID = Convert.ToInt32(value); onPropertyChange("TxtID"); }
+            set { int converted; if (int.TryParse(value, out converted)) { _bill.ID = converted; } else _bill.ID = 0; onPropertyChange("TxtID");}
         }
 
         public string TxtClientId
         {
             get { return _bill.ClientId.ToString(); }
-            set { _bill.ClientId = Convert.ToInt32(value); onPropertyChange("TxtClientId"); }
+            set { int converted; if (int.TryParse(value, out converted)) { _bill.ClientId = converted; } else _bill.ClientId = 0; onPropertyChange("TxtClientId");}
         }
 
         public string TxtCommandId
         {
             get { return _bill.CommandId.ToString(); }
-            set { _bill.CommandId = Convert.ToInt32(value); onPropertyChange("TxtCommandId"); }
+            set { int converted; if (int.TryParse(value, out converted)) { _bill.CommandId = converted; } else _bill.CommandId = 0; onPropertyChange("TxtCommandId"); }
         }
 
         public string TxtPayMod
@@ -102,13 +102,13 @@ namespace QCBDManagementWPF.Models
         public string TxtPay
         {
             get { return _bill.Pay.ToString(); }
-            set { _bill.Pay = Convert.ToDecimal(value); onPropertyChange("TxtPay"); }
+            set { decimal converted; if (decimal.TryParse(value, out converted)) { _bill.Pay = converted; } else _bill.Pay = 0; onPropertyChange("TxtPay"); }
         }
 
         public string TxtPayReceived
         {
             get { return _bill.PayReceived.ToString(); }
-            set { _bill.PayReceived = Convert.ToDecimal(value); onPropertyChange("TxtPayReceived"); }
+            set { decimal converted; if (decimal.TryParse(value, out converted)) { _bill.PayReceived = converted; } else _bill.PayReceived = 0; onPropertyChange("TxtPayReceived"); }
         }
 
         public string TxtPrivateComment
@@ -126,19 +126,19 @@ namespace QCBDManagementWPF.Models
         public string TxtDate
         {
             get { return _bill.Date.ToString(); }
-            set { _bill.Date = Convert.ToDateTime(value); onPropertyChange("TxtDate"); }
+            set { _bill.Date = Utility.convertToDateTime(value); onPropertyChange("TxtDate"); }
         }
 
         public string TxtDateLimit
         {
             get { return _bill.DateLimit.ToString(); }
-            set { _bill.DateLimit = Convert.ToDateTime(value); onPropertyChange("TxtDateLimit"); }
+            set { _bill.DateLimit = Utility.convertToDateTime(value); onPropertyChange("TxtDateLimit"); }
         }
 
         public string TxtPayDate
         {
-            get { return _bill.PayDate.ToString(); }
-            set { _bill.PayDate = Utility.convertToDateTime(value); onPropertyChange("TxtPayDate"); }
+            get { return _bill.PayDate.ToString("MM/dd/yyyy"); }
+            set { _bill.PayDate = Utility.convertToDateTime(value, true); onPropertyChange("TxtPayDate"); }
         }
 
         public List<BillModel> BillListToModelViewList(List<Bill> BillList)

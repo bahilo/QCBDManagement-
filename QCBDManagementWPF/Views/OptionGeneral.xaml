@@ -19,6 +19,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -345,14 +346,46 @@
                     <StackPanel Margin="0 10 0 0"  Grid.Row="1"  Orientation="Vertical">
                         <Border BorderBrush="Beige">
                             <TextBox TextWrapping="Wrap" Height="300" MinLines="10" AcceptsReturn="True"
-                             Margin="0 8 0 0" FontSize="12" Text="{Binding ReferentialViewModel.OptionGeneralViewModel.LegalInformationFileManagement.TxtContent, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
+                             Margin="0 8 0 0" FontSize="12" Text="{Binding ReferentialViewModel.OptionGeneralViewModel.LegalInformationFileManagement.TxtContent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         </Border>
                     </StackPanel>
                 </Grid>
             </StackPanel>
         </materialDesign:ColorZone>
 
-        <StackPanel Grid.Row="6" Grid.ColumnSpan="7" Margin="0 10 0 0">
+        <materialDesign:ColorZone Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" Visibility="{Binding ReferentialViewModel.OptionGeneralViewModel.BlockLegalInfosDetailVisibility}">
+            <StackPanel Orientation="Vertical">
+                <materialDesign:ColorZone Mode="PrimaryMid">
+                    <TextBlock HorizontalAlignment="Center">Sale General conditions</TextBlock>
+                </materialDesign:ColorZone>
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                            <Button Command="{Binding ReferentialViewModel.OptionGeneralViewModel.NewSaleGeneralConditionCommand}">
+                                <materialDesign:PackIcon Kind="Delete"/>
+                            </Button>
+                            <Button HorizontalAlignment="Right"
+                                Command="{Binding ReferentialViewModel.OptionGeneralViewModel.UpdateSaleGeneralConditionCommand}" Margin="1 0 0 0">
+                                <materialDesign:PackIcon Kind="Pencil"/>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                    <StackPanel Margin="0 10 0 0"  Grid.Row="1"  Orientation="Vertical">
+                        <Border BorderBrush="Beige">
+                            <TextBox TextWrapping="Wrap" Height="300" MinLines="10" AcceptsReturn="True"
+                             Margin="0 8 0 0" FontSize="12" Text="{Binding ReferentialViewModel.OptionGeneralViewModel.SaleGeneralConditionFileManagement.TxtContent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </materialDesign:ColorZone>
+
+        <StackPanel Grid.Row="7" Grid.ColumnSpan="7" Margin="0 10 0 0">
             <materialDesign:ColorZone Mode="PrimaryMid">
                 <TextBlock HorizontalAlignment="Center">Email</TextBlock>
             </materialDesign:ColorZone>

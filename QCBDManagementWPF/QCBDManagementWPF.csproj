@@ -60,6 +60,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -119,14 +120,12 @@
     <Compile Include="ViewModel\CommandSideBarViewModel.cs" />
     <Compile Include="Models\DeliveryModel.cs" />
     <Compile Include="ViewModel\ConfirmationViewModel.cs" />
-    <Compile Include="ViewModel\ItemCreateViewModel.cs" />
     <Compile Include="ViewModel\ItemDetailViewModel.cs" />
     <Compile Include="ViewModel\NotificationSideBarViewModel.cs" />
     <Compile Include="ViewModel\OptionDataAndDisplayViewModel.cs" />
     <Compile Include="ViewModel\OptionGeneralViewModel.cs" />
     <Compile Include="ViewModel\OptionSecurityViewModel.cs" />
     <Compile Include="ViewModel\OptionEmailViewModel.cs" />
-    <Compile Include="ViewModel\QuoteDetailViewModel.cs" />
     <Compile Include="ViewModel\ReferentialSideBarViewModel.cs" />
     <Compile Include="ViewModel\SecurityLoginViewModel.cs" />
     <Compile Include="Views\AgentDetail.xaml.cs">

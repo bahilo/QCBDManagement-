@@ -29,7 +29,7 @@ namespace QCBDManagementDAL.Helper.ChannelHelper
         //private static Action _actionToPerform;
         //private static CancellationTokenSource cancelSource = new CancellationTokenSource(120000);
         //private static Random rd = new Random();
-        private static string ErrorMessage;
+        //private static string ErrorMessage;
         //private static TaskCompletionSource<object> taskCompletionSource;
 
         //====================================================================================
@@ -71,7 +71,7 @@ namespace QCBDManagementDAL.Helper.ChannelHelper
         {
             TResult result = new TResult();
             QCBDManagementCommon.Classes.NotifyTaskCompletion<TResult> ntc = new QCBDManagementCommon.Classes.NotifyTaskCompletion<TResult>();
-            ntc.PropertyChanged += onActionComplete_checkIfExceptionDetected;
+            //ntc.PropertyChanged += onActionComplete_checkIfExceptionDetected;
             TaskCompletionSource<TResult> taskCompletionSource = new TaskCompletionSource<TResult>();
             Task.Factory
                     .StartNew(() =>
@@ -84,8 +84,9 @@ namespace QCBDManagementDAL.Helper.ChannelHelper
                         }
                         catch (Exception ex)
                         {
-                            ErrorMessage = string.Format("Custom [{0}]: One Error occured - {1}", callerName, ex.InnerException.Message);
+                            string ErrorMessage = string.Format("Custom [{0}]: One Error occured - {1}", callerName, ex.InnerException.Message);
                             taskCompletionSource.SetException(new Exception(ErrorMessage));
+                            Log.error(ErrorMessage);
                         }
                         return taskResult;
                     });
@@ -98,7 +99,7 @@ namespace QCBDManagementDAL.Helper.ChannelHelper
         {
             TResult result = new TResult();
             QCBDManagementCommon.Classes.NotifyTaskCompletion<TResult> ntc = new QCBDManagementCommon.Classes.NotifyTaskCompletion<TResult>();
-            ntc.PropertyChanged += onActionComplete_checkIfExceptionDetected;
+            //ntc.PropertyChanged += onActionComplete_checkIfExceptionDetected;
             TaskCompletionSource<TResult> taskCompletionSource = new TaskCompletionSource<TResult>();
             Task.Factory
                     .StartNew(() =>
@@ -111,8 +112,9 @@ namespace QCBDManagementDAL.Helper.ChannelHelper
                         }
                         catch (Exception ex)
                         {
-                            ErrorMessage = string.Format("Custom [{0}]: One Error occured - {1}", callerName, ex.InnerException.Message);
+                            string ErrorMessage = string.Format("Custom [{0}]: One Error occured - {1}", callerName, ex.InnerException.Message);
                             taskCompletionSource.SetException(new Exception(ErrorMessage));
+                            Log.error(ErrorMessage);
                         }
                         return taskResult;
                     });
@@ -124,7 +126,7 @@ namespace QCBDManagementDAL.Helper.ChannelHelper
         public static void doActionAsync(this System.Action action, [CallerMemberName]string callerName = null)
         {
             QCBDManagementCommon.Classes.NotifyTaskCompletion<object> ntc = new QCBDManagementCommon.Classes.NotifyTaskCompletion<object>();
-            ntc.PropertyChanged += onActionComplete_checkIfExceptionDetected;
+            //ntc.PropertyChanged += onActionComplete_checkIfExceptionDetected;
             TaskCompletionSource<object> taskCompletionSource = new TaskCompletionSource<object>();
 
             Task<object>.Factory.StartNew(() =>
@@ -136,8 +138,9 @@ namespace QCBDManagementDAL.Helper.ChannelHelper
                 }
                 catch (Exception ex)
                 {
-                    ErrorMessage = string.Format("Custom [{0}]: One Error occured - {1}", callerName, (ex.InnerException != null)? ex.InnerException.Message : ex.Message);
-                    taskCompletionSource.SetException(new Exception(ErrorMessage));                    
+                    string ErrorMessage = string.Format("Custom [{0}]: One Error occured - {1}", callerName, (ex.InnerException != null)? ex.InnerException.Message : ex.Message);
+                    taskCompletionSource.SetException(new Exception(ErrorMessage));
+                    Log.error(ErrorMessage);
                 }
                 return null;
             });
@@ -145,13 +148,13 @@ namespace QCBDManagementDAL.Helper.ChannelHelper
             ntc.initializeNewTask(taskCompletionSource.Task);
         }
 
-        private static void onActionComplete_checkIfExceptionDetected(object sender, PropertyChangedEventArgs e)
+        /*private static void onActionComplete_checkIfExceptionDetected(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName.Equals("IsFaulted"))
             {
                 Log.write(ErrorMessage, "ERR");
             }
-        }
+        }*/
 
 
         //====================================================================================
@@ -230,10 +233,6 @@ namespace QCBDManagementDAL.Helper.ChannelHelper
                         table.Load(cmd.ExecuteReader(System.Data.CommandBehavior.CloseConnection));
 
                     }
-                }
-                catch (Exception ex)
-                {
-
                 }
                 finally
                 {
@@ -846,7 +845,7 @@ namespace QCBDManagementDAL.Helper.ChannelHelper
         public static QCBDDataSet.agentsDataTable AgentTypeToDataTable(this List<Agent> agentList, QCBDDataSet.agentsDataTable returnQCBDDataTable)
         {
             object _lock = new object();
-            bool isUpdate;
+            //bool isUpdate;
             //QCBDDataSet.agentsDataTable returnQCBDDataTable = new QCBDDataSet.agentsDataTable();
             returnQCBDDataTable.AcceptChanges();
             foreach (var agent in agentList)
@@ -857,12 +856,12 @@ namespace QCBDManagementDAL.Helper.ChannelHelper
                     agentQCBD = returnQCBDDataTable.NewagentsRow();
                     returnQCBDDataTable.IDColumn.AutoIncrement = false;
                     agentQCBD.ID = agent.ID;
-                    isUpdate = false;
+                    //isUpdate = false;
                 }
                 else
                 {
                     agentQCBD = returnQCBDDataTable.FindByID(agent.ID);
-                    isUpdate = true;
+                    //isUpdate = true;
                 }
 
                 //Debug.WriteLine("before change row state: "+agentQCBD.RowState);

@@ -364,13 +364,14 @@ namespace QCBDManagementWPF.ViewModel
 
         private async void createQuote(string obj)
         {
+            Dialog.showSearch("Quote creation...");
             CommandModel quote = new CommandModel();
             List<Entity.Command_item> command_itemList = new List<Entity.Command_item>();
             List<Entity.Command> quoteList = new List<Entity.Command>();
 
             quote.AddressList = Cart.Client.AddressList;
             quote.CLientModel = Cart.Client;
-            quote.AgentModel = Cart.Client.Agent;
+            quote.AgentModel = new AgentModel { Agent = Bl.BlSecurity.GetAuthenticatedUser() };
             quote.TxtDate = DateTime.Now.ToString();
             quote.TxtStatus = EStatusCommand.Quote.ToString();
 
@@ -398,7 +399,10 @@ namespace QCBDManagementWPF.ViewModel
             var savedCommandList = await Bl.BlCommand.InsertCommand_item(command_itemList);
             Cart.CartItemList.Clear();
             Cart.Client.Client = new QCBDManagementCommon.Entities.Client();
-            loadCommands();
+            if (savedQuoteList.Count > 0)
+                await Dialog.show("Quote ID("+savedQuoteList[0].ID+") has been created successfully!");
+            //loadCommands();
+            Dialog.IsDialogOpen = false;
             _currentViewModelFunc(new QuoteViewModel());
         }
 

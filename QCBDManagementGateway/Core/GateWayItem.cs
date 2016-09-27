@@ -71,7 +71,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -101,7 +101,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -131,7 +131,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -161,7 +161,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -192,7 +192,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -222,7 +222,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -252,7 +252,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -282,7 +282,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -312,7 +312,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -342,7 +342,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -372,7 +372,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -402,7 +402,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -432,7 +432,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -461,7 +461,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -492,7 +492,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -522,7 +522,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -552,7 +552,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -582,7 +582,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -612,7 +612,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -642,7 +642,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -672,7 +672,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -701,7 +701,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -729,7 +729,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -758,7 +758,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -787,7 +787,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -815,7 +815,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -844,7 +844,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -873,7 +873,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -901,7 +901,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -930,7 +930,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -959,7 +959,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -988,7 +988,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1017,7 +1017,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1045,7 +1045,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1074,7 +1074,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1103,7 +1103,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1132,7 +1132,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1160,7 +1160,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1188,7 +1188,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1217,7 +1217,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1248,12 +1248,12 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
             }
-            catch (TimeoutException ex)
+            catch (TimeoutException)
             {
                 _channel.Abort();
                 throw;
@@ -1279,7 +1279,7 @@ namespace QCBDManagementGateway.Core
                 _channel.Close();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1309,7 +1309,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1339,7 +1339,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1369,7 +1369,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1398,7 +1398,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;
@@ -1427,7 +1427,7 @@ namespace QCBDManagementGateway.Core
                 Dispose();
                 throw;
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 _channel.Abort();
                 throw;

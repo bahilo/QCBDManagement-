@@ -159,6 +159,12 @@ namespace QCBDManagementWPF.ViewModel
             GetObjectFromMainWindowViewModel = getObject;
         }
 
+        public override void Dispose()
+        {
+            PropertyChanged -= onSelectedCLientViewModelChange;
+            _selectedCLientTask.PropertyChanged -= onSelectedCLientTaskCompletion_saveSelectedClient;
+        }
+
         //----------------------------[ Event Handler ]------------------
 
         private void onSelectedCLientViewModelChange(object sender, PropertyChangedEventArgs e)

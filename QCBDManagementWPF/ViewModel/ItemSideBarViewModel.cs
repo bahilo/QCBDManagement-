@@ -12,18 +12,40 @@ namespace QCBDManagementWPF.ViewModel
 {
     public class ItemSideBarViewModel : BindBase
     {
-        private ItemModel _selectedItem;
+        
         private Func<object, object> _currentViewModel;
+
+        //----------------------------[ Models ]------------------
+
+        private ItemModel _selectedItem;
+
+        //----------------------------[ Commands ]------------------
 
         public ButtonCommand<string> SetupItemCommand { get; set; }
         public ButtonCommand<string> UtilitiesCommand { get; set; }
 
+
+
         public ItemSideBarViewModel()
         {
+            instances();
+            instancesCommand();
+        }
+
+        //----------------------------[ Initialization ]------------------
+        
+        private void instances()
+        {
             _selectedItem = new ItemModel();
+        }
+
+        private void instancesCommand()
+        {
             SetupItemCommand = new ButtonCommand<string>(executeSetupAction, canExecuteSetupAction);
             UtilitiesCommand = new ButtonCommand<string>(executeUtilityAction, canExecuteUtilityAction);
         }
+
+        //----------------------------[ Properties ]------------------
 
         public ItemModel SelectedItem
         {
@@ -31,10 +53,17 @@ namespace QCBDManagementWPF.ViewModel
             set { setProperty(ref _selectedItem, value, "SelectedItem"); }
         }
 
-        private bool canExecuteUtilityAction(string arg)
+        //----------------------------[ Actions ]------------------
+                
+        public void mainNavigObject(Func<Object, Object> navigObject)
         {
-            return false;
+            _currentViewModel = navigObject;
         }
+        
+        //----------------------------[ Event Handler ]------------------
+
+
+        //----------------------------[ Action Commands ]------------------
 
         private async void executeUtilityAction(string obj)
         {
@@ -46,15 +75,9 @@ namespace QCBDManagementWPF.ViewModel
             }
         }
 
-        private bool canExecuteSetupAction(string arg)
+        private bool canExecuteUtilityAction(string arg)
         {
-            bool isUpdate = securityCheck(QCBDManagementCommon.Enum.EAction.Item, QCBDManagementCommon.Enum.ESecurity._Update);
-            bool isWrite = securityCheck(QCBDManagementCommon.Enum.EAction.Item, QCBDManagementCommon.Enum.ESecurity._Write);
-            if ((!isUpdate || !isWrite)
-                && arg.Equals("new-item"))
-                return false;
-
-            return true;
+            return false;
         }
 
         private void executeSetupAction(string obj)
@@ -69,14 +92,16 @@ namespace QCBDManagementWPF.ViewModel
             }
         }
 
-        public void mainNavigObject(Func<Object, Object> navigObject)
+        private bool canExecuteSetupAction(string arg)
         {
-            _currentViewModel = navigObject;
-        }
+            bool isUpdate = securityCheck(QCBDManagementCommon.Enum.EAction.Item, QCBDManagementCommon.Enum.ESecurity._Update);
+            bool isWrite = securityCheck(QCBDManagementCommon.Enum.EAction.Item, QCBDManagementCommon.Enum.ESecurity._Write);
+            if ((!isUpdate || !isWrite)
+                && arg.Equals("new-item"))
+                return false;
 
-
-        //----------------------------[ Event Handler ]------------------
-        
+            return true;
+        }  
 
     }
 }

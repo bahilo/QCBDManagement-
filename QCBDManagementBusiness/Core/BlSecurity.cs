@@ -70,7 +70,7 @@ namespace QCBDManagementBusiness.Core
             {
                 //result = BlSecurity;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -87,7 +87,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.InsertActionRecord(listActionRecord);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -102,7 +102,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.InsertRole(Rolelist);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -117,7 +117,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.InsertAction(listAction);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -132,7 +132,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.InsertAgent_role(Agent_rolelist);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -147,7 +147,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.InsertRole_action(listRole_action);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -162,7 +162,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.InsertPrivilege(listPrivilege);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -177,7 +177,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.DeleteActionRecord(listActionRecord);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -192,7 +192,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.DeleteRole(RoleList);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -207,7 +207,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.DeleteAction(ActionList);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -222,7 +222,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.DeleteAgent_role(listAgent_role);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -237,7 +237,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.DeleteRole_action(listRole_action);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -252,7 +252,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.DeletePrivilege(listPrivilege);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -287,7 +287,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.UpdateActionRecord(ActionRecordList);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -302,7 +302,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.UpdateRole(RoleList);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -317,7 +317,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.UpdateAction(ActionList);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -332,7 +332,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.UpdateRole_action(Role_actionList);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -347,7 +347,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.UpdatePrivilege(PrivilegeList);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -362,7 +362,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.UpdateAgent_role(Agent_roleList);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -377,7 +377,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.GetActionRecordData(nbLine);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -392,7 +392,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.GetActionRecordDataById(id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -412,7 +412,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.GetRoleData(nbLine);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -427,7 +427,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.GetRoleDataById(id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -442,7 +442,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.GetActionData(nbLine);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -457,7 +457,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.GetActionDataById(id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -472,7 +472,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.GetAgent_roleData(nbLine);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -487,7 +487,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.GetAgent_roleDataById(id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -502,7 +502,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.GetRole_actionData(nbLine);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -517,7 +517,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.GetRole_actionDataById(id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -532,7 +532,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.GetPrivilegeData(nbLine);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -547,7 +547,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.GetPrivilegeDataById(id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -562,7 +562,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.searchActionRecord(ActionRecord, filterOperator);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -577,7 +577,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.searchRole(Role, filterOperator);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -592,7 +592,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.searchAction(Action, filterOperator);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -607,7 +607,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.searchAgent_role(Agent_role, filterOperator);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -622,7 +622,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.searchRole_action(Role_action, filterOperator);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
@@ -637,7 +637,7 @@ namespace QCBDManagementBusiness.Core
             {
                 result = await DAC.DALSecurity.searchPrivilege(Privilege, filterOperator);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Debug.WriteLine(ex.Message); // Display message
             }
