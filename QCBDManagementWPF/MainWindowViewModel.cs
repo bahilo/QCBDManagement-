@@ -299,23 +299,33 @@ namespace QCBDManagementWPF
         {
             string login = ((await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = "ftp_login" }, "OR")).FirstOrDefault() ?? new Infos()).Value;
             string password = ((await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = "ftp_password" }, "OR")).FirstOrDefault() ?? new Infos()).Value;
-            HeaderImageDisplay.TxtLogin = LogoImageDisplay.TxtLogin = BillImageDisplay.TxtLogin = login;
-            HeaderImageDisplay.TxtPassword = LogoImageDisplay.TxtPassword = BillImageDisplay.TxtPassword = password;
+            
+            if (string.IsNullOrEmpty(HeaderImageDisplay.TxtFileFullPath))
+            {
+                HeaderImageDisplay.TxtLogin = login;
+                HeaderImageDisplay.TxtPassword = password;
+                var headerImageFoundDisplay = await loadImage(HeaderImageDisplay.TxtFileNameWithoutExtension, HeaderImageDisplay.TxtName, login, password);
+                if (!string.IsNullOrEmpty(headerImageFoundDisplay.TxtFileFullPath) && File.Exists(headerImageFoundDisplay.TxtFileFullPath))
+                    HeaderImageDisplay = headerImageFoundDisplay;
+            }
 
-            //var allImages = await Startup.Bl.BlReferential.searchInfosFromWebService(new Infos { Option = 1 }, "AND"); // option = 1 ( = retrieving all images)
-            var headerImageFoundDisplay = await loadImage(HeaderImageDisplay.TxtFileNameWithoutExtension, HeaderImageDisplay.TxtName, login, password);
-            if (!string.IsNullOrEmpty(headerImageFoundDisplay.TxtFileFullPath) && File.Exists(headerImageFoundDisplay.TxtFileFullPath))
-                HeaderImageDisplay = headerImageFoundDisplay;
+            if (string.IsNullOrEmpty(LogoImageDisplay.TxtFileFullPath))
+            {
+                LogoImageDisplay.TxtLogin = login;
+                LogoImageDisplay.TxtPassword = password;
+                var logoImageFoundDisplay = await loadImage(LogoImageDisplay.TxtFileNameWithoutExtension, LogoImageDisplay.TxtName, login, password);
+                if (!string.IsNullOrEmpty(logoImageFoundDisplay.TxtFileFullPath) && File.Exists(logoImageFoundDisplay.TxtFileFullPath))
+                    LogoImageDisplay = logoImageFoundDisplay;
+            }
 
-            var logoImageFoundDisplay = await loadImage(LogoImageDisplay.TxtFileNameWithoutExtension, LogoImageDisplay.TxtName, login, password);
-            if (!string.IsNullOrEmpty(logoImageFoundDisplay.TxtFileFullPath) && File.Exists(logoImageFoundDisplay.TxtFileFullPath))
-                LogoImageDisplay = logoImageFoundDisplay;
-
-            var billImageFoundDisplay = await loadImage(BillImageDisplay.TxtFileNameWithoutExtension, BillImageDisplay.TxtName, login, password);
-            if (!string.IsNullOrEmpty(billImageFoundDisplay.TxtFileFullPath) && File.Exists(billImageFoundDisplay.TxtFileFullPath))
-                BillImageDisplay = billImageFoundDisplay;
-
-
+            if (string.IsNullOrEmpty(BillImageDisplay.TxtFileFullPath))
+            {
+                BillImageDisplay.TxtLogin = login;
+                BillImageDisplay.TxtPassword = password;
+                var billImageFoundDisplay = await loadImage(BillImageDisplay.TxtFileNameWithoutExtension, BillImageDisplay.TxtName, login, password);
+                if (!string.IsNullOrEmpty(billImageFoundDisplay.TxtFileFullPath) && File.Exists(billImageFoundDisplay.TxtFileFullPath))
+                    BillImageDisplay = billImageFoundDisplay;
+            }  
         }
 
         private async Task<DisplayAndData.Display.Image> loadImage(string fileName, string imageName, string login, string password)
@@ -394,7 +404,7 @@ namespace QCBDManagementWPF
             {
                 //MainWindow.onUIThreadSync(() => {
                 ProgressBarPercentValue = status;
-                if (status != -1)
+                if (status > 0)
                     SearchProgressVisibility = "Hidden";
                 //});                
             }
@@ -489,24 +499,28 @@ namespace QCBDManagementWPF
             return ObjectToReturn;
         }
 
-        private void loadUIData()
+        private async void loadUIData()
         {
-            //await MainWindow.onUIThreadAsync(() => {
-            if (isNewAgentAuthentication)
+            await MainWindow.onUIThreadAsync(() =>
             {
-                _startup.Dal.SetUserCredential(SecurityLoginViewModel.Bl.BlSecurity.GetAuthenticatedUser(), isNewAgentAuthentication);
-                isNewAgentAuthentication = false;
-            }
-            else
-            {
-                _startup.Dal.ProgressBarFunc = progressBarManagement;
-                _startup.Dal.SetUserCredential(SecurityLoginViewModel.Bl.BlSecurity.GetAuthenticatedUser());
-                _startup.Dal.DALReferential.PropertyChanged += onLodingGeneralInfosDataFromWebServiceToLocalChange_loadHeaderImage;
-                //downloadHeaderImages();                    
-            }
-            CommandNavig.raiseCanExecuteActionChanged();
-            onPropertyChange("TxtUserName");
-            //}); 
+                SearchProgressVisibility = "Visible";
+                if (isNewAgentAuthentication)
+                {
+                    ProgressBarPercentValue = -1;
+                    _startup.Dal.SetUserCredential(SecurityLoginViewModel.Bl.BlSecurity.GetAuthenticatedUser(), isNewAgentAuthentication);
+                    isNewAgentAuthentication = false;
+                    ProgressBarPercentValue = 100;
+                }
+                else if (SecurityLoginViewModel.AgentModel.Agent.ID != 0)
+                {
+                    _startup.Dal.ProgressBarFunc = progressBarManagement;
+                    _startup.Dal.SetUserCredential(AuthenticatedUser);
+                    _startup.Dal.DALReferential.PropertyChanged += onLodingGeneralInfosDataFromWebServiceToLocalChange_loadHeaderImage;
+                    //downloadHeaderImages();                    
+                }
+                CommandNavig.raiseCanExecuteActionChanged();
+                onPropertyChange("TxtUserName");
+            });
         }
 
         /*private void setPageActive(object page)

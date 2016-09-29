@@ -57,7 +57,7 @@ namespace QCBDManagementDAL.Core
             if (e.PropertyName.Equals("Credential"))
             {
                 DALHelper.doActionAsync(retrieveGateWayData);
-                _gateWayAgent.PropertyChanged -= onCredentialChange_loadAgentDataFromWebService;
+                
             }
         }
         
@@ -210,7 +210,7 @@ namespace QCBDManagementDAL.Core
 
         public void Dispose()
         {
-
+            _gateWayAgent.PropertyChanged -= onCredentialChange_loadAgentDataFromWebService;
         }
 
         public async Task<List<Agent>> searchAgentFromWebService(Agent agent, string filterOperator)

@@ -1,4 +1,6 @@
-﻿using QCBDManagementWPF.Classes;
+﻿using QCBDManagementBusiness;
+using QCBDManagementCommon.Entities;
+using QCBDManagementWPF.Classes;
 using QCBDManagementWPF.Command;
 using System;
 using System.Collections.Generic;
@@ -10,11 +12,7 @@ namespace QCBDManagementWPF.ViewModel
 {
     public class OptionEmailViewModel : BindBase
     {
-        GeneralInfos.FileWriter _quoteEmailFile;
-        GeneralInfos.FileWriter _reminderOneEmailFile;
-        GeneralInfos.FileWriter _reminderTwoEmailFile;
-        GeneralInfos.FileWriter _billEmailFile;
-        GeneralInfos.FileWriter _commandConfirmationEmailFile;
+        Dictionary<string, GeneralInfos.FileWriter> _emails;
         private string _title;
 
         //----------------------------[ Models ]------------------
@@ -45,11 +43,13 @@ namespace QCBDManagementWPF.ViewModel
         private void instances()
         {
             _title = "Email Management";
-            _quoteEmailFile = new GeneralInfos.FileWriter("quote");
-            _reminderOneEmailFile = new GeneralInfos.FileWriter("reminder_1");
-            _reminderTwoEmailFile = new GeneralInfos.FileWriter("reminder_2");
-            _billEmailFile = new GeneralInfos.FileWriter("bill");
-            _commandConfirmationEmailFile = new GeneralInfos.FileWriter("command_confirmation");
+            _emails = new Dictionary<string, GeneralInfos.FileWriter>();
+            _emails["quote"] = new GeneralInfos.FileWriter("quote");
+            _emails["reminder_1"] = new GeneralInfos.FileWriter("reminder_1");
+            _emails["reminder_2"] = new GeneralInfos.FileWriter("reminder_2");
+            _emails["bill"] = new GeneralInfos.FileWriter("bill");
+            _emails["command_confirmation"] = new GeneralInfos.FileWriter("quote");
+            _emails["quote"] = new GeneralInfos.FileWriter("command_confirmation");
         }
 
         private void instancesModel()
@@ -65,6 +65,11 @@ namespace QCBDManagementWPF.ViewModel
 
         //----------------------------[ Properties ]------------------
 
+        public BusinessLogic Bl
+        {
+            get { return _startup.Bl; }
+            set { _startup.Bl = value; onPropertyChange("Bl"); }
+        }
 
         public string Title
         {
@@ -74,64 +79,77 @@ namespace QCBDManagementWPF.ViewModel
 
         public GeneralInfos.FileWriter CommandConfirmationEmailFile
         {
-            get { return _commandConfirmationEmailFile; }
-            set { setProperty(ref _commandConfirmationEmailFile, value, "CommandConfirmationEmailFile"); }
+            get { return _emails["command_confirmation"]; }
+            set { _emails["command_confirmation"] = value; onPropertyChange("CommandConfirmationEmailFile"); }
         }
 
         public GeneralInfos.FileWriter BillEmailFile
         {
-            get { return _billEmailFile; }
-            set { setProperty(ref _billEmailFile, value, "BillEmailFile"); }
+            get { return _emails["bill"]; }
+            set { _emails["bill"] = value; onPropertyChange("BillEmailFile"); }
         }
 
         public GeneralInfos.FileWriter ReminderTwoEmailFile
         {
-            get { return _reminderTwoEmailFile; }
-            set { setProperty(ref _reminderTwoEmailFile, value, "ReminderTwoEmailFile"); }
+            get { return _emails["reminder_2"]; }
+            set { _emails["reminder_2"] = value; onPropertyChange("ReminderTwoEmailFile"); }
         }
 
         public GeneralInfos.FileWriter ReminderOneEmailFile
         {
-            get { return _reminderOneEmailFile; }
-            set { setProperty(ref _reminderOneEmailFile, value, "ReminderEmailFile"); }
+            get { return _emails["reminder_1"]; }
+            set { _emails["reminder_1"] = value; onPropertyChange("ReminderEmailFile"); }
         }
 
         public GeneralInfos.FileWriter QuoteEmailFile
         {
-            get { return _quoteEmailFile; }
-            set { setProperty(ref _quoteEmailFile, value, "QuoteEmailFile"); }
+            get { return _emails["quote"]; }
+            set { _emails["quote"] = value; onPropertyChange("QuoteEmailFile"); }
         }
 
         //----------------------------[ Actions ]------------------
 
+        public async void loadData()
+        {
+            Dialog.showSearch("Loading...");
+            
+            string login = ((await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = "ftp_login" }, "OR")).FirstOrDefault() ?? new Infos()).Value;
+            string password = ((await _startup.Bl.BlReferential.searchInfos(new QCBDManagementCommon.Entities.Infos { Name = "ftp_password" }, "OR")).FirstOrDefault() ?? new Infos()).Value;
 
+            foreach (var email in _emails)
+            {
+                email.Value.TxtLogin = login;
+                email.Value.TxtPassword = password;
+                email.Value.read();
+            }
+
+            Dialog.IsDialogOpen = false;
+        }
 
         //----------------------------[ Event Handler ]------------------
 
 
 
         //----------------------------[ Action Commands ]------------------
-
-
-
+        
         private void eraseContent(string obj)
         {
             switch (obj)
             {
                 case "bill":
-                    _billEmailFile.TxtContent = "";
+                    _emails["bill"].TxtContent = "";
                     break;
                 case "reminder-2":
-                    _reminderOneEmailFile.TxtContent = "";
+                    _emails["reminder_2"].TxtContent = "";
                     break;
                 case "reminder-1":
-                    _reminderTwoEmailFile.TxtContent = "";
+                    _emails["reminder_1"].TxtContent = "";
                     break;
                 case "command-confirmation":
-                    _commandConfirmationEmailFile.TxtContent = "";
+                    _emails["command_confirmation"].TxtContent = "";
                     break;
                 case "quote":
-                    _quoteEmailFile.TxtContent = "";
+                    _emails["quote"].TxtContent = "";
                     break;
             }
         }
@@ -145,29 +163,29 @@ namespace QCBDManagementWPF.ViewModel
             return false;
         }
 
-        private void updateEmailFiles(string obj)
+        private async void updateEmailFiles(string obj)
         {
             switch (obj)
             {
                 case "bill":
-                    if (_billEmailFile.save())
-                        InputDialog.show("Bill Email saved Successfully!");
+                    if (_emails["bill"].save())
+                        await Dialog.show("Email Bill saved Successfully!");
                     break;
                 case "reminder-2":
-                    if (_reminderOneEmailFile.save())
-                        InputDialog.show("Bill first reminder Email saved Successfully!");
+                    if (_emails["reminder_2"].save())
+                        await Dialog.show("Email first Bill reminder saved Successfully!");
                     break;
                 case "reminder-1":
-                    if (_reminderTwoEmailFile.save())
-                        InputDialog.show("Bill second reminder Email saved Successfully!");
+                    if (_emails["reminder_1"].save())
+                        await Dialog.show("Email second Bill reminder saved Successfully!");
                     break;
                 case "command-confirmation":
-                    if (_commandConfirmationEmailFile.save())
-                        InputDialog.show("Command validation confirmation Email saved Successfully!");
+                    if (_emails["command_confirmation"].save())
+                        await Dialog.show("Email validation Order confirmation saved Successfully!");
                     break;
                 case "quote":
-                    if (_quoteEmailFile.save())
-                        InputDialog.show("Quote Email saved Successfully!");
+                    if (_emails["quote"].save())
+                        await Dialog.show("Email Quote saved Successfully!");
                     break;
             }
         }

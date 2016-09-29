@@ -16,13 +16,10 @@ namespace QCBDManagementDAL.Core
 {
     public class DALNotification : INotificationManager
     {
-        private SqlCommand _sqlCommand;
         public Agent AuthenticatedUser { get; set; }
         private GateWayNotification _gateWayNotification;
-        private bool _isLodingDataFromWebServiceToLocal;
         private int _loadSize;
         private int _progressStep;
-        private Func<double, double> _rogressBarFunc;
 
         public DALNotification()
         {
@@ -34,7 +31,6 @@ namespace QCBDManagementDAL.Core
         public void initializeCredential(Agent user)
         {
             AuthenticatedUser = user;
-            //_loadSize = (AuthenticatedUser.ListSize > 0) ? AuthenticatedUser.ListSize : _loadSize;
             _gateWayNotification.initializeCredential(user);
         }
 
@@ -70,7 +66,7 @@ namespace QCBDManagementDAL.Core
 
         public void Dispose()
         {
-            _sqlCommand.Connection.Close();
+
         }
     } /* end class BlNotification */
 }

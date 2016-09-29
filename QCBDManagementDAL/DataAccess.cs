@@ -38,14 +38,14 @@ public class DataAccess: IDataAccessManager
 
     public void SetUserCredential(Agent authenticatedUser, bool isNewAgentAuthentication = false)
     {
-        ProgressBarFunc(-1);
+        //ProgressBarFunc(-1);
         
         if (isNewAgentAuthentication)
         {
             Task.Factory.StartNew(() => {
                 DALCommand.progressBarManagement(ProgressBarFunc);
                 DALCommand.initializeCredential(authenticatedUser);
-                ProgressBarFunc(100);
+                //ProgressBarFunc(100);
             });
         }
         else

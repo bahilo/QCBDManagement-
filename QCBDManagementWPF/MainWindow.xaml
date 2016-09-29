@@ -15,7 +15,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:Views ="clr-namespace:QCBDManagementWPF.Views"
         xmlns:ViewModel="clr-namespace:QCBDManagementWPF.ViewModel"
-        Title="Quote Command Billing and Delivery Management" 
+        Title="Quote Order Billing and Delivery Management" 
         Closed="Window_Closing" >
     <Window.Resources>
         <ResourceDictionary>
@@ -196,13 +196,13 @@
                             <Button Grid.Column="4" x:Name="btnQuote" Style="{DynamicResource MaterialDesignFlatButton}" Width="115" Margin="0,0,0,1" Command="{Binding CommandNavig}" CommandParameter="quote">
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="FormatFloatLeft"/>
-                                    <TextBlock Margin="5 0 0 0">Quotation</TextBlock>
+                                    <TextBlock Margin="5 0 0 0">Quote</TextBlock>
                                 </StackPanel>
                             </Button>
                             <Button Grid.Column="5" x:Name="btnCommand" Style="{DynamicResource MaterialDesignFlatButton}" Width="125" Margin="0,0,0,1" Command="{Binding CommandNavig}" CommandParameter="command">
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="FormatFloatRight"/>
-                                    <TextBlock Margin="5 0 0 0">Command</TextBlock>
+                                    <TextBlock Margin="5 0 0 0">Orders</TextBlock>
                                 </StackPanel>
                             </Button>
                             <Button Grid.Column="6" x:Name="btnStatistic" Style="{DynamicResource MaterialDesignFlatButton}" Width="110" Margin="0,0,0,1" Command="{Binding CommandNavig}" CommandParameter="statistic">

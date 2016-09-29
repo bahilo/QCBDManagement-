@@ -153,8 +153,7 @@ namespace QCBDManagementWPF.ViewModel
                     SelectedAgentModel.TxtHashedPassword = Bl.BlSecurity.CalculateHash(SelectedAgentModel.TxtClearPassword);
                     isPasswordIdentical = true;
                 }
-            }
-            
+            }       
 
             if (SelectedAgentModel.Agent.ID == 0)
             {
@@ -167,19 +166,22 @@ namespace QCBDManagementWPF.ViewModel
                         await Dialog.show("Agent " + SelectedAgentModel.Agent.LastName + " Successfully Created!");
                     Dialog.IsDialogOpen = false;
                 }
-                await Dialog.show("Password are not Identical!");
+                else
+                    await Dialog.show("Password are not Identical!");
             }
             else
             {
-                if (!string.IsNullOrEmpty(SelectedAgentModel.TxtClearPasswordVerification) && !isPasswordIdentical)
-                    await Dialog.show("Password are not Identical (update will occur except the password)!");
-
-                Dialog.showSearch("Updating Agent " + SelectedAgentModel.Agent.LastName + "...");
-                var updatedAgentList = await Bl.BlAgent.UpdateAgent(new List<Agent> { SelectedAgentModel.Agent });
-                if (updatedAgentList.Count > 0)
-                   await  Dialog.show("Agent "+ SelectedAgentModel.Agent .LastName+ " Successfully Updated!");
-                Dialog.IsDialogOpen = false;
+                if (isPasswordIdentical || string.IsNullOrEmpty(SelectedAgentModel.TxtClearPasswordVerification))
+                {
+                    Dialog.showSearch("Updating Agent " + SelectedAgentModel.Agent.LastName + "...");
+                    var updatedAgentList = await Bl.BlAgent.UpdateAgent(new List<Agent> { SelectedAgentModel.Agent });
+                    if (updatedAgentList.Count > 0)
+                        await Dialog.show("Agent " + SelectedAgentModel.Agent.LastName + " Successfully Updated!");
+                    Dialog.IsDialogOpen = false;
+                }else
+                    await Dialog.show("Password are not Identical!");                
             }
+            isPasswordIdentical = false;
         }
 
         private bool canUpdateAgent(object arg)

@@ -29,7 +29,8 @@ namespace QCBDManagementWPF.Views
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            pwdBox.Password = ((SecurityLoginViewModel)this.DataContext).TxtClearPassword;
+            //pwdBox.Password = ((SecurityLoginViewModel)this.DataContext).TxtClearPassword;
+            pwdBox.Clear();
             pwdBox.LostFocus += ((SecurityLoginViewModel)this.DataContext).onPwdBoxPasswordChange_updateTxtClearPassword;
          }
     }

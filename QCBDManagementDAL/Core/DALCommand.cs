@@ -56,7 +56,7 @@ namespace QCBDManagementDAL.Core
             if (e.PropertyName.Equals("Credential"))
             {
                 DALHelper.doActionAsync(retrieveGateWayDataCommand);
-                _gateWayCommand.PropertyChanged -= onCredentialChange_loadCommandDataFromWebService;
+                
             }
         }
 
@@ -753,13 +753,7 @@ namespace QCBDManagementDAL.Core
 
         public void Dispose()
         {
-            /*DALHelper.emptyTable<commandsTableAdapter>();
-            DALHelper.emptyTable<command_itemsTableAdapter>();
-            DALHelper.emptyTable<tax_commandsTableAdapter>();
-            DALHelper.emptyTable<deliveriesTableAdapter>();
-            DALHelper.emptyTable<billsTableAdapter>();
-            DALHelper.emptyTable<taxesTableAdapter>();*/
-            //_commandsTableAdapter.Dispose();
+            _gateWayCommand.PropertyChanged -= onCredentialChange_loadCommandDataFromWebService;
         }
 
         public async Task<List<Command>> searchCommandFromWebService(Command command, string filterOperator)

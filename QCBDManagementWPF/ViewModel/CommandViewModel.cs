@@ -293,7 +293,7 @@ namespace QCBDManagementWPF.ViewModel
 
                     if (SelectedClient.Client.ID != 0)
                     {
-                        Title = string.Format("Command for the Company {0}", SelectedClient.Client.Company);
+                        Title = string.Format("Orders for the Company {0}", SelectedClient.Client.Company);
                         
                         //CommandModelTask.initializeNewTask(CommandListToModelList(CommandTask.Result));
                         CommandModelList = (await CommandListToModelList(await Bl.BlCommand.searchCommandFromWebService(new Entity.Command { ClientId = SelectedClient.Client.ID }, "AND"))).OrderByDescending(x => x.Command.ID).ToList();
@@ -301,7 +301,7 @@ namespace QCBDManagementWPF.ViewModel
                     }
                     else
                     {
-                        Title = "Command Management";
+                        Title = "Orders Management";
                         CommandModelList = (await CommandListToModelList(await Bl.BlCommand.searchCommand(new QCBDManagementCommon.Entities.Command { AgentId = Bl.BlSecurity.GetAuthenticatedUser().ID }, "AND"))).OrderByDescending(x => x.Command.ID).ToList();
                         //CommandTask.initializeNewTask(Bl.BlCommand.searchCommand(new QCBDManagementCommon.Entities.Command { AgentId = Bl.BlSecurity.GetAuthenticatedUser().ID }, "AND"));
                     }

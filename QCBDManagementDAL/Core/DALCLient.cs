@@ -76,8 +76,7 @@ namespace QCBDManagementDAL.Core
         {
             if (e.PropertyName.Equals("Credential"))
             {
-                DALHelper.doActionAsync(retrieveGateWayDataClient);
-                _gateWayClient.PropertyChanged -= onCredentialChange_loadClientDataFromWebService;
+                DALHelper.doActionAsync(retrieveGateWayDataClient);                
             }
         }
 
@@ -527,10 +526,7 @@ namespace QCBDManagementDAL.Core
 
         public void Dispose()
         {
-            /*DALHelper.emptyTable<addressesTableAdapter>();
-            DALHelper.emptyTable<clientsTableAdapter>();
-            DALHelper.emptyTable<contactsTableAdapter>();
-            //_clientsTableAdapter.Dispose();*/
+            _gateWayClient.PropertyChanged -= onCredentialChange_loadClientDataFromWebService;
         }
 
         public Task<List<Client>> MoveClientAgentBySelection(List<Client> clientList, Agent toAgent)

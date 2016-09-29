@@ -634,15 +634,16 @@ namespace QCBDManagementWPF.ViewModel
                 || obj.Equals("BlockStepThreeVisibility")))
                 return "Hidden";
 
-            if (!CommandSelected.TxtStatus.Equals(EStatusCommand.Quote.ToString())
+            /*if (CommandSelected.TxtStatus.Equals(EStatusCommand.Quote.ToString())
                 && obj.Equals("BlockBillListBoxVisibility"))
-                return "Hidden";
+                return "Hidden";*/
 
             if (CommandSelected.TxtStatus.Equals(EStatusCommand.Quote.ToString())
                 && (obj.Equals("BlockDeliveryReceiptCreatedVisibility")
                 || obj.Equals("BlockDeliveryReceiptCreationVisiblity")
                 || obj.Equals("BlockBillCreationVisibility")
                 || obj.Equals("BlockBillCreatedVisibility")
+                || obj.Equals("BlockBillListBoxVisibility")
                 ))
                 return "Hidden";
 

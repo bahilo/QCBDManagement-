@@ -65,8 +65,7 @@ namespace QCBDManagementDAL.Core
         {
             if (e.PropertyName.Equals("Credential"))
             {
-                DALHelper.doActionAsync(retrieveGateWayDataItem);
-                _gateWayItem.PropertyChanged -= onCredentialChange_loadItemDataFromWebService;
+                DALHelper.doActionAsync(retrieveGateWayDataItem);                
             }
         }
 
@@ -75,7 +74,6 @@ namespace QCBDManagementDAL.Core
             if (!string.IsNullOrEmpty(user.Login) && !string.IsNullOrEmpty(user.HashedPassword))
             {
                 AuthenticatedUser = user;
-                //_loadSize = (AuthenticatedUser.ListSize > 0) ? AuthenticatedUser.ListSize : _loadSize;
                 _gateWayItem.initializeCredential(AuthenticatedUser);
             }
         }
@@ -114,21 +112,8 @@ namespace QCBDManagementDAL.Core
                     _rogressBarFunc(_rogressBarFunc(0) + 100 / _progressStep);
                     Log.write("Item loaded!", "TES");
                 }
-            }
-
-            
+            }            
         }
-
-        /*private void retrieveGateWayDataAuto_ref()
-        {
-            lock (_lock) _isLodingDataFromWebServiceToLocal = true;
-            var savedAuto_refList = new NotifyTaskCompletion<List<Auto_ref>>(UpdateAuto_ref(new NotifyTaskCompletion<List<Auto_ref>>(_gateWayItem.GetAuto_refData(_loadSize)).Task.Result)).Task.Result;
-            lock (_lock)
-            {
-                _isLodingDataFromWebServiceToLocal = false;
-                _rogressBarFunc(_rogressBarFunc(0) + 100 / _progressStep);
-            }
-        }*/
 
         public void progressBarManagement(Func<double, double> progressBarFunc)
         {
@@ -607,13 +592,6 @@ namespace QCBDManagementDAL.Core
                 gateAwayItem.setServiceCredential(AuthenticatedUser.Login, AuthenticatedUser.HashedPassword);
                 result = await gateAwayItem.GetProvider_itemDataByItemList(itemList);
             }
-
-            /*foreach (Item item in itemList)
-            {
-                var provider_itemFound = (await searchProvider_item(new Provider_item { Item_ref = item.Ref }, "OR")).OrderByDescending(x => x.ID).FirstOrDefault();
-                if (provider_itemFound != null)
-                    result.Add(provider_itemFound);
-            }*/
             return result;
         }
 
@@ -622,25 +600,7 @@ namespace QCBDManagementDAL.Core
             using (provider_itemsTableAdapter _provider_itemsTableAdapter = new provider_itemsTableAdapter())
                 return (await DALHelper.doActionAsync<int, QCBDDataSet.provider_itemsDataTable>(_provider_itemsTableAdapter.get_data_provider_item_by_id, id)).DataTableTypeToProvider_item();
         }
-
-        /*public async Task<List<Command_item>> GetCommand_itemData(int nbLine)
-        {
-            List<Command_item> result = new List<Command_item>();
-            using (command_itemsTableAdapter _command_itemsTableAdapter = new command_itemsTableAdapter())
-                result = (await DALHelper.doActionAsync<QCBDDataSet.command_itemsDataTable>(_command_itemsTableAdapter.get_data_command_item)).DataTableTypeToCommand_item();
-            
-            if (nbLine.Equals(999) || result.Count == 0)
-                return result;
-
-            return result.GetRange(0, nbLine);
-        }
-
-        public async Task<List<Command_item>> GetCommand_itemDataById(int id)
-        {
-            using (command_itemsTableAdapter _command_itemsTableAdapter = new command_itemsTableAdapter())
-                return (await DALHelper.doActionAsync<int, QCBDDataSet.command_itemsDataTable>(_command_itemsTableAdapter.get_data_command_item_by_id, id)).DataTableTypeToCommand_item();
-        }*/
-
+        
         public async Task<List<Item_delivery>> GetItem_deliveryData(int nbLine)
         {
             List<Item_delivery> result = new List<Item_delivery>();
@@ -661,12 +621,6 @@ namespace QCBDManagementDAL.Core
                 gateAwayItem.setServiceCredential(AuthenticatedUser.Login, AuthenticatedUser.HashedPassword);
                 result = await gateAwayItem.GetItem_deliveryDataByDeliveryList(deliveryList);
             }
-            /*foreach (Delivery delivery in deliveryList)
-            {
-                var item_deliveryFound = (await searchItem_delivery(new Item_delivery { DeliveryId=delivery.ID }, "OR")).OrderByDescending(x => x.ID).FirstOrDefault();
-                if (item_deliveryFound != null)
-                    result.Add(item_deliveryFound);
-            }*/
             return result;
         }
 
@@ -684,10 +638,7 @@ namespace QCBDManagementDAL.Core
                 gateWayItem.setServiceCredential(AuthenticatedUser.Login, AuthenticatedUser.HashedPassword);
                 result = await gateWayItem.GetAuto_refData(nbLine);
             }
-                
-            //using (auto_refsTableAdapter _auto_refTableAdapter = new auto_refsTableAdapter())
-            //    result = (await DALHelper.doActionAsync<QCBDDataSet.auto_refsDataTable>(_auto_refTableAdapter.get_data_auto_ref)).DataTableTypeToAuto_ref();
-
+              
             if (nbLine.Equals(999) || result.Count == 0)
                 return result;
 
@@ -742,12 +693,7 @@ namespace QCBDManagementDAL.Core
         {
             return await Task.Factory.StartNew(() => { return Provider_item.Provider_itemTypeToFilterDataTable(filterOperator); });
         }
-
-        /*public async Task<List<Command_item>> searchCommand_item(Command_item Command_item, string filterOperator)
-        {
-            return await Task.Factory.StartNew(() => { return Command_item.Command_itemTypeToFilterDataTable(filterOperator); });
-        }*/
-
+        
         public async Task<List<Item_delivery>> searchItem_delivery(Item_delivery Item_delivery, string filterOperator)
         {
             return await Task.Factory.StartNew(() => { return Item_delivery.Item_deliveryTypeToFilterDataTable(filterOperator); });
@@ -756,7 +702,6 @@ namespace QCBDManagementDAL.Core
         public async Task<List<Auto_ref>> searchAuto_ref(Auto_ref Auto_ref, string filterOperator)
         {
             return await Task.Factory.StartNew(() => { return Auto_ref.Auto_refTypeToFilterDataTable(filterOperator); });
-            //DALHelper.Auto_refTypeToFilterDataTable(Auto_ref, filterOperator);
         }
 
         public async Task<List<Tax_item>> searchTax_item(Tax_item Tax_item, string filterOperator)
@@ -814,12 +759,7 @@ namespace QCBDManagementDAL.Core
 
         public void Dispose()
         {
-            /*DALHelper.emptyTable<itemsTableAdapter>();
-            DALHelper.emptyTable<provider_itemsTableAdapter>();
-            DALHelper.emptyTable<providersTableAdapter>();
-            DALHelper.emptyTable<command_itemsTableAdapter>();
-            DALHelper.emptyTable<item_deliveriesTableAdapter>();*/
-            //_itemTableAdapter.Dispose();
+            _gateWayItem.PropertyChanged -= onCredentialChange_loadItemDataFromWebService;
         }
     } /* end class BLItem */
 }

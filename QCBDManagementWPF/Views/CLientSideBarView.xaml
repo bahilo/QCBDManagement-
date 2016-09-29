@@ -89,7 +89,7 @@
                                 HorizontalAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Eye"/>
-                            <TextBlock Margin="8 0 0 0">See Client Commands</TextBlock>
+                            <TextBlock Margin="8 0 0 0">See Client Orders</TextBlock>
                         </StackPanel>
                     </Button>
                     <Button Style="{DynamicResource MaterialDesignFlatButton}" 

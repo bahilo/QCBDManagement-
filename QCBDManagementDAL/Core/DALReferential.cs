@@ -47,8 +47,7 @@ namespace QCBDManagementDAL.Core
         {
             if (e.PropertyName.Equals("Credential"))
             {
-                DALHelper.doActionAsync(retrieveGateWayDataReferential);
-                _gateWayReferential.PropertyChanged -= onCredentialChange_loadReferentialDataFromWebService;
+                DALHelper.doActionAsync(retrieveGateWayDataReferential);                
             }
         }
 
@@ -63,7 +62,6 @@ namespace QCBDManagementDAL.Core
             if (!string.IsNullOrEmpty(user.Login) && !string.IsNullOrEmpty(user.HashedPassword))
             {
                 AuthenticatedUser = user;
-                //_loadSize = (AuthenticatedUser.ListSize > 0) ? AuthenticatedUser.ListSize : _loadSize;
                 _gateWayReferential.initializeCredential(AuthenticatedUser);
             }
         }
@@ -246,7 +244,7 @@ namespace QCBDManagementDAL.Core
 
         public void Dispose()
         {
-
+            _gateWayReferential.PropertyChanged -= onCredentialChange_loadReferentialDataFromWebService;
         }
     } /* end class BlReferential */
 }

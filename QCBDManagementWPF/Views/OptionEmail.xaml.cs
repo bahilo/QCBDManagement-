@@ -32,6 +32,7 @@ namespace QCBDManagementWPF.Views
             if (parent != null)
             {
                 this.DataContext = (MainWindowViewModel)parent.DataContext;
+                ((MainWindowViewModel)this.DataContext).ReferentialViewModel.OptionEmailViewModel.loadData();
             }
         }
         

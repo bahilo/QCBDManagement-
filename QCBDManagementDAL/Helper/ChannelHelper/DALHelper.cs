@@ -231,8 +231,11 @@ namespace QCBDManagementDAL.Helper.ChannelHelper
                         cmd.Connection.Open();
                         cmd.CommandTimeout = 0;
                         table.Load(cmd.ExecuteReader(System.Data.CommandBehavior.CloseConnection));
-
                     }
+                }
+                catch (Exception ex)
+                {
+                    Log.error(ex.Message);
                 }
                 finally
                 {

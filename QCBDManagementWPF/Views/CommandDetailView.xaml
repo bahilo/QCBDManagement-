@@ -32,7 +32,7 @@
         <materialDesign:ColorZone Grid.Row="1"  Mode="Accent">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <TextBlock >Commad ID</TextBlock>
+                    <TextBlock >Order ID</TextBlock>
                     <TextBlock Margin="10 0 0 0" Text="{Binding CommandViewModel.CommandDetailViewModel.CommandSelected.TxtID}"/>
                     <TextBlock Margin="10 0 0 0" > for the Company</TextBlock>
                     <TextBlock Margin="10 0 0 0" FontStyle="Italic" Text="{Binding CommandViewModel.CommandDetailViewModel.CommandSelected.CLientModel.TxtCompany}"/>

@@ -193,7 +193,7 @@ namespace QCBDManagementWPF.ViewModel
                         await Dialog.show("The Agent " + updatedAgentList[0].LastName + " has been successfully deactivated!");
                     break;
                 case "use":
-                    Dialog.showSearch("Connection new Agent...");
+                    Dialog.showSearch("Please wait while we are dealing with your request...");
                     var newAgent = await loadNewUser(SelectedAgentModel.Agent.Login, SelectedAgentModel.Agent.HashedPassword);
                     if (newAgent.ID != 0)
                         await Dialog.show("Your are successfully connected as " + newAgent.FirstName + " " + newAgent.LastName);

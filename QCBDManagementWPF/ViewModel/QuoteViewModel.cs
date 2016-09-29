@@ -190,21 +190,16 @@ namespace QCBDManagementWPF.ViewModel
             if (_commandViewModel != null)
             {
                 _commandViewModel.PropertyChanged += onCommandModelChange_loadCommand;
-                _commandViewModel.loadCommands();
-                Title = _commandViewModel.Title.Replace("Command","Quotation");
+                _commandViewModel.loadCommands();                
             }
-
-                
-            //SelectedQuoteModel = new CommandModel();
-            //var result = await Bl.BlCommand.searchCommand(new Entity.Command { Status=EStatusCommand.Quote.ToString() }, "AND");
-            //QuoteModelList = await QuoteListToModelViewList(await Bl.BlCommand.searchCommand(new Entity.Command { Status = EStatusCommand.Quote.ToString() }, "AND"));
-        }
+       }
 
         private void onCommandModelChange_loadCommand(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName.Equals("CommandModelList"))
             {
                 QuoteModelList = _commandViewModel.CommandModelList.Where(x => x.TxtStatus.Equals(EStatusCommand.Quote.ToString())).ToList();
+                Title = _commandViewModel.Title.Replace("Orders", "Quote");
             }
         }
 
@@ -227,34 +222,15 @@ namespace QCBDManagementWPF.ViewModel
             return output;
         }
 
-        /*private void contextManagement(IState nextPage)
-        {
-            var mainViewModel = _getObjectFromMainWindowViewModel("main") as MainWindowViewModel;
-            if (mainViewModel != null)
-            {
-                mainViewModel.Context.PreviousState = this;
-                mainViewModel.Context.NextState = nextPage;
-            }
-        }*/
-
         internal void mainNavigObject(Func<object, object> navigation)
         {
             _currentViewModelFunc = navigation;
-            //QuoteSideBarViewModel.mainNavigObject(navigation);
         }
 
         internal void sideBarContentManagement(Func<object, object> sideBarManagement)
         {
             _currentSideBarViewModelFunc = sideBarManagement;
         }
-
-        /*public void initCart(ref Cart cart)
-        {
-            if (cart.Client == null)
-                MissingCLientMessage = "No Client Selected!";
-
-            _itemViewModel.initCart(ref cart);
-        }*/
 
         public void setSideBar(ref CommandSideBarViewModel sideBar)
         {
@@ -269,6 +245,15 @@ namespace QCBDManagementWPF.ViewModel
         internal void setInitCart(ref Cart cart)
         {
             Cart = cart;
+        }
+
+        public override void Dispose()
+        {
+            _quoteDetailViewModel.PropertyChanged -= onSelectedQuoteModelChange;
+            PropertyChanged -= onGetObjectFromMainWindowViewModelChange;
+            PropertyChanged -= onStartupChange;
+            PropertyChanged -= onDialogChange;
+            _commandViewModel.PropertyChanged -= onCommandModelChange_loadCommand;
         }
 
         //----------------------------[ Event Handler ]------------------
@@ -322,7 +307,6 @@ namespace QCBDManagementWPF.ViewModel
         private void saveSelectedQuote(CommandModel obj)
         {
             SelectedQuoteModel = obj;
-            //QuoteDetailViewModel.CommandSelected = obj;
         }
 
         private bool canSaveSelectedCommand(CommandModel arg)
@@ -341,22 +325,11 @@ namespace QCBDManagementWPF.ViewModel
             switch (obj)
             {
                 case "quote":
-                    //contextManagement(this);
                     _currentViewModelFunc(this);
                     break;
                 case "quote-detail":
-                    //contextManagement(QuoteDetailViewModel);
                     _currentViewModelFunc(QuoteDetailViewModel);
                     break;
-                /*case "quote-new":
-                    SelectedQuoteModel = new CommandModel();
-                    contextManagement(QuoteDetailViewModel);
-                    _currentViewModelFunc(QuoteDetailViewModel);
-                    break;
-                case "quote-update":
-                    contextManagement(QuoteDetailViewModel);
-                    _currentViewModelFunc(QuoteDetailViewModel);
-                    break;*/
                 default:
                     goto case "quote";
             }
@@ -392,7 +365,6 @@ namespace QCBDManagementWPF.ViewModel
                 command_item.TxtTotalSelling        = itemModel.TxtTotalSellingPrice;
                 command_item.TxtCommandId           = savedQuote.ID.ToString();
                 command_item.TxtQuantity            = itemModel.TxtQuantity;
-                //command_item.TxtQuantity_current    = itemModel.TxtQuantity;
 
                 command_itemList.Add(command_item.Command_Item);
             }    
@@ -401,7 +373,6 @@ namespace QCBDManagementWPF.ViewModel
             Cart.Client.Client = new QCBDManagementCommon.Entities.Client();
             if (savedQuoteList.Count > 0)
                 await Dialog.show("Quote ID("+savedQuoteList[0].ID+") has been created successfully!");
-            //loadCommands();
             Dialog.IsDialogOpen = false;
             _currentViewModelFunc(new QuoteViewModel());
         }
@@ -426,7 +397,6 @@ namespace QCBDManagementWPF.ViewModel
             var command_itemFoundList = await Bl.BlCommand.GetCommand_itemByCommandList(new List<Entity.Command> { obj.Command });
             await Bl.BlCommand.DeleteCommand_item(command_itemFoundList);
             await Bl.BlCommand.DeleteCommand(new List<Entity.Command> { obj.Command });
-            //_commandViewModel.deleteCommand(obj);
             _currentViewModelFunc(this);
         }
 

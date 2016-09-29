@@ -337,6 +337,7 @@ namespace QCBDManagementWPF.ViewModel
         private async void addTax(object obj)
         {
             Dialog.showSearch("Tax creation...");
+            TaxModel.TxtDate = DateTime.Now.ToString();
             var savedTaxList = await Bl.BlCommand.InsertTax(new List<QCBDManagementCommon.Entities.Tax> { TaxModel.Tax });
             if (savedTaxList.Count > 0)
             {

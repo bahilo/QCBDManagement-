@@ -39,7 +39,7 @@
                                 HorizontalAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="BookMultiple"/>
-                            <TextBlock Margin="8 0 0 0">Convert Quote into Command</TextBlock>
+                            <TextBlock Margin="8 0 0 0">Convert Quote into Order</TextBlock>
                         </StackPanel>
                     </Button>
                     <Button Style="{DynamicResource MaterialDesignFlatButton}" 
@@ -48,7 +48,7 @@
                                 HorizontalAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="BookMultiple"/>
-                            <TextBlock Margin="8 0 0 0">Convert Command into Quote</TextBlock>
+                            <TextBlock Margin="8 0 0 0">Convert Order into Quote</TextBlock>
                         </StackPanel>
                     </Button>
                     <Button Style="{DynamicResource MaterialDesignFlatButton}" 
@@ -66,7 +66,7 @@
                                 HorizontalAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="BookOpen"/>
-                            <TextBlock Margin="8 0 0 0">Valid Command</TextBlock>
+                            <TextBlock Margin="8 0 0 0">Valid Order</TextBlock>
                         </StackPanel>
                     </Button>
                     <Button Style="{DynamicResource MaterialDesignFlatButton}" 
@@ -84,14 +84,12 @@
                                 HorizontalAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="BookmarkCheck"/>
-                            <TextBlock Margin="8 0 0 0">Close Command</TextBlock>
+                            <TextBlock Margin="8 0 0 0">Close Order</TextBlock>
                         </StackPanel>
                     </Button>
                 </StackPanel>
             </Expander>
             <!-- -->
         </StackPanel>
-
-
     </Grid>
 </UserControl>

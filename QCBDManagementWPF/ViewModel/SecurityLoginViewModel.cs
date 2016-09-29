@@ -13,6 +13,7 @@ using System.Windows;
 using QCBDManagementCommon.Classes;
 using System.Threading;
 using System.Windows.Controls;
+using QCBDManagementCommon.Enum;
 
 namespace QCBDManagementWPF.ViewModel
 {
@@ -142,13 +143,16 @@ namespace QCBDManagementWPF.ViewModel
         {
             //Dialog.showSearch("Searching...");
             var agentFound = await Bl.BlSecurity.AuthenticateUser(TxtLogin, TxtClearPassword);
-            if (agentFound != null && agentFound.ID != 0)
+            if (agentFound != null && agentFound.ID != 0 && agentFound.Status.Equals(EStatus.Active.ToString()))
             {
                 AgentModel.Agent = agentFound;
+                TxtLogin = "";
+                TxtClearPassword = "";
+                TxtErrorMessage = "";
             }
             else
             {
-                TxtErrorMessage = "Your User Name or password is incorrect!";
+                TxtErrorMessage = "Your User Name or password is incorrect or Deactivated!";
             }               
             
             return null;
@@ -163,8 +167,8 @@ namespace QCBDManagementWPF.ViewModel
 
         public async void startAuthentication()
         {
-            TxtLogin = "codsimex212";
-            TxtClearPassword = "codsimex212";
+            TxtLogin = "<< Login here for dev mode >>";
+            TxtClearPassword = "<< Password here for dev mode >>";
             await authenticateAgent();
         }
 
@@ -230,7 +234,7 @@ namespace QCBDManagementWPF.ViewModel
 
         private void logOut(object obj)
         {
-            AgentModel = new AgentModel();
+            AgentModel.Agent = new QCBDManagementCommon.Entities.Agent();
             showView();
         }
 

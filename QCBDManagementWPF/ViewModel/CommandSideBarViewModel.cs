@@ -225,7 +225,7 @@ namespace QCBDManagementWPF.ViewModel
 
 
         private bool canExecuteUtilityAction(string arg)
-        {
+        {           
             if ((_page(null) as CommandDetailViewModel) == null)
                 return false;
 
@@ -234,19 +234,26 @@ namespace QCBDManagementWPF.ViewModel
                 && string.IsNullOrEmpty(SelectedCommandModel.TxtStatus))
                 return false;
 
+            if (arg.Equals("close-command") && !securityCheck(EAction.Command_Close, ESecurity._Update)
+                || arg.Equals("valid-command") && !securityCheck(EAction.Command_Valid, ESecurity._Update) && !securityCheck(EAction.Command_Valid, ESecurity._Write)
+                || arg.Equals("convert-commandToQuote") && !securityCheck(EAction.Command_Quote, ESecurity._Write) && !securityCheck(EAction.Command, ESecurity._Update)
+                || arg.Equals("valid-credit") && !securityCheck(EAction.Command_Close, ESecurity._Update))
+                return false;
+            
             if (!SelectedCommandModel.TxtStatus.Equals(EStatusCommand.Quote.ToString())
                 && (arg.Equals("convert-quoteToCommand")
                 || arg.Equals("convert-quoteToCredit")
-                || arg.Equals("open-email")))
+                || arg.Equals("open-email")
+                ))
                 return false;
 
             if (SelectedCommandModel.TxtStatus.Equals(EStatusCommand.Quote.ToString())
-                && (arg.Equals("close-command")
-                   || arg.Equals("valid-command")
-                   || arg.Equals("convert-commandToQuote")))
+                && (arg.Equals("close-command") && !securityCheck(EAction.Command_Close, ESecurity._Update)
+                   || arg.Equals("valid-command") && !securityCheck( EAction.Command_Valid, ESecurity._Update) && !securityCheck(EAction.Command_Valid, ESecurity._Write)
+                   || arg.Equals("convert-commandToQuote") && !securityCheck(EAction.Command_Quote, ESecurity._Write) && !securityCheck(EAction.Command, ESecurity._Update)
+                   ))
                 return false;
-
-
+            
             if ((SelectedCommandModel.TxtStatus.Equals(EStatusCommand.Command.ToString()) || !SelectedCommandModel.TxtStatus.Equals(EStatusCommand.Pre_Command.ToString()))
                 && arg.Equals("valid-command"))
                 return false;
@@ -271,31 +278,30 @@ namespace QCBDManagementWPF.ViewModel
                 switch (obj)
                 {
                     case "convert-quoteToCommand":
-                        //updateCommandStatus(EStatusCommand.Pre_Command);
                         commandDetail.updateCommandStatus(EStatusCommand.Pre_Command);
 
                         if (commandDetail.CommandSelected.TxtStatus.Equals(EStatusCommand.Pre_Command.ToString()))
-                            await Dialog.show("Quote successfully Converted to Command");
+                            await Dialog.show("Quote successfully Converted to Order");
                         break;
                     case "valid-command":
-                        //updateCommandStatus(EStatusCommand.Command);
                         commandDetail.updateCommandStatus(EStatusCommand.Command);
                         if (commandDetail.CommandSelected.TxtStatus.Equals(EStatusCommand.Command.ToString()))
-                            await Dialog.show("Command successfully Validated");
+                            await Dialog.show("Order successfully Validated");
                         break;
                     case "valid-credit":
-                        //updateCommandStatus(EStatusCommand.Command);
-                        commandDetail.updateCommandStatus(EStatusCommand.Credit);
-                        if (commandDetail.CommandSelected.TxtStatus.Equals(EStatusCommand.Credit.ToString()))
-                            await Dialog.show("Command successfully Validated");
+                        if (await Dialog.show("Do you really want to validate this credit?"))
+                        {
+                            commandDetail.updateCommandStatus(EStatusCommand.Credit);
+                            if (commandDetail.CommandSelected.TxtStatus.Equals(EStatusCommand.Credit.ToString()))
+                                await Dialog.show("Order successfully Validated");
+                        }                        
                         break;
                     case "convert-commandToQuote":
-                        //updateCommandStatus(EStatusCommand.Quote);
                         if (await Dialog.show("Do you really want to convert into quote?"))
                         {
                             commandDetail.updateCommandStatus(EStatusCommand.Quote);
                             if (commandDetail.CommandSelected.TxtStatus.Equals(EStatusCommand.Quote.ToString()))
-                                await Dialog.show("Command successfully Converted to Quote");
+                                await Dialog.show("Order successfully Converted to Quote");
                         }                         
                         break;
                     case "convert-quoteToCredit":
@@ -303,16 +309,15 @@ namespace QCBDManagementWPF.ViewModel
                         {
                             commandDetail.updateCommandStatus(EStatusCommand.Pre_Credit);
                             if (commandDetail.CommandSelected.TxtStatus.Equals(EStatusCommand.Pre_Credit.ToString()))
-                                await Dialog.show("Command successfully Converted to Quote");
+                                await Dialog.show("Order successfully Converted to Quote");
                         }
                         break;
                     case "close-command":
-                        //updateCommandStatus(EStatusCommand.Command_Close);
                         if (await Dialog.show("Do you really want to close this command?"))
                         {
                             commandDetail.updateCommandStatus(EStatusCommand.Command_Close);
                             if (commandDetail.CommandSelected.TxtStatus.Equals(EStatusCommand.Command_Close.ToString()))
-                                await Dialog.show("Command successfully Closed");
+                                await Dialog.show("Order successfully Closed");
                         }
                         break;
                 }

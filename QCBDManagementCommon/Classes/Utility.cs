@@ -106,27 +106,31 @@ namespace QCBDManagementCommon.Classes
             req.Method = WebRequestMethods.Ftp.UploadFile;
             req.Credentials = new NetworkCredential(username, password);
             Stream requestStream = null;
-            FileStream stream = null;
+            //FileStream stream = null;
 
             // Copy the file contents to the request stream.
-            const int bufferLength = 2048;
-            byte[] buffer = new byte[bufferLength];
-            int count = 0;
-            int readBytes = 0;
-
+            //const int bufferLength = 2048;
+            byte[] buffer;// = new byte[bufferLength];
+            //int count = 0;
+            //int readBytes = 0;
+            StreamReader streamReaderSource = new StreamReader(fileFullPath);
             try
             {
-                stream = File.OpenRead(fileFullPath);
+                buffer = Encoding.UTF8.GetBytes(streamReaderSource.ReadToEnd());
+                //stream = File.OpenRead(fileFullPath);
 
+                
+
+                //do
+                //{
+                    //readBytes = stream.Read(buffer, 0, buffer.Length);
+                    req.ContentLength = buffer.Length;
                 requestStream = req.GetRequestStream();
-
-                do
-                {
-                    readBytes = stream.Read(buffer, 0, bufferLength);
-                    requestStream.Write(buffer, 0, bufferLength);
-                    count += readBytes;
-                }
-                while (readBytes != 0);
+                //readBytes = stream.Read(buffer, 0, buffer.Length);
+                requestStream.Write(buffer, 0, buffer.Length);
+                    //count += readBytes;
+                //}
+                //while (readBytes != 0);
             }
             catch (WebException ex)
             {
@@ -136,12 +140,13 @@ namespace QCBDManagementCommon.Classes
             finally
             {
                 requestStream.Close();
+                streamReaderSource.Close();
             }
 
             downloadFIle(ftpUrl, fileFullPath, username, password);
 
             FtpWebResponse response = (FtpWebResponse)req.GetResponse();
-            if (response.StatusCode.Equals(FtpStatusCode.ClosingData) && count > 0)
+            if (response.StatusCode.Equals(FtpStatusCode.ClosingData)) // && count > 0)
                 isComplete = true;
 
             return isComplete;

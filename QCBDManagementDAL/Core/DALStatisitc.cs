@@ -57,8 +57,7 @@ namespace QCBDManagementDAL.Core
         {
             if (e.PropertyName.Equals("Credential"))
             {
-                DALHelper.doActionAsync(retrieveGateWayData);
-                _gateWayStatistic.PropertyChanged -= onCredentialChange_loadStatisticDataFromWebService;
+                DALHelper.doActionAsync(retrieveGateWayData);                
             }
         }
 
@@ -202,7 +201,7 @@ namespace QCBDManagementDAL.Core
 
         public void Dispose()
         {
-
+            _gateWayStatistic.PropertyChanged -= onCredentialChange_loadStatisticDataFromWebService;
         }
     } /* end class BLStatisitc */
 }

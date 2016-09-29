@@ -71,7 +71,7 @@
                     </StackPanel>
                 </Grid>-->
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Width="400">
-                    <TextBox Text="{Binding CommandViewModel.CommandSearch.CommandId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" materialDesign:TextFieldAssist.Hint="Commande/Avoir/Devis ID" x:Name="tbTxtCommandId" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" FontSize="16" Margin="0 16 0 0"/>
+                    <TextBox Text="{Binding CommandViewModel.CommandSearch.CommandId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" materialDesign:TextFieldAssist.Hint="Order/Credit/Quote ID" x:Name="tbTxtCommandId" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" FontSize="16" Margin="0 16 0 0"/>
                     <TextBox Text="{Binding CommandViewModel.CommandSearch.BillId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" materialDesign:TextFieldAssist.Hint="Bill ID" x:Name="tbTxtBillId" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" FontSize="16" Margin="0 16 0 0"/>
                     <TextBox Text="{Binding CommandViewModel.CommandSearch.CLientId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" materialDesign:TextFieldAssist.Hint="Client ID" x:Name="tbTxtCLientId" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" FontSize="16" Margin="0 16 0 0"/>
                     <TextBox Text="{Binding CommandViewModel.CommandSearch.CompanyName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" materialDesign:TextFieldAssist.Hint="Company Name" x:Name="tbTxtClientName" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" FontSize="16" Margin="0 16 0 0"/>
@@ -146,7 +146,7 @@
 
             <StackPanel Orientation="Vertical">
                 <materialDesign:ColorZone Mode="PrimaryMid">
-                    <TextBlock Name="txtBWaitValid" HorizontalAlignment="Center">Commands/Credits Waiting To Be Validate</TextBlock>
+                    <TextBlock Name="txtBWaitValid" HorizontalAlignment="Center">Orders/Credits Waiting To Be Validate</TextBlock>
                 </materialDesign:ColorZone>
                 <DataGrid x:Name="dgCommandWaitValidList" AutoGenerateColumns="False"
                             ItemsSource="{Binding CommandViewModel.WaitValidCommandList, UpdateSourceTrigger=PropertyChanged}" 
@@ -188,7 +188,7 @@
         <materialDesign:Card Grid.Row="3" Visibility="{Binding CommandViewModel.BlockCommandVisibility, UpdateSourceTrigger=PropertyChanged }">
             <materialDesign:ColorZone Mode="PrimaryMid">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Name="txtBWaitClientValid" HorizontalAlignment="Center">Commands Waiting to Be validate with CLient</TextBlock>
+                    <TextBlock Name="txtBWaitClientValid" HorizontalAlignment="Center">Orders Waiting to Be validate with CLient</TextBlock>
                     <DataGrid x:Name="dgCommandWaitValidClientList" AutoGenerateColumns="False"
                                   ItemsSource="{Binding CommandViewModel.WaitValidClientCommandList, UpdateSourceTrigger=PropertyChanged}" 
                                   Margin="0 0 8 0" EnableColumnVirtualization="True" EnableRowVirtualization="True" 
@@ -241,7 +241,7 @@
             <materialDesign:ColorZone Mode="PrimaryMid">
                 <StackPanel Orientation="Vertical">
                     <!-- -->
-                    <TextBlock Name="txtBInProcess" HorizontalAlignment="Center">Commands/Credits validated - In Process</TextBlock>
+                    <TextBlock Name="txtBInProcess" HorizontalAlignment="Center">Orders/Credits validated - In Process</TextBlock>
                     <DataGrid x:Name="dgCommandInProcessList" AutoGenerateColumns="False"
                                 ItemsSource="{Binding CommandViewModel.InProcessCommandList, UpdateSourceTrigger=PropertyChanged}" 
                                 Margin="0 0 8 0" EnableColumnVirtualization="True" EnableRowVirtualization="True" 
@@ -282,7 +282,7 @@
         <materialDesign:Card Grid.Row="5" Visibility="{Binding CommandViewModel.BlockCommandVisibility, UpdateSourceTrigger=PropertyChanged }">
             <materialDesign:ColorZone Mode="PrimaryMid">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Name="txtBWaitPay" HorizontalAlignment="Center">Commands/Credits Delivered - Waiting To Be Pay</TextBlock>
+                    <TextBlock Name="txtBWaitPay" HorizontalAlignment="Center">Orders/Credits Delivered - Waiting To Be Pay</TextBlock>
                     <DataGrid x:Name="dgCommandWaitPayList" AutoGenerateColumns="False"
                                 ItemsSource="{Binding CommandViewModel.WaitPayCommandList, UpdateSourceTrigger=PropertyChanged}" 
                                 Margin="0 0 8 0" EnableColumnVirtualization="True" EnableRowVirtualization="True" 
@@ -313,7 +313,7 @@
         <materialDesign:Card Grid.Row="6" Visibility="{Binding CommandViewModel.BlockCommandVisibility, UpdateSourceTrigger=PropertyChanged }">
             <materialDesign:ColorZone Mode="PrimaryMid">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Name="txtBPayed" HorizontalAlignment="Center">Commands/Credits Closed - Delivered And Payed</TextBlock>
+                    <TextBlock Name="txtBPayed" HorizontalAlignment="Center">Orders/Credits Closed - Delivered And Payed</TextBlock>
                     <DataGrid x:Name="dgCommandPayedDeliveredList" AutoGenerateColumns="False"
                                 ItemsSource="{Binding CommandViewModel.ClosedCommandList, UpdateSourceTrigger=PropertyChanged}" 
                                 materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8" 
